@@ -4,9 +4,13 @@
 
 This code is written in Python and requires
 
-* [Theano](http://deeplearning.net/software/theano/>)
+* [Theano](http://deeplearning.net/software/theano/)
 
-Optional but recommended for analysis and visualization of the networks (including examples from the paper):
+Optional but recommended to speed up running the trained networks outside of Theano for analysis purposes,
+
+* [Cython](http://cython.org/)
+
+Also optional but recommended for analysis and visualization of the networks (including examples from the paper):
 
 * matplotlib
 
