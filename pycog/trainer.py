@@ -85,8 +85,8 @@ class Trainer(object):
         """
         RNN initialization.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         params : dict
                  Parameters. See RNN.defaults for the default values.
