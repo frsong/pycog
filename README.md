@@ -35,9 +35,4 @@ MIT
 
 Please cite our paper in your publications if it helps your research:
 
-  @article{song2015,
-    Author  = {Song, H. F., Yang, G. Robert, and Wang, X.-J.},
-    Journal = {Unknown},
-    Title   = {Training Excitatory-Inhibitory Recurrent Neural Networks: A Simple and Flexible Framework for Cognitive Tasks},
-    Year    = {2015}
-  }
+* Song, H. F., Yang, G. Robert, and Wang, X.-J. Training Excitatory-Inhibitory Recurrent Neural Networks: A Simple and Flexible Framework for Cognitive Tasks, 2015.
