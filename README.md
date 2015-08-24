@@ -31,6 +31,8 @@ This is almost always innocuous and can be safely ignored.
 
 MIT
 
+## Citation
+
 Please cite our paper in your publications if it helps your research:
 
   @article{song2015,

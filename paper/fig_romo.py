@@ -109,11 +109,14 @@ x_stim  = x_tune + 0.025
 x_delay = x_stim + w_a1 + 0.08
 y_a1    = y0 + h_tune + 0.11
 
+x_sig = x2 + 0.015
+w_sig = 0.235
+
 plots.update({
     'psy':    fig.add([x_psy, y_psy, w_psy, h_psy]),
     'pos':    fig.add([x0, y1, w, h]),
     'switch': fig.add([x1, y1, w, h]),
-    'sig':    fig.add([x2, y1, w, h]),
+    'sig':    fig.add([x_sig, y1, w_sig, h]),
     'tune':   fig.add([x_tune, y_tune, w_tune, h_tune]),
     'stim':   fig.add([x_stim, y_a1,   w_a1,   h_a1]),
     'delay':  fig.add([x_delay, y_a1,   w_a1,   h_a1])
@@ -171,6 +174,9 @@ plot.text_upper_center('Pos. tuned during $f_1$, neg. during $f_2$', dy=0.1, fon
 plot = plots['<']
 plot.xlabel('Time from $f_1$ onset (sec)')
 plot.ylabel('Input (a.u.)')
+
+plot = plots['sig']
+plot.ylabel('Prop. sig. tuned units')
 
 #=========================================================================================
 # Sample inputs
