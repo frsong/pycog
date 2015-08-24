@@ -183,8 +183,8 @@ class Trainer(object):
         """
         Initialize weights from a distribution.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         rng : numpy.random.RandomState
               Random number generator.
