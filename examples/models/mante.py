@@ -208,9 +208,6 @@ def generate_trial(rng, dt, params):
 
     return trial
 
-#learning_rate = 5e-3
-#n_gradient    = 10
-
 # Performance measure
 performance = tasktools.performance_2afc
 
