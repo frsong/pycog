@@ -6,7 +6,7 @@ This code is written in Python and requires
 
 * [Theano](http://deeplearning.net/software/theano/)
 
-Optional but recommended to speed up running the trained networks outside of Theano for analysis purposes,
+Optional but recommended if you plan to run many trials with the trained networks, outside of Theano, for analysis purposes:
 
 * [Cython](http://cython.org/)
 
