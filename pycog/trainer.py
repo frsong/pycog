@@ -236,8 +236,8 @@ class Trainer(object):
         """
         Train the RNN.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         savefile : str
         
