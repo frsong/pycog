@@ -1,5 +1,5 @@
 """
-Some commonly used functions to define a task.
+Some commonly used functions for defining a task.
 
 """
 from __future__ import division
