@@ -1,4 +1,4 @@
-# Train excitatory-inhibitory recurrent neural networks for cognitive tasks.
+# Excitatory-inhibitory recurrent neural networks for cognitive tasks
 
 ## Requirements
 
