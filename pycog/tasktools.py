@@ -12,18 +12,20 @@ import numpy as np
 
 def generate_ei(N, pE=0.8):
     """
-    E/I sign signature.
+    E/I signature.
 
-    Args
-    ----
+    Parameters
+    ----------
 
     N : int
         Number of recurrent units.
 
-    pE : float, 0 <= pE <= 1
+    pE : float, optional
          Fraction of units that are excitatory. Default is the usual value for cortex.
 
     """
+    assert 0 <= pE <= 1
+
     Nexc = int(pE*N)
     Ninh = N - Nexc
 
@@ -125,9 +127,3 @@ def performance_2afc(trials, z):
                for choice, trial in zip(choices, trials) if trial['info']]
 
     return 100*sum(correct)/len(correct)
-
-#/////////////////////////////////////////////////////////////////////////////////////////
-
-if __name__ == '__main__':
-    # TODO: Test
-    pass
