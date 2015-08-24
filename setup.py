@@ -29,7 +29,7 @@ class pycog_install(install):
         while mode not in ['', 'develop', 'cancel']:
             if mode != 'develop':
                 print("This script is for 'develop' install only.")
-            mode = raw_input("Installation mode [develop]/cancel: ")
+            mode = raw_input("Installation mode [develop]/cancel: ").strip()
         if mode in ['', 'develop']:
             self.distribution.run_command('develop')
 

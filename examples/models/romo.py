@@ -27,25 +27,6 @@ ei, EXC, INH = tasktools.generate_ei(N)
 POS = 0
 NEG = 1
 
-# Population labels
-Nexc    = len(EXC)
-Ninh    = len(INH)
-EXC_POS = EXC[:Nexc//4]
-INH_POS = INH[:Ninh//4]
-EXC_NEG = EXC[Nexc//4:Nexc//2]
-INH_NEG = INH[Ninh//4:Ninh//2]
-
-#Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5)
-#lambda1_rec = 1
-
-#-----------------------------------------------------------------------------------------
-# Input connectivity
-#-----------------------------------------------------------------------------------------
-
-#Cin = np.zeros((N, Nin))
-#Cin[EXC_POS + INH_POS, POS] = 1
-#Cin[EXC_NEG + INH_NEG, NEG] = 1
-
 #-----------------------------------------------------------------------------------------
 # Output connectivity
 #-----------------------------------------------------------------------------------------
