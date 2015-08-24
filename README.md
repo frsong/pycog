@@ -6,7 +6,7 @@ This code is written in Python and requires
 
 * [Theano](http://deeplearning.net/software/theano/>)
 
-Optional but recommended for analysis and visualization of the networks:
+Optional but recommended for analysis and visualization of the networks (including examples from the paper):
 
 * matplotlib
 
