@@ -1,0 +1,6 @@
+*~
+*.DS_Store
+*.pyc
+build/
+examples/work/
+paper/figs/
