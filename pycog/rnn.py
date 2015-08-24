@@ -116,8 +116,8 @@ class RNN(object):
         """
         Initialize the RNN from a saved training file.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         savefile:  str, optional
                    File name for trained network. If None, create a default network.
@@ -225,8 +225,8 @@ class RNN(object):
         """
         Run the network.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         Tf : float, optional
              Duration for which to run the network. If None, it is assumed that
