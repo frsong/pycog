@@ -12,7 +12,13 @@ Optional but recommended for analysis and visualization of the networks:
 - matplotlib
 - scipy
 
-Due to the exploratory nature of this code, we recommend ``installing'' by adding the location of this package to your $PYTHONPATH.
+## Installation
+
+Go to the pycog directory where setup.py is and type
+
+```bash
+python setup.py develop
+```
 
 ## Example
 
