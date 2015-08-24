@@ -4,7 +4,7 @@
 
 This code is written in Python and requires
 
-* `Theano <http://deeplearning.net/software/theano/>`_
+* [Theano](http://deeplearning.net/software/theano/>)
 
 Optional but recommended for analysis and visualization of the networks:
 
