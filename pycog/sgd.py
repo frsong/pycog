@@ -2,7 +2,7 @@
 Train a recurrent neural network using minibatch stochastic gradient descent 
 with the modifications described in
 
-  On the difficulty to training recurrent neural networks.
+  On the difficulty of training recurrent neural networks.
   R. Pascanu, T. Mikolov, & Y. Bengio, ICML 2013.
 
   https://github.com/pascanur/trainingRNNs
