@@ -11,13 +11,19 @@ import sys
 
 import numpy as np
 
+THIS = 'pycog.model'
+
 class Struct():
+    """
+    Treat a dictionary like a module.
+
+    """
     def __init__(self, **entries): 
         self.__dict__.update(entries)
 
 class Model(object):
     """
-    Class to (slightly) simplify training networks.
+    Provide a simpler interface to users, and check for obvious mistakes.
 
     """
     def __init__(self, modelfile=None, **kwargs):
@@ -33,8 +39,10 @@ class Model(object):
 
         kwargs : dict
 
+          Must contain
+
           generate_trial : function
-                           Returns a trial in a dictionary. 
+                           Return a dictionary containing trial information.
                            This function should take as its arguments
                             
                            rng    : numpy.random.RandomState
@@ -60,19 +68,21 @@ class Model(object):
                 f    = self.m.task.generate_trial
                 args = inspect.getargspec(f).args[1:]
             except AttributeError:
-                print("[ Model ] You need to define a function that returns trials.")
+                print("[ {}.Model ] You need to define a function that returns trials."
+                      .format(THIS))
                 sys.exit()
 
         # generate_trial : usage
         if args != ['rng', 'dt', 'params']:
-            print("[ Model ] Warning: Function generate_trial doesn't have the expected"
-                  " list of argument names. It is OK if only the names are different.")
+            print(("[ {}.Model ] Warning: Function generate_trial doesn't have the expected"
+                   " list of argument names. It is OK if only the names are different.")
+                  .format(THIS))
 
         # var_in : size
         if (hasattr(self.m, 'var_in') and isinstance(self.m.var_in, np.ndarray)
             and self.m.var_in.ndim == 1):
             if len(self.m.var_in) != self.m.Nin:
-                print("[ Model ] The length of var_in doesn't match Nin.")
+                print("[ {}.Model ] The length of var_in doesn't match Nin.".format(THIS))
                 sys.exit()
 
     #/////////////////////////////////////////////////////////////////////////////////////
@@ -81,8 +91,8 @@ class Model(object):
         """
         Train the network.
 
-        Args
-        ----
+        Parameters
+        ----------
 
         savefile : str
         seed : int, optional
