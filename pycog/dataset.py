@@ -16,8 +16,8 @@ class Dataset(object):
     def __init__(self, size, task, floatX, p, batch_size=None, seed=1, name='Dataset'):
         """
         
-        Args
-        ----
+        Parameters
+        ----------
         
         size : int
                Number of trials in each minibatch.

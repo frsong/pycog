@@ -15,7 +15,6 @@ import cPickle as pickle
 import datetime
 import os
 import sys
-from   collections import OrderedDict
 
 import numpy as np
 
@@ -161,13 +160,13 @@ class SGD(object):
         if 'x0' in self.trainable_names:
             g += [g_x0]
 
-        norm_theta = T.sqrt(sum([(i**2).sum() for i in g]))
-        g = [SGD.clip_norm(i, norm_theta, maxnorm) for i in g]
+        gnorm = T.sqrt(sum([(i**2).sum() for i in g]))
+        g = [SGD.clip_norm(i, gnorm, maxnorm) for i in g]
         g_Win, g_Wrec, g_Wout, g_brec, g_bout, g_x0 = RNN.fill(g, self.trainable_names)
 
         # Pascanu's safeguard for numerical precision issues with float32
-        new_cond = T.or_(T.or_(T.isnan(norm_theta), T.isinf(norm_theta)),
-                         T.or_(norm_theta < 0, norm_theta > 1e10))
+        new_cond = T.or_(T.or_(T.isnan(gnorm), T.isinf(gnorm)),
+                         T.or_(gnorm < 0, gnorm > 1e10))
         if 'Win' in self.trainable_names:
             g_Win  = T.switch(new_cond, np.float32(0), g_Win)
         g_Wrec = T.switch(new_cond, np.float32(0.02)*Wrec, g_Wrec)
@@ -196,14 +195,12 @@ class SGD(object):
             g += [g_x0]
 
         # Update rule
-        updates = OrderedDict()
-        for i, j in zip(self.trainables, g):
-            updates[i] = i - lr*j
+        updates = [(theta, theta - lr*grad) for theta, grad in zip(self.trainables, g)]
 
         # Update function
         self.train_step = theanotools.function(
             inputs + [alpha, lambda_Omega, lr, maxnorm, bound],
-            [costs[0] + regs, norm_theta, Omega, nelems, x],
+            [costs[0] + regs, gnorm, Omega, nelems, x],
             updates=updates
             )
 
@@ -316,10 +313,10 @@ class SGD(object):
         # Updates
         #---------------------------------------------------------------------------------
 
-        performance   = self.p['performance']
-        terminate     = self.p['terminate']
-        tr_Omega      = None
-        tr_norm_theta = None
+        performance = self.p['performance']
+        terminate   = self.p['terminate']
+        tr_Omega    = None
+        tr_gnorm    = None
         try:
             tstart = datetime.datetime.now()
             for iter in xrange(first_iter, 1+self.p['max_iter']):
@@ -385,14 +382,14 @@ class SGD(object):
                     rho = RNN.spectral_radius(self.Wrec_.eval())
 
                     # Format
-                    Omega      = ('n/a' if tr_Omega is None 
-                                  else '{:.8f}'.format(float(tr_Omega)))
-                    norm_theta = ('n/a' if tr_norm_theta is None 
-                                  else '{:.8f}'.format(float(tr_norm_theta)))
+                    Omega = ('n/a' if tr_Omega is None 
+                             else '{:.8f}'.format(float(tr_Omega)))
+                    gnorm = ('n/a' if tr_gnorm is None 
+                             else '{:.8f}'.format(float(tr_gnorm)))
                     
                     # Info
                     print("| Omega      (last iter) = {}".format(Omega))
-                    print("| grad. norm (last iter) = {}".format(norm_theta))
+                    print("| grad. norm (last iter) = {}".format(gnorm))
                     print("| rho                    = {:.8f}".format(rho))
                     sys.stdout.flush()
 
@@ -431,7 +428,7 @@ class SGD(object):
                 # Training step
                 #-------------------------------------------------------------------------
 
-                tr_cost, tr_norm_theta, tr_Omega, tr_nelems, tr_x = self.train_step(
+                tr_cost, tr_gnorm, tr_Omega, tr_nelems, tr_x = self.train_step(
                     *(gradient_data(best['other_costs'])
                       + [alpha, lambda_Omega, lr, maxnorm, bound])
                      )

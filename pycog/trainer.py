@@ -74,9 +74,10 @@ class Trainer(object):
         'distribution_out':  None,
         'checkfreq':         None,
         'patience':          None,
-        'init_momentum':     0,    # Not used at the moment
-        'momentum':          0,    # Not used at the moment
-        'method':            'sgd' # Not used at the moment
+        'init_momentum':     0,     # Not used at the moment
+        'momentum':          False, # Not used at the moment
+        'mu':                0.9,   # Not used at the moment
+        'method':            'sgd'  # Not used at the moment
         }
     defaults['performance'] = None
     defaults['terminate']   = lambda performance_history: False
