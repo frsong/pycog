@@ -48,10 +48,10 @@ def get_idx(t, interval):
     return list(np.where((start < t) & (t <= end))[0])
 
 def get_epochs_idx(dt, epochs):
-    t = np.linspace(dt, epochs['Tf'], int(epochs['Tf']/dt))
-    assert t[1] - t[0] == dt, "[ tasktools.get_epochs_idx ] dt doesn't fit into Tf."
+    t = np.linspace(dt, epochs['T'], int(epochs['T']/dt))
+    assert t[1] - t[0] == dt, "[ tasktools.get_epochs_idx ] dt doesn't fit into T."
 
-    return t, {k: get_idx(t, v) for k, v in epochs.items() if k != 'Tf'}
+    return t, {k: get_idx(t, v) for k, v in epochs.items() if k != 'T'}
 
 #-----------------------------------------------------------------------------------------
 # Functions for generating epoch durations that are multiples of the time step

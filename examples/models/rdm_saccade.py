@@ -129,21 +129,21 @@ def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
 
     if False:
-        epochs = {'Tf': 1000}
+        epochs = {'T': 1000}
     else:
         fixation = tasktools.uniform(rng, dt, 200, 600)
         targets  = tasktools.uniform(rng, dt, 200, 600)
         stimulus = tasktools.truncated_exponential(rng, dt, 330, xmin=80, xmax=1500)
         decision = 500
-        Tf       = fixation + targets + stimulus + decision
+        T        = fixation + targets + stimulus + decision
 
         epochs = {
             'fixation': (0, fixation + targets + stimulus),
-            'targets':  (fixation, Tf),
+            'targets':  (fixation, T),
             'stimulus': (fixation + targets, fixation + targets + stimulus),
-            'decision': (fixation + targets + stimulus, Tf)
+            'decision': (fixation + targets + stimulus, T)
             }
-        epochs['Tf'] = Tf
+        epochs['T'] = T
 
     #---------------------------------------------------------------------------------
     # Trial info

@@ -113,7 +113,7 @@ def generate_trial(rng, dt, params):
     M1       = 500
     M2       = 500
     M3       = 500
-    Tf       = iti + fixation + M1 + M2 + M3
+    T        = iti + fixation + M1 + M2 + M3
 
     epochs = {
         'iti':      (0, iti),
@@ -122,7 +122,7 @@ def generate_trial(rng, dt, params):
         'M2':       (iti + fixation + M1, iti + fixation + M1 + M2),
         'M3':       (iti + fixation + M1 + M2, iti + fixation + M1 + M2 + M3),
         }
-    epochs['Tf'] = Tf
+    epochs['T'] = T
 
     #---------------------------------------------------------------------------------
     # Trial info

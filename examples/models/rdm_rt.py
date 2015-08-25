@@ -83,7 +83,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'Tf': 1000}
+        epochs = {'T': 1000}
     else:
         if params['name'] == 'test':
             fixation = 300
@@ -92,14 +92,14 @@ def generate_trial(rng, dt, params):
             fixation = 100
             stimulus = 1000
         no_reward = 500
-        Tf        = fixation + stimulus
+        T         = fixation + stimulus
 
         epochs = {
             'fixation': (0, fixation),
-            'stimulus': (fixation, Tf),
-            'decision': (fixation + no_reward, Tf)
+            'stimulus': (fixation, T),
+            'decision': (fixation + no_reward, T)
             }
-        epochs['Tf'] = Tf
+        epochs['T'] = T
 
     #-------------------------------------------------------------------------------------
     # Trial info

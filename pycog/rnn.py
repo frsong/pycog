@@ -221,16 +221,16 @@ class RNN(object):
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
-    def run(self, Tf=None, inputs=None, rng=None, seed=1234):
+    def run(self, T=None, inputs=None, rng=None, seed=1234):
         """
         Run the network.
 
         Parameters
         ----------
 
-        Tf : float, optional
-             Duration for which to run the network. If None, it is assumed that
-             inputs is None and the the network will be run for the trial duration.
+        T : float, optional
+            Duration for which to run the network. If None, it is assumed that
+            inputs is None and the the network will be run for the trial duration.
 
         inputs : (input_func, input_args), optional
         
@@ -280,11 +280,11 @@ class RNN(object):
         #---------------------------------------------------------------------------------
 
         if inputs is None:
-            if Tf is None:
+            if T is None:
                 raise RuntimeError("[ {}.RNN.run ] Cannot determine the trial duration."
                                    .format(THIS))
 
-            self.t = np.linspace(0, Tf, int(Tf/dt)+1)
+            self.t = np.linspace(0, T, int(T/dt)+1)
 
             if self.Win is not None:
                 u = np.zeros((Nt, Nin))
