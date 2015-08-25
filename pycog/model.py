@@ -25,8 +25,8 @@ class Model(object):
         If modelfile is provided infer everything from the file, otherwise the
         user is responsible for providing the necessary parameters through kwargs.
 
-        Args
-        ----
+        Parameters
+        ----------
     
         modelfile: str
                    A Python script containing model parameters.
