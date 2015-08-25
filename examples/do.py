@@ -2,9 +2,10 @@
 """
 Sample script for performing common tasks.
 
-"""
-from __future__ import division
+If you use this script to run jobs on the cluster don't forget to change the ``queue``
+argument in ``write_jobfile``.
 
+"""
 import argparse
 import imp
 import os
@@ -118,7 +119,7 @@ elif action == 'clean':
         print("Removed {}".format(fname))
 
 #=========================================================================================
-# Submit jobs
+# Submit a job
 #=========================================================================================
 
 elif action == 'submit':
@@ -142,7 +143,7 @@ elif action == 'submit':
     cmd     = 'python {}/do.py {} {}{}'.format(here, modelfile, action, sargs)
     pbspath = workpath + '/pbs'
     jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath, 
-                                     ppn=ppn, gpus=gpus)
+                                     ppn=ppn, gpus=gpus, queue='s48')
     subprocess.call(['qsub', jobfile])
 
 #=========================================================================================

@@ -5,7 +5,7 @@ import os
 from .utils import mkdir_p
 
 def write_jobfile(cmd, jobname, pbspath, scratchpath, 
-                  nodes=1, ppn=1, gpus=0, mem=4, ndays=1, queue='s48'):
+                  nodes=1, ppn=1, gpus=0, mem=4, ndays=1, queue=''):
     """
     Create a job file.
     
@@ -22,10 +22,10 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
               Directory to store PBS file in.
 
     scratchpath : str
-                  Directory to storing log files.
+                  Directory to store output files in.
 
     nodes : int, optional
-            Number of computing nodes.
+            Number of compute nodes.
 
     ppn : int, optional
           Number of processors per node.
@@ -34,12 +34,12 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
            Number of GPU cores.
 
     mem : int, optional
-          Amount, GB, of memory.
+          Amount, in GB, of memory.
 
     ndays : int, optional
-            Number of days to run for.
+            Running time, in days.
 
-    queue : str
+    queue : str, optional
             Queue name.
 
     Returns
@@ -49,13 +49,18 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
               Path to the job file.
 
     """
-    gpu_request = ''
     if gpus > 0:
-        gpu_request = ':gpus={}:titan'.format(gpus)
+        gpus = ':gpus={}:titan'.format(gpus)
+    else:
+        gpus = ''
 
-    threads = ''
+    if queue != '':
+        queue = '#PBS -q {}\n'.format(queue)
+
     if ppn > 1:
         threads = '#PBS -v OMP_NUM_THREADS={}\n'.format(ppn)
+    else:
+        threads = ''
 
     mkdir_p(pbspath)
     jobfile = '{}/{}.pbs'.format(pbspath, jobname)
@@ -64,10 +69,10 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
         f.write(
             '#!/bin/bash\n'
             + '\n'
-            + '#PBS -l nodes={}:ppn={}{}\n'.format(nodes, ppn, gpu_request)
+            + '#PBS -l nodes={}:ppn={}{}\n'.format(nodes, ppn, gpus)
             + '#PBS -l mem={}GB\n'.format(mem)
             + '#PBS -l walltime={}:00:00\n'.format(24*ndays)
-            + '#PBS -q {}\n'.format(queue)
+            + queue
             + '#PBS -N {}\n'.format(jobname[0:16])
             + ('#PBS -e localhost:{}/${{PBS_JOBNAME}}.e${{PBS_JOBID}}\n'
                .format(scratchpath))
