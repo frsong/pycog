@@ -8,6 +8,7 @@ A more convenient interface to matplotlib.
   matplotlib to the latest version and this problem will go away.
 
 """
+from __future__ import absolute_import
 from __future__ import division
 
 import os
@@ -24,13 +25,8 @@ from matplotlib.mlab      import PCA
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.special        import cbrt
 
-from utils import mkdir_p
+from .utils import mkdir_p
 
-#=========================================================================================
-# Settings
-#=========================================================================================
-
-# For messages
 THIS = "pycog.figtools"
 
 #=========================================================================================
@@ -43,8 +39,10 @@ mpl.rcParams['pdf.use14corefonts'] = True
 
 # Setup LaTeX if available
 try:
-    subprocess.check_output('latex --version', shell=True)
-except CalledProcessError:
+    FNULL = open(os.devnull, 'w')
+    subprocess.check_call('latex --version', shell=True,
+                          stdout=FNULL, stderr=subprocess.STDOUT)
+except subprocess.CalledProcessError:
     latex = False
     print("[ {} ] Warning: Couldn't find LaTeX. Your figures will look ugly."
           .format(THIS))
