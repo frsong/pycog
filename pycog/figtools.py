@@ -68,9 +68,9 @@ mpl.rcParams['ytick.direction'] = 'out'
 #=========================================================================================
 
 def gradient(cmin, cmax):
-    if not isinstance(cmin, (tuple, list)):
+    if isinstance(cmin, str):
         cmin = colorConverter.to_rgb(cmin)
-    if not isinstance(cmax, (tuple, list)):
+    if isinstance(cmax, str):
         cmax = colorConverter.to_rgb(cmax)
 
     cdict = {
@@ -136,6 +136,10 @@ class Subplot(object):
         raise NotImplementedError("Subplot." + name)
 
     def __init__(self, fig, p, rect):
+        """
+        rect : [left, bottom, width, height]
+
+        """
         self.p     = p
         self.ax    = fig.add_axes(rect)
         self.axes  = [self.xaxis, self.yaxis]

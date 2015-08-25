@@ -87,7 +87,7 @@ class Model(object):
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
-    def train(self, savefile, seed=None, compiledir=None, recover=True):
+    def train(self, savefile, seed=None, compiledir=None, recover=True, gpus=0):
         """
         Train the network.
 
@@ -105,6 +105,8 @@ class Model(object):
         if compiledir is not None:
             os.environ['THEANO_FLAGS'] += ',base_compiledir=' + compiledir
         os.environ['THEANO_FLAGS'] += ',floatX=float32,allow_gc=False'
+        if gpus > 0:
+            os.environ['THEANO_FLAGS'] += ',device=gpu,nvcc.fastmath=True'
 
         # Only involve Theano for training
         from .trainer import Trainer

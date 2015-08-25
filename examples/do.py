@@ -23,9 +23,9 @@ p = argparse.ArgumentParser()
 p.add_argument('model_file', help="model specification")
 p.add_argument('action', nargs='?', default='check')
 p.add_argument('args', nargs='*')
-p.add_argument('-p', '--ppn', type=int, default=1)
-p.add_argument('-g', '--gpus', type=int, default=0)
 p.add_argument('-s', '--seed', type=int, default=100)
+p.add_argument('-p', '--ppn', type=int, default=1)
+p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 a = p.parse_args()
 
 modelfile = os.path.abspath(a.model_file)
@@ -139,13 +139,8 @@ elif action == 'submit':
     else:
         sargs = ''
 
-    cmd = ''
-    if gpus > 0:
-        cmd = 'THEANO_FLAGS=device=gpu,nvcc.fastmath=True '
-
-    cmd     += 'python {}/master.py {} {}{}'.format(here, modelfile, action, sargs)
-    pbspath  = workpath + '/pbs'
-
+    cmd     = 'python {}/do.py {} {}{}'.format(here, modelfile, action, sargs)
+    pbspath = workpath + '/pbs'
     jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath, 
                                      ppn=ppn, gpus=gpus)
     subprocess.call(['qsub', jobfile])
@@ -164,7 +159,7 @@ elif action == 'train':
     compiledir = '{}/{}-{}'.format(theanopath, name, int(time.time()))
 
     # Train
-    model.train(savefile, seed=seed, compiledir=compiledir)
+    model.train(savefile, seed=seed, compiledir=compiledir, gpus=gpus)
 
 #=========================================================================================
 # Test spontaneous state

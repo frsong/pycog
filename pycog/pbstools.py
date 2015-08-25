@@ -1,27 +1,57 @@
+from __future__ import absolute_import
+
 import os
 
-from utils import mkdir_p
+from .utils import mkdir_p
 
-def write_jobfile(cmd, jobname, pbspath, scratchpath, nodes=1, ppn=1, gpus=0, mem=4,
-                  ndays=1, queue='s48'):
+def write_jobfile(cmd, jobname, pbspath, scratchpath, 
+                  nodes=1, ppn=1, gpus=0, mem=4, ndays=1, queue='s48'):
     """
     Create a job file.
     
-    Args
-    ----
+    Parameters
+    ----------
+
     cmd : str
           Command to execute.
+
+    jobname : str
+              Name of the job.
+
+    pbspath : str
+              Directory to store PBS file in.
+
+    scratchpath : str
+                  Directory to storing log files.
+
+    nodes : int, optional
+            Number of computing nodes.
+
+    ppn : int, optional
+          Number of processors per node.
+
+    gpus : int, optional
+           Number of GPU cores.
+
+    mem : int, optional
+          Amount, GB, of memory.
+
+    ndays : int, optional
+            Number of days to run for.
+
+    queue : str
+            Queue name.
 
     Returns
     -------
 
     jobfile : str
+              Path to the job file.
 
     """
-    cores = ''
+    gpu_request = ''
     if gpus > 0:
-        ppn   = gpus
-        cores = ':gpus={}:titan'.format(gpus)
+        gpu_request = ':gpus={}:titan'.format(gpus)
 
     threads = ''
     if ppn > 1:
@@ -34,13 +64,15 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath, nodes=1, ppn=1, gpus=0, me
         f.write(
             '#!/bin/bash\n'
             + '\n'
-            + '#PBS -l nodes={}:ppn={}{}\n'.format(nodes, ppn, cores)
+            + '#PBS -l nodes={}:ppn={}{}\n'.format(nodes, ppn, gpu_request)
             + '#PBS -l mem={}GB\n'.format(mem)
             + '#PBS -l walltime={}:00:00\n'.format(24*ndays)
             + '#PBS -q {}\n'.format(queue)
             + '#PBS -N {}\n'.format(jobname[0:16])
-            + '#PBS -e localhost:{}/${{PBS_JOBNAME}}.e${{PBS_JOBID}}\n'.format(scratchpath)
-            + '#PBS -o localhost:{}/${{PBS_JOBNAME}}.o${{PBS_JOBID}}\n'.format(scratchpath)
+            + ('#PBS -e localhost:{}/${{PBS_JOBNAME}}.e${{PBS_JOBID}}\n'
+               .format(scratchpath))
+            + ('#PBS -o localhost:{}/${{PBS_JOBNAME}}.o${{PBS_JOBID}}\n'
+               .format(scratchpath))
             + threads
             + '\n'
             + 'cd {}\n'.format(scratchpath)

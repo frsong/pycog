@@ -93,6 +93,9 @@ class Trainer(object):
         params : dict
                  Parameters. See RNN.defaults for the default values.
 
+          Values
+          ------
+
           Nout : int
                  Number of output units.
 

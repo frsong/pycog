@@ -19,7 +19,7 @@ p = argparse.ArgumentParser()
 p.add_argument('-f', '--format', default='pdf')
 a = p.parse_args()
 
-Figure.defaults['format'] = a.format
+Figure.defaults['format'] = p.parse_args().format
 
 #=========================================================================================
 # Setup
@@ -102,7 +102,7 @@ shift  = 0.008
 plot = plots['A']
 plot.text_upper_center('Direction discrimination', dy=0.1, fontsize=8)
 plot.xlabel('Time', labelpad=6.5)
-plot.ylabel('Output', labelpad=7)
+plot.ylabel('Target output', labelpad=7)
 
 plot = plots['B']
 plot.text_upper_center('Reaction time version', dy=0.1, fontsize=8)
