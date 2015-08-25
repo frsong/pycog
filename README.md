@@ -39,6 +39,13 @@ RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility
 
 This is almost always innocuous and can be safely ignored.
 
+## Acknowledgments
+
+* On the difficulty to training recurrent neural networks.                                         
+  R. Pascanu, T. Mikolov, & Y. Bengio, ICML 2013.                                                  
+                                                                                                   
+  https://github.com/pascanur/trainingRNNs
+
 ## License
 
 MIT

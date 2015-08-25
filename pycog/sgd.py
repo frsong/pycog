@@ -15,6 +15,7 @@ import cPickle as pickle
 import datetime
 import os
 import sys
+from   collections import OrderedDict
 
 import numpy as np
 
@@ -58,7 +59,7 @@ class SGD(object):
                 costs[0] is the loss that is optimized. costs[1:] are used for
                 monitoring only.
 
-        regs : Theano variable
+        regs : theano.tensor.var.TensorVariable
                Regularization terms to add to costs[0].
 
         x : Theano variable
@@ -194,12 +195,19 @@ class SGD(object):
         if 'x0' in self.trainable_names:
             g += [g_x0]
 
-        updates = [(i, i - lr*j) for i, j in zip(self.trainables, g)]
+        # Update rule
+        updates = OrderedDict()
+        for i, j in zip(self.trainables, g):
+            updates[i] = i - lr*j
+
+        # Update function
         self.train_step = theanotools.function(
             inputs + [alpha, lambda_Omega, lr, maxnorm, bound],
             [costs[0] + regs, norm_theta, Omega, nelems, x],
             updates=updates
             )
+
+        # Cost function
         self.f_cost = theanotools.function(inputs, [costs[0] + regs] + costs[1:] + [z])
 
     #/////////////////////////////////////////////////////////////////////////////////////
@@ -230,8 +238,13 @@ class SGD(object):
         ---------
 
         gradient_data : pycog.Dataset
+                        Gradient dataset.
+
         validation_data : pycog.Dataset
+                          Validation dataset.
+
         savefile : str
+                   File to save network information in.
 
         """
         checkfreq = self.p['checkfreq']

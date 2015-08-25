@@ -74,6 +74,8 @@ class Trainer(object):
         'distribution_out':  None,
         'checkfreq':         None,
         'patience':          None,
+        'init_momentum':     0,    # Not used at the moment
+        'momentum':          0,    # Not used at the moment
         'method':            'sgd' # Not used at the moment
         }
     defaults['performance'] = None
