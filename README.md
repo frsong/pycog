@@ -32,7 +32,7 @@ The networks used to generate the figures in the paper were trained using the sp
 
 It is common to see the following warning when running Theano:
 
-```bash
+```
 RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility
   rval = __import__(module_name, {}, {}, [module_name])
 ```
