@@ -7,23 +7,44 @@ try:
 except ImportError:
     nx = None
 
-#/////////////////////////////////////////////////////////////////////////////////////////
-
-def is_connected(C):
-    if nx is None:
-        return True
-
-    G = nx.from_numpy_matrix(C, create_using=nx.DiGraph())
-    return nx.is_strongly_connected(G)
-
-#/////////////////////////////////////////////////////////////////////////////////////////
+THIS = "pycog.connectivity"
 
 class Connectivity(object):
     """
     Constrain the connectivity.
 
     """
+    @staticmethod
+    def is_connected(C):
+        if nx is None:
+            return True
+
+        G = nx.from_numpy_matrix(C, create_using=nx.DiGraph())
+        return nx.is_strongly_connected(G)
+
     def __init__(self, C_or_N, Cfixed=None, p=1, rng=None, seed=4321):
+        """
+        Initialize.
+
+        Parameters
+        ----------
+        
+        C_or_N : 2D numpy.ndarray or int
+                 If ``int``, create a random binary mask with density p.
+
+        Cfixed : 2D numpy.ndarray
+                 Fixed weights.
+
+        p : float, optional
+            Density of non-self connections.
+
+        rng : numpy.random.RandomState, optional
+              Random number generator.
+
+        seed : int, optional
+               Seed for random number generator if ``rng`` is not provided.
+
+        """
         if isinstance(C_or_N, int):
             N    = C_or_N
             ntot = N*(N-1)
@@ -33,22 +54,23 @@ class Connectivity(object):
                 rng = np.random.RandomState(seed)
 
             x = np.concatenate((np.ones(nnz, dtype=int), np.zeros(ntot-nnz, dtype=int)))
-            while True:
-                rng.shuffle(x)
+            rng.shuffle(x)
 
-                C = np.zeros((N, N), dtype=int)
-                k = 0
-                for i in xrange(N):
-                    for j in xrange(N):
-                        if i == j: continue
+            C = np.zeros((N, N), dtype=int)
+            k = 0
+            for i in xrange(N):
+                for j in xrange(N):
+                    if i == j: continue
 
-                        C[i,j] = x[k]
-                        k += 1
-
-                if is_connected(C):
-                    break
+                    C[i,j] = x[k]
+                    k += 1
         else:
             C = C_or_N
+
+        # Check that a square connection matrix is connected.
+        if C.shape[0] == C.shape[1] and not Connectivity.is_connected(C):
+            print("[ {}.Connectivity ] Warning: The connection matrix is not connected."
+                  .format(THIS))
 
         self.define(C, Cfixed)
 
@@ -56,13 +78,14 @@ class Connectivity(object):
 
     def define(self, C, Cfixed):
         """
-        C : 2D ndarray
+        C : 2D numpy.ndarray
             Plastic weights
 
-        Cfixed : 2D ndarray
+        Cfixed : 2D numpy.ndarray
                  Fixed weights
 
         """
+        # Connectivity properties
         self.C     = C
         self.shape = C.shape
         self.size  = C.size
