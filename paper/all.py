@@ -26,19 +26,29 @@ a = p.parse_args()
 
 fmt  = a.format
 args = a.args
+if not args:
+    args = ['structure', 'rdm_varstim', 'rdm_rt', 'multisensory', 'lee']
 
 #=========================================================================================
 # Shared steps
 #=========================================================================================
 
-def call(x):
-    subprocess.call(x, shell=True)
+here = os.path.dirname(os.path.realpath(__file__))
+base = os.path.abspath(os.path.join(here, os.pardir))
+examples_dir = base + '/examples'
+models_dir   = examples_dir + '/models'
+analysis_dir = examples_dir + '/analysis'
+paper_dir    = base + '/paper'
+
+def call(s):
+    print(3*' ' + s)
+    #subprocess.call(x, shell=True)
 
 def clean(model):
-    call("../examples/do.py models/{} clean".format(model))
+    call("{}/do.py {}/{} clean".format(examples_dir, models_dir, model))
 
 def train(model):
-    call("../examples/do.py models/{} train".format(model))
+    call("{}/do.py {}/{} train".format(examples_dir, models_dir, model))
 
 def trials(model, analysis=None, ntrials=None):
     if analysis is None:
@@ -49,17 +59,18 @@ def trials(model, analysis=None, ntrials=None):
     else:
         ntrials = ' {}'.format(ntrials)
         
-    call("../examples/do.py models/{} run analysis/{} trials{}"
-         .format(model, analysis, ntrials))
+    call("{}/do.py {}/{} run {}/{} trials{}"
+         .format(examples_dir, models_dir, model, analysis_dir, analysis, ntrials))
 
 def sort(model, analysis=None):
     if analysis is None:
         analysis = model
 
-    call("../examples/do.py models/{} run analysis/{} sort".format(model, analysis))
+    call("{}/do.py {}/{} run {}/{} sort"
+         .format(examples_dir, models_dir, model, analysis_dir, analysis))
 
-def figure(figmaker):
-    call("../paper/{}.py".format(figmaker))
+def figure(fig):
+    call("{}/{}.py".format(paper_dir, fig))
 
 #=========================================================================================
 
@@ -76,6 +87,7 @@ if 'mante' in args:
     pass
 
 if 'lee' in args:
+    print("=> Lee task")
     clean('lee')
     train('lee')
     trials('lee')
