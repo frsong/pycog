@@ -10,16 +10,29 @@ This is mostly for us to check our work and for you to see what we did;
 we don't recommend that you actually run this script.
 
 """
+import argparse
 import os
 import subprocess
 import sys
 
-args = []
+#=========================================================================================
+# Command line
+#=========================================================================================
+
+p = argparse.ArgumentParser()
+p.add_argument('args', nargs='*')
+p.add_argument('-f', '--format', type=str, default='pdf')
+a = p.parse_args()
+
+fmt  = a.format
+args = a.args
+
+#=========================================================================================
 
 if 'structure' in args:
     pass
 
-if 'rdm' in args:
+if 'rdm_varstim' in args:
     pass
 
 if 'multisensory' in args:
