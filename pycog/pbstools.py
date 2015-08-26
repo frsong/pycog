@@ -67,7 +67,7 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
 
     with open(jobfile, 'w') as f:
         f.write(
-            '#!/bin/bash\n'
+            '#! /bin/bash\n'
             + '\n'
             + '#PBS -l nodes={}:ppn={}{}\n'.format(nodes, ppn, gpus)
             + '#PBS -l mem={}GB\n'.format(mem)
