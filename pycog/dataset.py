@@ -37,7 +37,8 @@ class Dataset(object):
                Seed for random number generator.
 
         name : str
-               Name of the dataset, which can be used by task.
+               Name of the dataset, which can be used by task, e.g., to distinguish
+               between gradient and validation datasets.
 
         """
         self.minibatch_size = size
@@ -88,6 +89,9 @@ class Dataset(object):
     def __call__(self, best_costs, update=True):
         """
         Return a batch of trials.
+
+        best_costs : list
+                     The best costs, not including the loss.
 
         update : bool
                  If True, return a new set of trials.

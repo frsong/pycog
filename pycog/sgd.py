@@ -84,6 +84,7 @@ class SGD(object):
         self.p           = params
         self.save_values = save_values
 
+        # Trainable variable names
         self.trainable_names = [tr.name for tr in trainables]
 
         #---------------------------------------------------------------------------------
@@ -160,6 +161,7 @@ class SGD(object):
         if 'x0' in self.trainable_names:
             g += [g_x0]
 
+        # Clip
         gnorm = T.sqrt(sum([(i**2).sum() for i in g]))
         g = [SGD.clip_norm(i, gnorm, maxnorm) for i in g]
         g_Win, g_Wrec, g_Wout, g_brec, g_bout, g_x0 = RNN.fill(g, self.trainable_names)

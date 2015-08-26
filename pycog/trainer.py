@@ -72,12 +72,13 @@ class Trainer(object):
         'distribution_in':   None,
         'distribution_rec':  None,
         'distribution_out':  None,
+        'gamma_k':           2,
         'checkfreq':         None,
         'patience':          None,
-        'init_momentum':     0,     # Not used at the moment
-        'momentum':          False, # Not used at the moment
-        'mu':                0.9,   # Not used at the moment
-        'method':            'sgd'  # Not used at the moment
+        'init_momentum':     0,     # Not used currently
+        'momentum':          False, # Not used currently
+        'mu':                0.9,   # Not used currently
+        'method':            'sgd'  # Not used currently
         }
     defaults['performance'] = None
     defaults['terminate']   = lambda performance_history: False
@@ -86,7 +87,7 @@ class Trainer(object):
 
     def __init__(self, params, floatX=theano.config.floatX):
         """
-        RNN initialization.
+        Initialize.
 
         Parameters
         ----------
@@ -184,8 +185,7 @@ class Trainer(object):
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
-    @staticmethod
-    def init_weights(rng, C, m, n, distribution):
+    def init_weights(self, rng, C, m, n, distribution):
         """
         Initialize weights from a distribution.
 
@@ -201,6 +201,7 @@ class Trainer(object):
                Number of rows and columns, respectively.
 
         distribution : str
+                       Name of the distribution.
 
         """
         # Account for plastic and fixed weights.
@@ -217,7 +218,7 @@ class Trainer(object):
         elif distribution == 'normal':
             w = rng.normal(np.zeros(size), mask, size=size)
         elif distribution == 'gamma':
-            k     = 2
+            k     = self.p['gamma_k']
             theta = 0.1*mask/k
             w     = rng.gamma(k, theta, size=size)
         elif distribution == 'lognormal':
@@ -291,12 +292,12 @@ class Trainer(object):
         settings['distribution (Wout)'] = self.p['distribution_out']
 
         if Nin > 0:
-            Win_0 = Trainer.init_weights(rng, self.p['Cin'],
-                                         N, Nin, self.p['distribution_in'])
-        Wrec_0 = Trainer.init_weights(rng, self.p['Crec'], 
-                                      N, N, self.p['distribution_rec'])
-        Wout_0 = Trainer.init_weights(rng, self.p['Cout'],
-                                      Nout, N, self.p['distribution_out'])
+            Win_0 = self.init_weights(rng, self.p['Cin'], N, Nin, 
+                                      self.p['distribution_in'])
+        Wrec_0 = self.init_weights(rng, self.p['Crec'], 
+                                   N, N, self.p['distribution_rec'])
+        Wout_0 = self.init_weights(rng, self.p['Cout'],
+                                   Nout, N, self.p['distribution_out'])
 
         #---------------------------------------------------------------------------------
         # Enforce Dale's Law on the initial weights
