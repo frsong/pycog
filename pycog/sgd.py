@@ -213,6 +213,7 @@ class SGD(object):
 
     @staticmethod
     def get_value(x):
+        print(x.name, type(x))
         if hasattr(x, 'get_value'):
             return x.get_value(borrow=True)
         if hasattr(x, 'eval'):
@@ -222,10 +223,15 @@ class SGD(object):
     @staticmethod
     def get_values(thetas):
         """
-        Get the parameters to save.
+        Get numerical values.
+
+        Parameters
+        ----------
+
+        thetas : list
 
         """
-        return [SGD.get_value(theta) for i in thetas]
+        return [SGD.get_value(theta) for theta in thetas]
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
