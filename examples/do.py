@@ -2,8 +2,9 @@
 """
 Sample script for performing common tasks.
 
-If you use this script to run jobs on the cluster don't forget to change the ``queue``
-argument in ``write_jobfile``.
+If you use this script to run jobs on a cluster don't forget to change the ``queue``
+argument in ``write_jobfile``. Of course, you may have to modify the function
+itself depending on your setup.
 
 """
 import argparse
@@ -29,6 +30,7 @@ p.add_argument('-p', '--ppn', type=int, default=1)
 p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 a = p.parse_args()
 
+# Model file
 modelfile = os.path.abspath(a.model_file)
 if not modelfile.endswith('.py'):
     modelfile += '.py'
