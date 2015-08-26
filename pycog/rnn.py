@@ -10,8 +10,7 @@ import os
 import shutil
 import sys
 import time
-
-from collections import OrderedDict
+from   collections import OrderedDict
 
 import numpy as np
 
@@ -130,6 +129,7 @@ class RNN(object):
 
         """
         self.verbose = verbose
+        
         if savefile is not None:
             # Check that file exists
             if not os.path.isfile(savefile):
