@@ -27,7 +27,7 @@ a = p.parse_args()
 fmt  = a.format
 args = a.args
 if not args:
-    args = ['structure', 'rdm_varstim', 'rdm_rt', 'multisensory', 'lee']
+    args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory', 'lee']
 
 #=========================================================================================
 # Shared steps
@@ -81,13 +81,23 @@ if 'rdm_varstim' in args:
     pass
 
 if 'multisensory' in args:
-    pass
+    print("=> Multisensory integration task")
+    clean('multisensory')
+    train('multisensory')
+    sort('multisensory')
+    figure('fig_multisensory')
 
 if 'mante' in args:
-    pass
+    print("=> Context-dependent integration task")
+    clean('mante')
+    train('mante')
+    sort('mante')
+    call("{}/do.py {}/mante run {}/mante regress"
+         .format(examples_dir, models_dir, analysis_dir))
+    figure('fig_mante')
 
 if 'lee' in args:
-    print("=> Lee task")
+    print("=> Lee sequence generation task")
     clean('lee')
     train('lee')
     trials('lee')
