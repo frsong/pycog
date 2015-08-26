@@ -18,8 +18,14 @@ Also optional but recommended for analysis and visualization of the networks (in
 
 Go to the pycog directory and type
 
-```bash
+```
 python setup.py develop
+```
+
+If this fails for some reason, simply add the ``pycog`` path to your ``$PYTHONPATH``. To build the Cython extension, type
+
+```
+python setup.py build_ext --inplace
 ```
 
 ## Example
