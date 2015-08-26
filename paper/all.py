@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 """
-Reproduce every figure in the paper, from scratch.
+Reproduce every figure in the paper from scratch.
 
 Note
 ----
