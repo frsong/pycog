@@ -220,12 +220,12 @@ class SGD(object):
         return x
 
     @staticmethod
-    def get_values(vars):
+    def get_values(thetas):
         """
         Get the parameters to save.
 
         """
-        return [SGD.get_value(i) for i in vars]
+        return [SGD.get_value(theta) for i in thetas]
 
     #/////////////////////////////////////////////////////////////////////////////////////
 

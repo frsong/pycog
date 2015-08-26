@@ -19,10 +19,6 @@ import paper
 
 here     = os.path.dirname(os.path.realpath(__file__))
 figspath = here + '/figs'
-try:
-    fmt = sys.argv[1]
-else:
-    fmt = 'pdf'
 
 nodale_trialsfile = paper.scratchpath + '/rdm_nodale/trials/rdm_nodale_trials.pkl'
 dense_trialsfile  = paper.scratchpath + '/rdm_dense/trials/rdm_dense_trials.pkl'
@@ -75,9 +71,9 @@ w_mask = 0.12
 h_mask = r*w_mask
 
 plots = {
-    'Bcon':  fig.add([0.54,  0.77, w_mask, h_mask], None),
-    'Bmask': fig.add([0.695, 0.77, w_mask, h_mask], None),
-    'Belem': fig.add([0.85,  0.77, w_mask, h_mask], None),
+    'Bcon':  fig.add([0.55,  0.77, w_mask, h_mask], None),
+    'Bmask': fig.add([0.705, 0.77, w_mask, h_mask], None),
+    'Belem': fig.add([0.86,  0.77, w_mask, h_mask], None),
 
     'Cpsy': fig.add([x0_psy,          y0,              w_psy, h_psy]),
     'Crec': fig.add([x0,              y1,              w_rec, h_rec], None),
@@ -100,7 +96,7 @@ dx2 = x2 - x1
 x0  = 0.01
 x1  = x0 + dx2
 x2  = x1 + dx2
-x_mask = 0.53
+x_mask = 0.525
 
 y0 = 0.97
 y1 = 0.64
@@ -229,21 +225,23 @@ RNN.plot_connection_matrix(plot, abs(rnn_fixed.Wrec), smap_exc, smap_inh)
 plot = plots['Bcon']
 plot.text(1.09, 0.5, '=', ha='left', va='center', fontsize=10, 
           transform=plot.transAxes)
-plot.text(0.5, +1.2, 'Weights', ha='center', va='top', fontsize=8, 
+plot.text(0.5, +1.05, 'Pre', ha='center', va='bottom', fontsize=7, 
           transform=plot.transAxes)
+plot.text(-0.05, 0.5, 'Post', ha='right', va='center', fontsize=7, 
+          transform=plot.transAxes, rotation='vertical')
 plot.text(0.5, -0.15, r'$W^\text{rec}$', ha='center', va='top', fontsize=10, 
           transform=plot.transAxes)
 
 plot = plots['Bmask']
 plot.text(1.09, 0.5, r'$\odot$', ha='left', va='center', fontsize=10, 
           transform=plot.transAxes)
-plot.text(0.5, +1.2, 'Structure mask', ha='center', va='top', fontsize=8, 
+plot.text(0.5, +1.2, 'Fixed structure mask', ha='center', va='top', fontsize=7,
           transform=plot.transAxes)
 plot.text(0.5, -0.15, r'$M^\text{rec}$', ha='center', va='top', fontsize=10, 
           transform=plot.transAxes)
 
 plot = plots['Belem']
-plot.text(0.5, +1.2, 'Positive weights', ha='center', va='top', fontsize=8, 
+plot.text(0.5, +1.2, 'Trained positive weights', ha='center', va='top', fontsize=7, 
           transform=plot.transAxes)
 plot.text(0.5, -0.15, r'$W^\text{rec,+}$', ha='center', va='top', fontsize=10, 
           transform=plot.transAxes)
