@@ -5,6 +5,8 @@ discrimination task.
   Neuronal population coding of parametric working memory.
   O. Barak, M. Tsodyks, & R. Romo, JNS 2010.
 
+  http://www.jneurosci.org/content/30/28/9424.short
+
 """
 from __future__ import division
 
