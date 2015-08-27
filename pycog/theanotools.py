@@ -112,7 +112,7 @@ def shared(x, dtype=theano.config.floatX, **kwargs):
         return theano.shared(x, **kwargs)
     return theano.shared(np.asarray(x, dtype=dtype), **kwargs)
 
-def shared_scalar(c, dtype=theano.config.floatX, **kwargs):
+def shared_scalar(x, dtype=theano.config.floatX, **kwargs):
     return theano.shared(np.cast[dtype](x), **kwargs)
 
 def shared_zeros(shape, dtype=theano.config.floatX, **kwargs):

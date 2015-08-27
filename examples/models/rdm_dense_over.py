@@ -167,7 +167,7 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 95
+    return np.mean(performance_history[-5:]) > 90
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)

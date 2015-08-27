@@ -30,8 +30,8 @@ class Dataset(object):
         p : dict
             Parameters.
 
-        batch_size : int
-                     Number of trials to store.
+        batch_size : int, optional
+                     Number of trials to store. If None, same as `size`.
 
         seed : int
                Seed for random number generator.
@@ -57,9 +57,9 @@ class Dataset(object):
         self.rng = np.random.RandomState(seed)
 
         # Batch size
+        if batch_size is None:
+            batch_size = size
         self.batch_size = batch_size
-        if self.batch_size is None:
-            self.batch_size = self.minibatch_size
 
         # Initialize
         self.inputs    = None
@@ -113,18 +113,9 @@ class Dataset(object):
 
     def update(self, best_costs):
         """
-        Generate a new minibatch of trials. For speed (but at the cost of memory), 
-        we store batch_size trials and only create new trials if we run out of trials.
-
-        Args
-        ----
-
-        best_costs : list of floats
-                     Performance measures, in case you want to modify the trials
-                     (e.g., noise) depending on the error.
-
-        Computes
-        --------
+        Generate a new minibatch of trials and store them in `self.inputs` and
+        `self.outputs`. For speed (but at the cost of memory), we store `batch_size`
+        trials and only create new trials if we run out of trials.
 
         For both inputs and outputs, the first two dimensions contain time and 
         trials, respectively. For the third dimension,
@@ -133,6 +124,13 @@ class Dataset(object):
           self.inputs [:,:,Nin:]  contains the recurrent noise,
           self.outputs[:,:,:Nout] contains the target outputs, &
           self.outputs[:,:,Nout:] contains the mask.
+
+        Parameters
+        ----------
+
+        best_costs : list of floats
+                     Performance measures, in case you want to modify the trials
+                     (e.g., noise) depending on the error.
 
         """
         self.trial_idx += self.minibatch_size

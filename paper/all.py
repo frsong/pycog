@@ -21,7 +21,7 @@ import sys
 
 p = argparse.ArgumentParser()
 p.add_argument('args', nargs='*')
-p.add_argument('-f', '--format', type=str, default='pdf')
+p.add_argument('-f', '--format', type=str, default='eps')
 a = p.parse_args()
 
 fmt  = a.format
@@ -70,12 +70,16 @@ def sort(model, analysis=None):
          .format(examples_dir, models_dir, model, analysis_dir, analysis))
 
 def figure(fig):
-    call("{}/{}.py".format(paper_dir, fig))
+    call("{}/{}.py -f {}".format(paper_dir, fig, fmt))
 
 #=========================================================================================
 
 if 'structure' in args:
-    pass
+    print("=> Fig. 1")
+    clean('rdm_dense')
+    train('rdm_dense')
+    trials('rdm_dense', 'rdm')
+    figure('fig_structure')
 
 if 'rdm_varstim' in args:
     pass
