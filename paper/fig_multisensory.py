@@ -4,10 +4,12 @@ from __future__ import division
 import cPickle as pickle
 import imp
 import os
+from   os.path import join
 
 import numpy as np
 
 from pycog.figtools    import Figure
+from pycog.utils       import get_here
 from examples.analysis import multisensory
 
 import paper

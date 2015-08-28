@@ -4,11 +4,13 @@ from __future__ import division
 import imp
 import os
 import sys
+from   os.path import join
 
 import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import gradient, mpl, Figure
+from pycog.utils       import get_here
 from examples.analysis import rdm
 
 import paper
@@ -17,8 +19,8 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
-figspath = here + '/figs'
+here     = get_here(__file__)
+figspath = join(here, 'figs')
 
 nodale_trialsfile = paper.scratchpath + '/rdm_nodale/trials/rdm_nodale_trials.pkl'
 dense_trialsfile  = paper.scratchpath + '/rdm_dense/trials/rdm_dense_trials.pkl'

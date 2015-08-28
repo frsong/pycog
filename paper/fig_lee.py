@@ -4,11 +4,13 @@ from __future__ import division
 import cPickle as pickle
 import imp
 import os
+from   os.path import join
 
 import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import Figure, mpl, PCA
+from pycog.utils       import get_here
 from examples.analysis import lee
 
 import paper
@@ -17,8 +19,8 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
-figspath = here + '/figs'
+here     = get_here(__file__)
+figspath = join(here, 'figs')
 
 savefile   = here + '/../examples/work/data/lee/lee.pkl'
 trialsfile = paper.scratchpath + '/lee/trials/lee_trials.pkl'

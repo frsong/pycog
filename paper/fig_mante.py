@@ -3,10 +3,12 @@ from __future__ import division
 
 import cPickle as pickle
 import os
+from   os.path import join
 
 import numpy as np
 
 from pycog.figtools    import Figure
+from pycog.utils       import get_here
 from examples.analysis import mante
 
 import paper
@@ -15,8 +17,8 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.abspath(os.path.dirname(__file__))
-figspath = os.path.join(here, 'figs')
+here     = get_here(__file__)
+figspath = join(here, 'figs')
 
 trialsfile  = paper.scratchpath + '/mante/trials/mante_trials.pkl'
 sortedfile  = paper.scratchpath + '/mante/trials/mante_sorted.pkl'

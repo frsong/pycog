@@ -4,6 +4,7 @@ from __future__ import division
 import cPickle as pickle
 import imp
 import os
+from   os.path import join
 
 import numpy as np
 
