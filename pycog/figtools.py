@@ -126,7 +126,7 @@ class Subplot(object):
     """
     Interface to Axes.
 
-    You can access any attribute that belongs to Axes through Subplot.
+    You can access any non-overridden Axes attribute directly through Subplot.
 
     """
     def __getattr__(self, name):
@@ -287,9 +287,17 @@ class Subplot(object):
     #/////////////////////////////////////////////////////////////////////////////////////
 
     def lim(self, axis, data, lower=None, upper=None, margin=0.05, relative=True):
-        if isinstance(data[0], (tuple, list)):
-            data = np.concatenate(data)
+        """
+        Automatically set axis margins.
 
+        """
+        # Flatten
+        try:
+            data = [item for sublist in data for item in sublist]
+        except:
+            pass
+
+        # Data bounds
         amin = min(data)
         amax = max(data)
 
@@ -299,10 +307,11 @@ class Subplot(object):
         else:
             da = margin
 
+        # Adjust bounds
         amin -= da
         amax += da
 
-        # Bounds
+        # Fixed bounds
         if lower is not None:
             amin = lower
         if upper is not None:
@@ -323,18 +332,29 @@ class Subplot(object):
 
     @staticmethod
     def sturges(data):
+        """
+        Sturges' rule for the number of bins in a histogram.
+
+        """
         return int(np.ceil(np.log2(len(data)) + 1))
 
     @staticmethod
     def scott(data, ddof=0):
+        """
+        Scott's rule for the number of bins in a histogram.
+
+        """
         if np.std(data, ddof=ddof) == 0:
             return sturges_rule(data)
 
         h = 3.5*np.std(data, ddof=ddof)/cbrt(len(data))
-        
         return int((np.max(data) - np.min(data))/h)
 
     def hist(self, data, bins=None, get_binedges=False, **kwargs):
+        """
+        Plot a histogram.
+
+        """
         defaults = {
             'color':    Figure.colors('blue'),
             'normed':   True,

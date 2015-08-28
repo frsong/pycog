@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 from __future__ import division
 
+import argparse
 import cPickle as pickle
 import imp
 import os
@@ -15,10 +16,20 @@ from examples.analysis import multisensory
 import paper
 
 #=========================================================================================
+# Image format
+#=========================================================================================
+
+p = argparse.ArgumentParser()
+p.add_argument('-f', '--format', default='pdf')
+a = p.parse_args()
+
+format = a.format
+
+#=========================================================================================
 # Paths
 #=========================================================================================
 
-here     = get_here(__FILE__)
+here     = get_here(__file__)
 base     = get_parent(here)
 figspath = join(here, 'figs')
 
@@ -51,8 +62,8 @@ units = {
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=6.3, h=3.9, axislabelsize=7, labelpadx=5, labelpady=5.5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+fig = Figure(w=6.3, h=3.9, axislabelsize=7, labelpadx=5, labelpady=5.5, thickness=0.6, 
+             ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 #-----------------------------------------------------------------------------------------
 # Inputs

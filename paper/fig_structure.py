@@ -38,8 +38,8 @@ m_rdm_fixed = imp.load_source('model', modelfile)
 w   = 7.5
 h   = 6.5
 r   = w/h
-fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=6, labelpady=6,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=6, labelpady=6, thickness=0.6, 
+             ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 w_rec = 0.25
 h_rec = r*w_rec

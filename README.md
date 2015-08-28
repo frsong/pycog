@@ -2,7 +2,7 @@
 
 ## Requirements
 
-This code is written in Python and requires
+This code is written in Python (tested with 2.7) and requires
 
 * [Theano](http://deeplearning.net/software/theano/)
 

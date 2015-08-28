@@ -21,10 +21,8 @@ import sys
 
 p = argparse.ArgumentParser()
 p.add_argument('args', nargs='*')
-p.add_argument('-f', '--format', type=str, default='eps')
 a = p.parse_args()
 
-fmt  = a.format
 args = a.args
 if not args:
     args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory', 'lee']
@@ -70,7 +68,7 @@ def sort(model, analysis=None):
          .format(examples_dir, models_dir, model, analysis_dir, analysis))
 
 def figure(fig):
-    call("{}/{}.py -f {}".format(paper_dir, fig, fmt))
+    call("{}/{}.py".format(paper_dir, fig))
 
 #=========================================================================================
 

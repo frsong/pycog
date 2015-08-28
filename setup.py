@@ -9,6 +9,10 @@ from   setuptools.command.install import install
 
 import numpy as np
 
+# Warn
+#if sys.version_info >= (3,):
+#    print("Please note that the software was only tested with Python 2.7.")
+
 # Determine whether Cython is available
 try:
     from Cython.Distutils import build_ext
@@ -55,6 +59,7 @@ setup(
     cmdclass=cmdclass, 
     ext_modules=ext_modules,
     packages=find_packages(),
+    setup_requires=['numpy'],
     install_requires=['theano'],
     classifiers=[
         'Programming Language :: Python',

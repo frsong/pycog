@@ -28,7 +28,7 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
             Number of compute nodes.
 
     ppn : int, optional
-          Number of processors per node.
+          Number of cores per node.
 
     gpus : int, optional
            Number of GPU cores.
@@ -63,8 +63,7 @@ def write_jobfile(cmd, jobname, pbspath, scratchpath,
         threads = ''
 
     mkdir_p(pbspath)
-    jobfile = '{}/{}.pbs'.format(pbspath, jobname)
-
+    jobfile = os.path.join(pbspath, jobname + '.pbs')
     with open(jobfile, 'w') as f:
         f.write(
             '#! /bin/bash\n'

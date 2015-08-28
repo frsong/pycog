@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 from __future__ import division
 
-import argparse
 import os
 from   os.path import join
 
@@ -13,16 +12,6 @@ from pycog.utils       import get_here, get_parent
 from examples.analysis import rdm
 
 import paper
-
-#=========================================================================================
-# Image format
-#=========================================================================================
-
-p = argparse.ArgumentParser()
-p.add_argument('-f', '--format', default='pdf')
-a = p.parse_args()
-
-format = a.format
 
 #=========================================================================================
 # Setup
@@ -50,8 +39,8 @@ labels = list('ABCDEFGHI')
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2, format=format)
+fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5, thickness=0.6, 
+             ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 ncols = 3
 nrows = 3

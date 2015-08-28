@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 from __future__ import division
 
-import argparse
 import os
 from   os.path import join
 
@@ -12,16 +11,6 @@ from pycog.utils       import get_here
 from examples.analysis import rdm
 
 import paper
-
-#=========================================================================================
-# Image format
-#=========================================================================================
-
-p = argparse.ArgumentParser()
-p.add_argument('-f', '--format', default='pdf')
-a = p.parse_args()
-
-Figure.defaults['format'] = p.parse_args().format
 
 #=========================================================================================
 # Setup
@@ -45,8 +34,8 @@ rt_unit      = 11
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=4.3, h=6.6, axislabelsize=7, labelpadx=5, labelpady=5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+fig = Figure(w=4.3, h=6.6, axislabelsize=7, labelpadx=5, labelpady=5, thickness=0.6,
+             ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 w  = 0.35
 dx = 0.49
