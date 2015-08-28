@@ -27,7 +27,7 @@ models = [('rdm_nodale', '1C: Integration (no Dale)'),
           ('rdm_dense', '1D: Integration (Dale, dense)'),
           ('rdm_fixed', '1E: Integration (Dale, fixed)'),
           ('rdm_varstim', '2A: Integration (variable stim.)'),
-          ('5', None),
+          ('rdm_rt', '2B: Integration (reaction-time)'),
           ('mante', 'Context-dependent int.'),
           ('multisensory', 'Multisensory int.'),
           ('romo', 'Parametric working memory'),
@@ -103,23 +103,16 @@ for model, _ in models:
     clr_target = Figure.colors('red')
     clr_actual = '0.2'
 
-    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed']:
-        plot.plot(ntrials, performance, color=clr_actual, lw=1)
-        plot.xlim(ntrials[0], ntrials[-1])
-        plot.ylim(40, 100)
-        plot.hline(80, color=clr_target, lw=0.75)
-
-    if model == 'rdm_varstim':
-        plot.plot(ntrials, performance, color=clr_actual, lw=1)
-        plot.xlim(ntrials[0], ntrials[-1])
-        plot.ylim(40, 100)
-        plot.hline(85, color=clr_target, lw=0.75)
-
     if model == 'lee':
         plot.plot(ntrials, performance, color=clr_actual, lw=1)
         plot.xlim(ntrials[0], ntrials[-1])
         plot.yscale('log')
         plot.hline(0.06, color=clr_target, lw=0.75)
+    else:
+        plot.plot(ntrials, performance, color=clr_actual, lw=1)
+        plot.xlim(ntrials[0], ntrials[-1])
+        plot.ylim(40, 100)
+        plot.hline(80, color=clr_target, lw=0.75)
 
 #=========================================================================================
 
