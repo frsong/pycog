@@ -136,7 +136,7 @@ class RNN(object):
                 print("[ {}.RNN ] File {} doesn't exist.".format(THIS, savefile))
                 sys.exit()
 
-            # Ensure we have a readable file.
+            # Ensure we have a readable file
             base, ext = os.path.splitext(savefile)
             savefile_copy = base + '_copy' + ext
             while True:

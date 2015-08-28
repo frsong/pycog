@@ -51,31 +51,31 @@ print("SEED:      " + str(seed))
 #=========================================================================================
 
 # Location of script
-here   = os.path.dirname(os.path.realpath(__file__))
-prefix = here.split('/')[-1]
+here   = os.path.abspath(os.path.dirname(__file__))
+prefix = os.path.basename(here)
 
 # Name to use
-name = os.path.splitext(modelfile.split('/')[-1])[0]
+name = os.path.splitext(os.path.basename(modelfile))[0]
 
 # Scratch
-scratchroot = os.environ.get('SCRATCH', '{}/scratch'.format(os.environ['HOME']))
-scratchpath = '{}/work/{}/{}'.format(scratchroot, prefix, name)
+scratchroot = os.environ.get('SCRATCH', os.path.join(os.environ['HOME'], 'scratch'))
+scratchpath = os.path.join(scratchroot, 'work', prefix, name)
 
 # Theano
-theanopath = scratchpath + '/theano'
+theanopath = os.path.join(scratchpath, 'theano')
 
 # Paths
-workpath   = here + '/work'
-datapath   = workpath + '/data/' + name
-figspath   = workpath + '/figs/' + name
-trialspath = scratchpath + '/trials'
+workpath   = os.path.join(here, 'work')
+datapath   = os.path.join(workpath, 'data', name)
+figspath   = os.path.join(workpath, 'figs', name)
+trialspath = os.path.join(scratchpath, 'trials')
 
 # Create necessary directories
 for path in [datapath, figspath, scratchpath, trialspath]:
     mkdir_p(path)
 
 # File to store model in
-savefile = '{}/{}.pkl'.format(datapath, name)
+savefile = os.path.join(datapath, name + '.pkl')
 
 #=========================================================================================
 # Check log file
@@ -142,8 +142,9 @@ elif action == 'submit':
     else:
         sargs = ''
 
-    cmd     = 'python {}/do.py {} {}{}'.format(here, modelfile, action, sargs)
-    pbspath = workpath + '/pbs'
+    cmd     = ('python {} {} {}{}'
+               .format(os.path.join(here, 'do.py'), modelfile, action, sargs))
+    pbspath = os.path.join(workpath, 'pbs')
     jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath, 
                                      ppn=ppn, gpus=gpus, queue='s48')
     subprocess.call(['qsub', jobfile])
@@ -159,7 +160,7 @@ elif action == 'train':
     model = Model(modelfile=modelfile)
 
     # Avoid locks on the cluster
-    compiledir = '{}/{}-{}'.format(theanopath, name, int(time.time()))
+    compiledir = os.path.join(theanopath, '{}-{}'.format(name, int(time.time())))
 
     # Train
     model.train(savefile, seed=seed, compiledir=compiledir, gpus=gpus)
@@ -210,7 +211,7 @@ elif action == 'structure':
     sortby = None
     if len(args) > 0:
         if args[0] == 'selectivity':
-            filename = '{}/{}_selectivity.txt'.format(datapath, name)
+            filename = os.path.join(datapath, name + '_selectivity.txt')
         else:
             filename = os.path.abspath(args[0])
 
