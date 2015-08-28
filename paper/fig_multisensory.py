@@ -9,7 +9,7 @@ from   os.path import join
 import numpy as np
 
 from pycog.figtools    import Figure
-from pycog.utils       import get_here
+from pycog.utils       import get_here, get_parent
 from examples.analysis import multisensory
 
 import paper
@@ -18,27 +18,29 @@ import paper
 # Paths
 #=========================================================================================
 
-here       = os.path.dirname(os.path.realpath(__file__))
-figspath   = here + '/figs'
+here     = get_here(__FILE__)
+base     = get_parent(here)
+figspath = join(here, 'figs')
 
-trialsfile = paper.scratchpath + '/multisensory/trials/multisensory_trials.pkl'
-sortedfile = paper.scratchpath + '/multisensory/trials/multisensory_sorted.pkl'
+trialsfile = join(paper.scratchpath, 'multisensory', 'trials', 'multisensory_trials.pkl')
+sortedfile = join(paper.scratchpath, 'multisensory', 'trials', 'multisensory_sorted.pkl')
+
+# Load model
+modelfile = join(base, 'examples', 'models', 'multisensory.py')
+m = imp.load_source('model', modelfile)
 
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
 
-# Stimulus onset
+# Display time
 epochs = trials[0]['info']['epochs']
 stimulus_start, stimulus_end = epochs['stimulus']
 t0   = stimulus_start
 tmin = 200
 tmax = stimulus_end
 
-# Load model
-modelfile = here + '/../examples/models/multisensory.py'
-m = imp.load_source('model', modelfile)
-
+# Units to display
 units = {
     'choice':   2,
     'modality': 39,

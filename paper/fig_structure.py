@@ -10,7 +10,7 @@ import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import gradient, mpl, Figure
-from pycog.utils       import get_here
+from pycog.utils       import get_here, get_parent
 from examples.analysis import rdm
 
 import paper
@@ -20,6 +20,7 @@ import paper
 #=========================================================================================
 
 here     = get_here(__file__)
+base     = get_parent(here)
 figspath = join(here, 'figs')
 
 nodale_trialsfile = paper.scratchpath + '/rdm_nodale/trials/rdm_nodale_trials.pkl'
