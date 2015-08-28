@@ -154,9 +154,9 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
     # Report overall performance
     pcorrect_by_mod = {mod: 100*ncorrect_by_mod[mod]/ntrials_by_mod[mod] for mod in mods}
     print("[ {}.psychometric_function ]".format(THIS))
-    print("v  {:.2f}% correct.".format(pcorrect_by_mod['v']))
-    print(" a {:.2f}% correct.".format(pcorrect_by_mod['a']))
-    print("va {:.2f}% correct.".format(pcorrect_by_mod['va']))
+    print("  v  {:.2f}% correct.".format(pcorrect_by_mod['v']))
+    print("   a {:.2f}% correct.".format(pcorrect_by_mod['a']))
+    print("  va {:.2f}% correct.".format(pcorrect_by_mod['va']))
 
     # Psychometric function
     for mod in mods:
