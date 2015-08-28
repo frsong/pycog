@@ -35,7 +35,7 @@ class SGD(object):
     @staticmethod
     def clip_norm(v, norm, maxnorm):
         """ 
-        Renormalize the vector v if its norm exceeds maxnorm.
+        Renormalize the vector v if norm exceeds maxnorm.
 
         """
         return T.switch(norm > maxnorm, maxnorm*v/norm, v)

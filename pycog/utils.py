@@ -13,8 +13,8 @@ def print_settings(settings, indent=3, title="=> settings"):
     Pretty print.
 
     """
-    maxlen = max([len(s) for s in settings])
     print(title)
+    maxlen = max([len(s) for s in settings])
     for k, v in settings.items():
         print(indent*' ' + '| {}:{}{}'.format(k, (maxlen - len(k) + 1)*' ', v))
     sys.stdout.flush()
