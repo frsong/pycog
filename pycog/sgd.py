@@ -25,7 +25,7 @@ from .      import theanotools
 from .rnn   import RNN
 from .utils import dump
 
-this = 'pycog.sgd'
+THIS = 'pycog.sgd'
 
 class SGD(object):
     """
@@ -286,8 +286,8 @@ class SGD(object):
             for i, j in zip(self.trainables, init_p):
                 i.set_value(j)
 
-            print("[ SGD.train ] Recovered saved model,"
-                  " continuing from iteration {}.".format(first_iter))
+            print(("[ {}.SGD.train ] Recovered saved model,"
+                   " continuing from iteration {}.").format(THIS, first_iter))
         else:
             best = {
                 'iter':        1,
@@ -441,4 +441,5 @@ class SGD(object):
 
                 #-------------------------------------------------------------------------
         except KeyboardInterrupt:
-            print("Training interrupted by user during iteration {}.".format(iter))
+            print("[ {}.SGD.train ] Training interrupted by user during iteration {}."
+                  .format(THIS, iter))
