@@ -8,6 +8,7 @@ import os
 import numpy as np
 
 from pycog.figtools    import Figure, mpl
+from pycog.utils       import get_here
 from examples.analysis import romo
 
 import paper
@@ -16,7 +17,7 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.abspath(os.path.dirname(__file__))
+here     = get_here(__file__)
 base     = os.path.abspath(os.path.join(here, os.pardir))
 figspath = os.path.join(here, 'figs')
 

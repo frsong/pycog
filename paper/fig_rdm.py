@@ -3,10 +3,12 @@ from __future__ import division
 
 import argparse
 import os
+from   os.path import join
 
 import numpy as np
 
 from pycog.figtools    import Figure
+from pycog.utils       import get_here
 from examples.analysis import rdm
 
 import paper
@@ -25,12 +27,13 @@ Figure.defaults['format'] = p.parse_args().format
 # Setup
 #=========================================================================================
 
-here     = os.path.abspath(os.path.dirname(__file__))
-figspath = os.path.join(here, 'figs')
+here     = get_here(__file__)
+figspath = join(here, 'figs')
 
-varstim_trialsfile = paper.scratchpath + '/rdm_varstim/trials/rdm_varstim_trials.pkl'
-varstim_sortedfile = (paper.scratchpath 
-                      + '/rdm_varstim/trials/rdm_varstim_sorted_stim_onset.pkl')
+varstim_trialsfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
+                          'rdm_varstim_trials.pkl')
+varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials', 
+                          'rdm_varstim_sorted_stim_onset.pkl')
 
 rt_trialsfile = paper.scratchpath + '/rdm_rt/trials/rdm_rt_trials.pkl'
 rt_sortedfile = paper.scratchpath + '/rdm_rt/trials/rdm_rt_sorted_response.pkl'

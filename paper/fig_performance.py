@@ -9,6 +9,7 @@ import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import Figure
+from pycog.utils       import get_here, get_parent
 from examples.analysis import rdm
 
 import paper
@@ -27,12 +28,12 @@ format = a.format
 # Setup
 #=========================================================================================
 
-here     = os.path.abspath(os.path.dirname(__file__))
-base     = os.path.abspath(os.path.join(here, os.pardir))
+here     = get_here(__file__)
+base     = get_parent(here)
 figspath = join(here, 'figs')
 
 def savefile(model):
-    return join(base, 'examples', 'work', 'data', model, model + '.pkl')
+    return join(base, 'examples', 'work', 'data', model, model+'.pkl')
 
 models = [('rdm_nodale', '1C: Integration (no Dale)'),
           ('rdm_dense', '1D: Integration (Dale, dense)'),

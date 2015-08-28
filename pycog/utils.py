@@ -1,5 +1,5 @@
 """
-Utility functions.
+Useful functions.
 
 """
 import cPickle as pickle
@@ -19,6 +19,12 @@ def print_settings(settings, indent=3, title="=> settings"):
         print(indent*' ' + '| {}:{}{}'.format(k, (maxlen - len(k) + 1)*' ', v))
     sys.stdout.flush()
 
+def get_here(file):
+    return os.path.abspath(os.path.dirname(file))
+
+def get_parent(dir):
+    return os.path.abspath(os.path.join(dir, os.pardir))
+
 def mkdir_p(path):
     """
     Portable mkdir -p
@@ -34,7 +40,7 @@ def mkdir_p(path):
 
 def dump(filename, obj):
     """
-    Disable keyboard interrupt while saving.
+    Disable keyboard interrupt while pickling.
 
     """
     s = signal.signal(signal.SIGINT, signal.SIG_IGN)
