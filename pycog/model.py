@@ -132,7 +132,7 @@ class Model(object):
         # The task
         try:
             task = self.m.task
-        except:
+        except AttributeError:
             task = Struct(generate_trial=self.m.generate_trial)
 
         # Train
