@@ -425,13 +425,15 @@ class RNN(object):
         all = []
 
         # Loss
-        ntrials = np.asarray([int(costs[0]) for costs in self.costs_history],
-                             dtype=int)/int(1e4)
+        ntrials = [int(costs[0]) for costs in self.costs_history]
+        ntrials = np.asarray(ntrials, dtype=int)//int(ntrials[1]-ntrials[0])
         cost    = [costs[1][0] for costs in self.costs_history]
         plot.plot(ntrials, cost, color='0.2', lw=1, label='Cost')
         all.append(cost)
 
         # Regularizer
+        ntrials = [int(costs[0]) for costs in self.Omega_history]
+        ntrials = np.asarray(ntrials, dtype=int)//int(ntrials[1]-ntrials[0])
         cost = [costs[1] for costs in self.Omega_history]
         plot.plot(ntrials, cost, color=Figure.colors('red'), lw=1, label='Reg. term')
         all.append(cost)
@@ -452,6 +454,8 @@ class RNN(object):
 
         plot = plots['R']
 
+        ntrials = [int(costs[0]) for costs in self.costs_history]
+        ntrials = np.asarray(ntrials, dtype=int)//int(ntrials[1]-ntrials[0])
         cost = [costs[1][1] for costs in self.costs_history]
 
         plot.plot(ntrials, cost, color='0.2', lw=1)

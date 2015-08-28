@@ -286,7 +286,8 @@ class Subplot(object):
     #/////////////////////////////////////////////////////////////////////////////////////
 
     def lim(self, axis, data, lower=None, upper=None, margin=0.05, relative=True):
-        data = np.ravel(data)
+        if isinstance(data[0], (tuple, list)):
+            data = np.concatenate(data)
 
         amin = min(data)
         amax = max(data)

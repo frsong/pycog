@@ -36,12 +36,12 @@ def savefile(model):
 models = [('1', None),
           ('2', None),
           ('3', None),
-          ('Integration (variable stim.)', savefile('rdm_varstim')),
+          ('rdm_varstim', 'Integration (variable stim.)'),
           ('5', None),
-          ('6', None),
-          ('Context-dependent int.', None),
-          ('Multisensory int.', None),
-          ('Lee', None)]
+          ('mante', 'Context-dependent int.'),
+          ('multisensory', 'Multisensory int.'),
+          ('romo', 'Parametric working memory'),
+          ('lee', 'Lee')]
 labels = list('ABCDEFGHI')
 
 #=========================================================================================
@@ -89,18 +89,36 @@ plot = plots[models[-1][0]]
 plot.ylabel('Error in eye position')
 
 for k in xrange(len(models)):
-    s, _ = models[k]
-    plots[s].text_upper_center(s, dy=0.05, fontsize=7)
+    model, desc = models[k]
+    if desc is None:
+        desc = model
+    plots[model].text_upper_center(desc, dy=0.05, fontsize=7)
 
 #=========================================================================================
 # Plot performance
 #=========================================================================================
 
-for s, savefile in models:
-    if savefile is None:
+for model, _ in models:
+    try:
+        rnn = RNN(savefile(model), verbose=True)
+    except:
         continue
 
-    rnn = RNN(savefile, verbose=True)
+    ntrials = [int(costs[0]) for costs in rnn.costs_history]
+    ntrials = np.asarray(ntrials, dtype=int)//int(ntrials[1]-ntrials[0])
+
+    performance = [costs[1][-1] for costs in rnn.costs_history]
+
+    plot = plots[model]
+    if model == 'rdm_varstim':
+        print(ntrials)
+        exit()
+
+        #plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
+        plot.plot(ntrials[::2], performance[::2], 'o', 
+                  mfc=Figure.colors('red'), mec='none', ms=4)
+
+        plot.ylim(0, 100)
 
 #=========================================================================================
 
