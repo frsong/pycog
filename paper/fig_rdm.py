@@ -25,8 +25,8 @@ Figure.defaults['format'] = p.parse_args().format
 # Setup
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
-figspath = here + '/figs'
+here     = os.path.abspath(os.path.dirname(__file__))
+figspath = os.path.join(here, 'figs')
 
 varstim_trialsfile = paper.scratchpath + '/rdm_varstim/trials/rdm_varstim_trials.pkl'
 varstim_sortedfile = (paper.scratchpath 

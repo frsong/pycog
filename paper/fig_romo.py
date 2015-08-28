@@ -16,12 +16,13 @@ import paper
 # Paths
 #=========================================================================================
 
-here       = os.path.dirname(os.path.realpath(__file__))
-figspath   = here + '/figs'
+here     = os.path.abspath(os.path.dirname(__file__))
+base     = os.path.abspath(os.path.join(here, os.pardir))
+figspath = os.path.join(here, 'figs')
 
-modelfile  = here + '/../examples/models/romo.py'
-trialsfile = paper.scratchpath + '/romo/trials/romo_trials.pkl'
-sortedfile = paper.scratchpath + '/romo/trials/romo_sorted.pkl'
+modelfile  = os.path.join(base, 'examples', 'models', 'romo.py')
+trialsfile = os.path.join(paper.scratchpath, 'romo', 'trials', 'romo_trials.pkl')
+sortedfile = os.path.join(paper.scratchpath, 'romo', 'trials', 'romo_sorted.pkl')
 
 #=========================================================================================
 # Setup

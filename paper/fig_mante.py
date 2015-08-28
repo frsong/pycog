@@ -15,8 +15,8 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
-figspath = here + '/figs'
+here     = os.path.abspath(os.path.dirname(__file__))
+figspath = os.path.join(here, 'figs')
 
 trialsfile  = paper.scratchpath + '/mante/trials/mante_trials.pkl'
 sortedfile  = paper.scratchpath + '/mante/trials/mante_sorted.pkl'

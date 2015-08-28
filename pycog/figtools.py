@@ -14,6 +14,7 @@ from __future__ import division
 import os
 import subprocess
 import sys
+from   os.path import join
 
 import numpy                      as np
 import matplotlib                 as mpl; mpl.use('Agg') # For compatibility on cluster
@@ -523,13 +524,11 @@ class Figure(object):
             mkdir_p(path)
         if name is None:
             name = os.path.splitext(sys.argv[0].split('/')[-1])[0]
-        if fmt is None:
-            fmt = Figure.defaults['format']
 
-        fname = '{}/{}.{}'.format(path, name, fmt)
+        fname = join(path, name + '.' + self.p['format'])
         plt.figure(self.fig.number)
         plt.savefig(fname, transparent=transparent, **kwargs)
-        print("[ Figure.save ] " + fname)
+        print("[ {}.Figure.save ] ".format(THIS) + fname)
 
     def close(self):
         plt.close(self.fig)

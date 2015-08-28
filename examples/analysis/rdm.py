@@ -7,6 +7,7 @@ from __future__ import division
 import cPickle as pickle
 import os
 import sys
+from   os.path import join
 
 import numpy as np
 
@@ -22,7 +23,7 @@ THIS = "examples.analysis.rdm"
 
 # File to store trials in
 def get_trialsfile(p):
-    return '{}/{}_trials.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_trials.pkl')
 
 # Load trials
 def load_trials(trialsfile):
@@ -33,19 +34,19 @@ def load_trials(trialsfile):
 
 # File to store sorted trials in
 def get_sortedfile_stim_onset(p):
-    return '{}/{}_sorted_stim_onset.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_sorted_stim_onset.pkl')
 
 # File to store sorted trials in
 def get_sortedfile_response(p):
-    return '{}/{}_sorted_response.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_sorted_response.pkl')
 
 # File to store d'
 def get_dprimefile(p):
-    return '{}/{}_dprime.txt'.format(p['datapath'], p['name'])
+    return join(p['datapath'], p['name'] + '_dprime.txt')
 
 # File to store selectivity
 def get_selectivityfile(p):
-    return '{}/{}_selectivity.txt'.format(p['datapath'], p['name'])
+    return join(p['datapath'], p['name'] + '_selectivity.txt')
 
 # Simple choice function
 def get_choice(trial):
@@ -673,7 +674,7 @@ def do(action, args, p):
         from glob import glob
 
         # Remove existing files
-        filenames = glob('{}/{}_stim_onset_unit*'.format(p['figspath'], p['name']))
+        filenames = glob(join(p['figspath'], p['name'] + '_stim_onset_unit*'))
         for filename in filenames:
             os.remove(filename)
             print("Removed {}".format(filename))
@@ -722,7 +723,7 @@ def do(action, args, p):
         from glob import glob
 
         # Remove existing files
-        filenames = glob('{}/{}_response_unit*'.format(p['figspath'], p['name']))
+        filenames = glob(join(p['figspath'], p['name'] + '_response_unit*'))
         for filename in filenames:
             os.remove(filename)
             print("Removed {}".format(filename))

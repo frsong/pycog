@@ -3,6 +3,7 @@ from __future__ import division
 
 import argparse
 import os
+from   os.path import join
 
 import numpy as np
 
@@ -20,18 +21,18 @@ p = argparse.ArgumentParser()
 p.add_argument('-f', '--format', default='pdf')
 a = p.parse_args()
 
-Figure.defaults['format'] = p.parse_args().format
+format = a.format
 
 #=========================================================================================
 # Setup
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
+here     = os.path.abspath(os.path.dirname(__file__))
 base     = os.path.abspath(os.path.join(here, os.pardir))
-figspath = here + '/figs'
+figspath = join(here, 'figs')
 
 def savefile(model):
-    return base + '/examples/work/data/{0}/{0}.pkl'.format(model)
+    return join(base, 'examples', 'work', 'data', model, model + '.pkl')
 
 models = [('rdm_nodale', '1C: Integration (no Dale)'),
           ('rdm_dense', '1D: Integration (Dale, dense)'),
@@ -49,7 +50,7 @@ labels = list('ABCDEFGHI')
 #=========================================================================================
 
 fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2, format=format)
 
 ncols = 3
 nrows = 3
