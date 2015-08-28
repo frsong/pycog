@@ -33,9 +33,9 @@ figspath = here + '/figs'
 def savefile(model):
     return base + '/examples/work/data/{0}/{0}.pkl'.format(model)
 
-models = [('1', None),
-          ('2', None),
-          ('3', None),
+models = [('rdm_nodale', '1C: Integration (no Dale)'),
+          ('rdm_dense', '1D: Integration (Dale, dense)'),
+          ('rdm_fixed', '1E: Integration (Dale, fixed)'),
           ('rdm_varstim', 'Integration (variable stim.)'),
           ('5', None),
           ('mante', 'Context-dependent int.'),
@@ -82,7 +82,7 @@ fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 #=========================================================================================
 
 plot = plots[models[0][0]]
-plot.xlabel('Number of trials')
+plot.xlabel(r'Number of trials ($\times 10^4$)')
 plot.ylabel('Percent correct')
 
 plot = plots[models[-1][0]]
@@ -105,20 +105,22 @@ for model, _ in models:
         continue
 
     ntrials = [int(costs[0]) for costs in rnn.costs_history]
-    ntrials = np.asarray(ntrials, dtype=int)//int(ntrials[1]-ntrials[0])
-
+    ntrials = np.asarray(ntrials, dtype=int)/int(1e4)
     performance = [costs[1][-1] for costs in rnn.costs_history]
 
     plot = plots[model]
+
+    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed']:
+        plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
+        plot.xlim(ntrials[0], ntrials[-1])
+        plot.ylim(40, 100)
+        plot.hline(80, color='0.5', lw=0.75)
+
     if model == 'rdm_varstim':
-        print(ntrials)
-        exit()
-
-        #plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
-        plot.plot(ntrials[::2], performance[::2], 'o', 
-                  mfc=Figure.colors('red'), mec='none', ms=4)
-
-        plot.ylim(0, 100)
+        plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
+        plot.xlim(ntrials[0], ntrials[-1])
+        plot.ylim(40, 100)
+        plot.hline(85, color='0.5', lw=0.75)
 
 #=========================================================================================
 
