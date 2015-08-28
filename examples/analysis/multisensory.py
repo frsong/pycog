@@ -6,26 +6,26 @@ from __future__ import division
 
 import cPickle as pickle
 import sys
+from   os.path import join
 
 import numpy as np
 
 from pycog          import fittools, RNN, tasktools
 from pycog.figtools import Figure
 
+THIS = "examples.analysis.multisensory"
+
 #=========================================================================================
 # Setup
 #=========================================================================================
 
-# For messages
-THIS = "examples.analysis.multisensory"
-
 # File to store trials in
 def get_trialsfile(p):
-    return '{}/{}_trials.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_trials.pkl')
 
 # File to store sorted trials in
 def get_sortedfile(p):
-    return '{}/{}_sorted.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_sorted.pkl')
 
 # Simple choice function
 def get_choice(trial):

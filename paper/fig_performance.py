@@ -1,8 +1,7 @@
 #! /usr/bin/env python
 from __future__ import division
 
-import os
-from   os.path import join
+from os.path import join
 
 import numpy as np
 
@@ -101,17 +100,26 @@ for model, _ in models:
 
     plot = plots[model]
 
+    clr_target = Figure.colors('red')
+    clr_actual = '0.2'
+
     if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed']:
-        plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
+        plot.plot(ntrials, performance, color=clr_actual, lw=1)
         plot.xlim(ntrials[0], ntrials[-1])
         plot.ylim(40, 100)
-        plot.hline(80, color='0.5', lw=0.75)
+        plot.hline(80, color=clr_target, lw=0.75)
 
     if model == 'rdm_varstim':
-        plot.plot(ntrials, performance, color=Figure.colors('red'), lw=1)
+        plot.plot(ntrials, performance, color=clr_actual, lw=1)
         plot.xlim(ntrials[0], ntrials[-1])
         plot.ylim(40, 100)
-        plot.hline(85, color='0.5', lw=0.75)
+        plot.hline(85, color=clr_target, lw=0.75)
+
+    if model == 'lee':
+        plot.plot(ntrials, performance, color=clr_actual, lw=1)
+        plot.xlim(ntrials[0], ntrials[-1])
+        plot.yscale('log')
+        plot.hline(0.06, color=clr_target, lw=0.75)
 
 #=========================================================================================
 

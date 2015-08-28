@@ -14,12 +14,11 @@ import numpy as np
 from pycog          import fittools, RNN, tasktools
 from pycog.figtools import Figure
 
+THIS = "examples.analysis.rdm"
+
 #=========================================================================================
 # Setup
 #=========================================================================================
-
-# For messages
-THIS = "examples.analysis.rdm"
 
 # File to store trials in
 def get_trialsfile(p):

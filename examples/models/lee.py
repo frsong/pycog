@@ -4,6 +4,8 @@ The sequence generation part of
   Prefrontal neural correlates of memory for sequences.
   B. B. Averbeck & D. Lee, JNS 2007.
 
+  http://www.jneurosci.org/content/27/9/2204.abstract
+
 """
 from __future__ import division
 

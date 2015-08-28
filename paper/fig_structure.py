@@ -23,12 +23,15 @@ here     = get_here(__file__)
 base     = get_parent(here)
 figspath = join(here, 'figs')
 
-nodale_trialsfile = paper.scratchpath + '/rdm_nodale/trials/rdm_nodale_trials.pkl'
-dense_trialsfile  = paper.scratchpath + '/rdm_dense/trials/rdm_dense_trials.pkl'
-fixed_trialsfile  = paper.scratchpath + '/rdm_fixed/trials/rdm_fixed_trials.pkl'
+nodale_trialsfile = join(paper.scratchpath, 
+                         'rdm_nodale', 'trials', 'rdm_nodale_trials.pkl')
+dense_trialsfile  = join(paper.scratchpath, 
+                         'rdm_dense', 'trials', 'rdm_dense_trials.pkl')
+fixdd_trialsfile  = join(paper.scratchpath, 
+                         'rdm_fixed', 'trials', 'rdm_fixed_trials.pkl')
 
 # Load model
-modelfile   = here + '/../examples/models/rdm_fixed.py'
+modelfile   = join(base, 'examples', 'models', 'rdm_fixed.py')
 m_rdm_fixed = imp.load_source('model', modelfile)
 
 #=========================================================================================
@@ -64,7 +67,7 @@ x1_psy = x1 + offset
 x2_psy = x2 + offset
 
 w_psy = 0.2
-h_psy = 0.17
+h_psy = 0.172
 
 dy = 0.09
 y0 = 0.44
@@ -178,16 +181,18 @@ smap_exc_out, smap_inh_out = generate_cmap([rnn.Wout for rnn in rnns])
 # Labels
 #=========================================================================================
 
+textprop = dict(dy=0.18, fontsize=7)
+
 plot = plots['Cpsy']
 plot.xlabel(r'Percent coherence toward choice 1')
 plot.ylabel(r'Percent choice 1', labelpad=4)
-plot.text_upper_center('No Dale\'s principle', dy=0.2, fontsize=7)
+plot.text_upper_center('No Dale\'s principle', **textprop)
 
 plot = plots['Dpsy']
-plot.text_upper_center('Dale\'s principle, dense connectivity', dy=0.2, fontsize=7)
+plot.text_upper_center('Dale\'s principle, dense connectivity', **textprop)
 
 plot = plots['Epsy']
-plot.text_upper_center('Dale\'s principle, fixed connectivity', dy=0.2, fontsize=7)
+plot.text_upper_center('Dale\'s principle, fixed connectivity', **textprop)
 
 #=========================================================================================
 # Psychometric curves

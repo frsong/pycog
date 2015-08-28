@@ -14,12 +14,11 @@ import scipy.stats as stats
 from pycog          import fittools, RNN, tasktools
 from pycog.figtools import Figure, mpl
 
+THIS = "examples.analysis.romo"
+
 #=========================================================================================
 # Setup
 #=========================================================================================
-
-# For messages
-THIS = "examples.analysis.romo"
 
 # File to store trials in
 def get_trialsfile(p):

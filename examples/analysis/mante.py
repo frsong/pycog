@@ -10,12 +10,11 @@ from scipy.ndimage.filters import gaussian_filter1d as smooth
 from pycog          import fittools, RNN, tasktools
 from pycog.figtools import apply_alpha, Figure
 
+THIS = "examples.analysis.mante"
+
 #=========================================================================================
 # Setup
 #=========================================================================================
-
-# For messages
-THIS = "examples.analysis.mante"
 
 # File to store trials in
 def get_trialsfile(p):
