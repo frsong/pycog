@@ -36,7 +36,7 @@ def savefile(model):
 models = [('rdm_nodale', '1C: Integration (no Dale)'),
           ('rdm_dense', '1D: Integration (Dale, dense)'),
           ('rdm_fixed', '1E: Integration (Dale, fixed)'),
-          ('rdm_varstim', 'Integration (variable stim.)'),
+          ('rdm_varstim', '2A: Integration (variable stim.)'),
           ('5', None),
           ('mante', 'Context-dependent int.'),
           ('multisensory', 'Multisensory int.'),
