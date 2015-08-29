@@ -88,31 +88,40 @@ for k in xrange(len(models)):
 # Plot performance
 #=========================================================================================
 
-for model, _ in models:
-    try:
-        rnn = RNN(savefile(model), verbose=True)
-    except:
-        continue
+clr_target = Figure.colors('red')
+clr_actual = '0.2'
 
-    ntrials = [int(costs[0]) for costs in rnn.costs_history]
-    ntrials = np.asarray(ntrials, dtype=int)/int(1e4)
+for model, _ in models:
+    rnn = RNN(savefile(model), verbose=True)
+
+    ntrials     = [int(costs[0]) for costs in rnn.costs_history]
+    ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
     performance = [costs[1][-1] for costs in rnn.costs_history]
+
+    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed', 'rdm_rt']:
+        target = 80
+    elif model in ['rdm_varstim', 'multisensory']:
+        target = 85
+    elif model in ['mante']:
+        target = 95
+    elif model in ['romo']:
+        target = 94
+    elif model in ['lee']:
+        target = 0.06
+    else:
+        raise ValueError("Unknown task {}".format(model))
 
     plot = plots[model]
 
-    clr_target = Figure.colors('red')
-    clr_actual = '0.2'
+    plot.plot(ntrials, performance, color=clr_actual, lw=1)
+    plot.xlim(ntrials[0], ntrials[-1])
+    plot.hline(target, color=clr_target, lw=0.75)
 
+    # y-axis
     if model == 'lee':
-        plot.plot(ntrials, performance, color=clr_actual, lw=1)
-        plot.xlim(ntrials[0], ntrials[-1])
         plot.yscale('log')
-        plot.hline(0.06, color=clr_target, lw=0.75)
     else:
-        plot.plot(ntrials, performance, color=clr_actual, lw=1)
-        plot.xlim(ntrials[0], ntrials[-1])
         plot.ylim(40, 100)
-        plot.hline(80, color=clr_target, lw=0.75)
 
 #=========================================================================================
 

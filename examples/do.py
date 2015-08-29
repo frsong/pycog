@@ -76,7 +76,7 @@ for path in [datapath, figspath, scratchpath, trialspath]:
     mkdir_p(path)
 
 # File to store model in
-savefile = join(datapath, name + '.pkl')
+savefile = join(datapath, name+'.pkl')
 
 #=========================================================================================
 # Check log file
