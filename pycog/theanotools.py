@@ -80,11 +80,13 @@ output_activations = {
 # Loss functions
 #=========================================================================================
 
+epsilon = 1e-10
+
 def binary_crossentropy(y, t):
-    return -t*T.log(y + 1e-10) - (1-t)*T.log((1-y) + 1e-10)
+    return -t*T.log(y + epsilon) - (1-t)*T.log((1-y) + epsilon)
 
 def categorical_crossentropy(y, t):
-    return -t*T.log(y + 1e-10)
+    return -t*T.log(y + epsilon)
 
 def L2(y, t):
     return (y - t)**2
