@@ -55,10 +55,10 @@ class SGD(object):
                  Dataset used to train the RNN.
 
         costs : [loss, ...]
-                costs[0] is the loss that is optimized. costs[1:] are used for
+                `costs[0]` is the loss that is optimized. `costs[1:]` are used for
                 monitoring only.
 
-        regs : theano.tensor.var.TensorVariable
+        regs : Theano variable
                Regularization terms to add to costs[0].
 
         x : Theano variable
