@@ -96,6 +96,8 @@ def apply_alpha(color, alpha=0.7):
     return tuple(alpha*fg + (1-alpha)*bg)
 
 colors = {
+    'aquamarine':   '#4c968e',
+    'gold':         '#b18955',
     'strongblue':   '#2171b5',
     'strongred':    '#cb181d',
     'blue':         apply_alpha('#447294'),

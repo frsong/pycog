@@ -17,6 +17,12 @@ def rectify(x):
 def d_rectify(x):
     return T.switch(x < 0, 0, 1)
 
+def rectify_power(x, n=2):
+    return T.switch(x < 0, 0, x**n)
+
+def d_rectify_power(x, n=2):
+    return T.switch(x < 0, 0, n*x**(n-1))
+
 sigmoid = T.nnet.sigmoid
 
 def d_sigmoid(x):
@@ -61,19 +67,21 @@ def softmax(x):
 #-----------------------------------------------------------------------------------------
 
 hidden_activations = {
-    'linear':   (lambda x: x, lambda x: 1),
-    'rectify':  (rectify,     d_rectify),
-    'sigmoid':  (sigmoid,     d_sigmoid),
-    'tanh':     (tanh,        d_tanh),
-    'rtanh':    (rtanh,       d_rtanh),
-    'softplus': (softplus,    d_softplus)
+    'linear':        (lambda x: x,   lambda x: 1),
+    'rectify':       (rectify,       d_rectify),
+    'rectify_power': (rectify_power, d_rectify_power),
+    'sigmoid':       (sigmoid,       d_sigmoid),
+    'tanh':          (tanh,          d_tanh),
+    'rtanh':         (rtanh,         d_rtanh),
+    'softplus':      (softplus,      d_softplus)
 }
 
 output_activations = {
-    'linear':  (lambda x: x),
-    'rectify': rectify,
-    'sigmoid': sigmoid,
-    'softmax': softmax
+    'linear':        (lambda x: x),
+    'rectify':       rectify,
+    'rectify_power': rectify_power,
+    'sigmoid':       sigmoid,
+    'softmax':       softmax
     }
 
 #=========================================================================================

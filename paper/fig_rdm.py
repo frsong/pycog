@@ -21,7 +21,7 @@ figspath = join(here, 'figs')
 
 varstim_trialsfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
                           'rdm_varstim_trials.pkl')
-varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials', 
+varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
                           'rdm_varstim_sorted_stim_onset.pkl')
 
 rt_trialsfile = paper.scratchpath + '/rdm_rt/trials/rdm_rt_trials.pkl'
@@ -132,11 +132,11 @@ t_decision = np.array([800, 1000])
 
 hi = 1
 lo = 0.1
-plot.plot(t_fixation, (lo+shift)*np.ones_like(t_fixation), 
+plot.plot(t_fixation, (lo+shift)*np.ones_like(t_fixation),
           color=Figure.colors('blue'), lw=2)
-plot.plot(t_fixation, (lo-shift)*np.ones_like(t_fixation), 
+plot.plot(t_fixation, (lo-shift)*np.ones_like(t_fixation),
           color=Figure.colors('red'), lw=2)
-plot.plot(t_decision, hi*np.ones_like(t_decision), 
+plot.plot(t_decision, hi*np.ones_like(t_decision),
           color=Figure.colors('blue'), lw=2)
 plot.plot(t_decision, (lo-shift)*np.ones_like(t_decision),
           color=Figure.colors('red'), lw=2)
@@ -160,7 +160,7 @@ plot.text(np.mean(t_decision), 0.6+dtext, 'dec.',
           ha='center', va='center', fontsize=7)
 
 #-----------------------------------------------------------------------------------------
-# Reaction time version 
+# Reaction time version
 #-----------------------------------------------------------------------------------------
 
 plot = plots['B']
@@ -184,11 +184,11 @@ plot.yticks()
 plot.vline(t[1], color='0.2', linestyle='--', lw=1, dashes=dashes)
 
 # Epochs
-plot.text(np.mean(t[[0,1]]), 0.6+dtext, 'fix.', 
+plot.text(np.mean(t[[0,1]]), 0.6+dtext, 'fix.',
           ha='center', va='center', fontsize=7)
-plot.text(t[1] + 50, 0.6-dtext, r'ongoing stimulus', 
+plot.text(t[1] + 50, 0.6-dtext, r'ongoing stimulus',
           ha='left', va='center', fontsize=7)
-plot.text(np.mean(t[[2,3]]), 0.6+dtext, 'decision', 
+plot.text(np.mean(t[[2,3]]), 0.6+dtext, 'decision',
           ha='center', va='center', fontsize=7)
 
 # Stimulus arrow
@@ -237,7 +237,7 @@ plot = plots['G']
 rdm.plot_unit(varstim_unit, varstim_sortedfile, plot, tmin=-200, tmax=600, lw=1.5)
 
 # Legend
-prop = {'prop': {'size': 5}, 
+prop = {'prop': {'size': 5},
         'handlelength': 1, 'handletextpad': 1.1, 'labelspacing': 0.5}
 plot.legend(bbox_to_anchor=(0.34, 1.11), **prop)
 

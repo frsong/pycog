@@ -503,7 +503,7 @@ class Trainer(object):
             settings['output activation/loss'] = 'softmax/categorical cross entropy'
             f_loss = theanotools.categorical_crossentropy
         else:
-            raise NotImplementedError("output activation: " + act)
+            raise NotImplementedError("No loss function for output activation " + act)
 
         #---------------------------------------------------------------------------------
         # RNN

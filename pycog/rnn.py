@@ -26,6 +26,9 @@ THIS = 'pycog.rnn'
 def rectify(x):
     return x*(x > 0)
 
+def rectify_power(x, n=2):
+    return x**n*(x > 0)
+
 def sigmoid(x):
     return 1/(1 + np.exp(-x))
 
@@ -44,12 +47,13 @@ def softmax(x):
     return e/np.sum(e, axis=1, keepdims=True)
 
 activation_functions = {
-    'linear':   lambda x: x,
-    'rectify':  rectify,
-    'sigmoid':  sigmoid,
-    'tanh':     np.tanh,
-    'rtanh':    rtanh,
-    'softmax':  softmax
+    'linear':        lambda x: x,
+    'rectify':       rectify,
+    'rectify_power': rectify_power,
+    'sigmoid':       sigmoid,
+    'tanh':          np.tanh,
+    'rtanh':         rtanh,
+    'softmax':       softmax
 }
 
 #=========================================================================================

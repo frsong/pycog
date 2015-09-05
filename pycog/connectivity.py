@@ -30,7 +30,7 @@ class Connectivity(object):
         ----------
         
         C_or_N : 2D numpy.ndarray or int
-                 If ``int``, create a random binary mask with density p.
+                 If ``int``, create a random binary mask with density `p`.
 
         Cfixed : 2D numpy.ndarray
                  Fixed weights.
