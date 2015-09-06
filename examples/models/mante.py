@@ -135,9 +135,9 @@ def generate_trial(rng, dt, params):
         # Trial info
         trial['info'] = {
             'coh_m':        coh_m,
-            'left_right_m': left_right_m, 
+            'left_right_m': left_right_m,
             'coh_c':        coh_c,
-            'left_right_c': left_right_c, 
+            'left_right_c': left_right_c,
             'context':      context,
             'choice':       choice
             }

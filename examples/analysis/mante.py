@@ -50,7 +50,7 @@ def is_active(r):
 def run_trials(p, args, dt=0.5, dt_save=2):
     # Model
     m = p['model']
-    
+
     # Number of trials
     try:
         ntrials = int(args[0])
@@ -67,7 +67,7 @@ def run_trials(p, args, dt=0.5, dt_save=2):
     try:
         for i in xrange(ntrials):
             # Condition
-            k = tasktools.unravel_index(i % m.nconditions, 
+            k = tasktools.unravel_index(i % m.nconditions,
                                         (len(m.cohs), len(m.left_rights),
                                          len(m.cohs), len(m.left_rights),
                                          len(m.contexts)))
@@ -166,7 +166,7 @@ def psychometric_function(trialsfile, plots=None, **kwargs):
             choices = np.array(choice_by_coh[coh])
             p0[i]   = 1 - np.sum(choices)/len(choices)
         scaled_cohs = 5*cohs
-        
+
         results[cond] = (scaled_cohs, p0)
 
     #-------------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ def psychometric_function(trialsfile, plots=None, **kwargs):
                 label = 'Motion context'
             else:
                 color = color_c
-                label = 'Colour context'
+                label = 'Color context'
 
             # Stimulus
             if cond[1] == 'm':
@@ -210,7 +210,7 @@ def psychometric_function(trialsfile, plots=None, **kwargs):
                 print("[ {}.psychometric_function ]".format(THIS)
                       + " Unable to fit, drawing a line through the points.")
                 plot.plot(scaled_cohs, 100*p0, color=color, lw=1, zorder=5, label=label)
-            
+
             plot.lim('x', scaled_cohs)
             plot.ylim(0, 100)
 
@@ -418,7 +418,7 @@ def plot_unit(unit, sortedfile, plots, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs
         labels = {
             'choice':         'choice',
             'motion_choice':  'motion \& choice',
-            'colour_choice':  'colour \& choice',
+            'colour_choice':  'color \& choice',
             'context_choice': 'context \& choice'
             }
         for k , label in labels.items():
@@ -464,7 +464,7 @@ def plot_unit(unit, sortedfile, plots, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs
 
     plot = plots['motion_choice']
     condition_averaged = sorted_trials['motion_choice']
-    
+
     abscohs = []
     for (choice, coh, context) in condition_averaged:
         abscohs.append(abs(coh))
@@ -496,7 +496,7 @@ def plot_unit(unit, sortedfile, plots, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs
 
     plot = plots['colour_choice']
     condition_averaged = sorted_trials['colour_choice']
-    
+
     abscohs = []
     for (choice, coh, context) in condition_averaged:
         abscohs.append(abs(coh))
@@ -531,7 +531,7 @@ def plot_unit(unit, sortedfile, plots, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs
 
     for (choice, context), r in condition_averaged.items():
         ls = get_linestyle(choice)
-        
+
         if context == 'm':
             color = 'k'
         else:
@@ -659,7 +659,7 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
             beta[i,k] = np.linalg.inv(F[i,k].dot(F[i,k].T)).dot(F[i,k]).dot(r[i,k])
             if np.any(np.isnan(beta[i,k])):
                 raise RuntimeError("[ {}.regress ] Regression failed.".format(THIS))
-    
+
     #-------------------------------------------------------------------------------------
     # Denoising matrix
     #-------------------------------------------------------------------------------------
@@ -667,11 +667,11 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
     # Load sorted trials
     with open(sortedfile) as f:
         t, sorted_trials = pickle.load(f)
-    
+
     all_conditions = sorted_trials['all']
     for cond, r in all_conditions.items():
         all_conditions[cond] = r[units,::step]
-    
+
     # Data matrix
     X = np.zeros((all_conditions.values()[0].shape[0],
                   len(all_conditions)*all_conditions.values()[0].shape[1]))
@@ -691,13 +691,13 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
     #-------------------------------------------------------------------------------------
     # Task axes
     #-------------------------------------------------------------------------------------
-    
+
     # Rearrange from (units, time, reg) to (reg, time, units)
     beta = np.swapaxes(beta, 0, 2)
 
     # Denoise
     beta = beta.dot(D.T)
-    
+
     # Time-independent regression vectors
     beta_max = np.zeros((nreg, nunits))
     for v in xrange(nreg):
@@ -805,7 +805,7 @@ def plot_taskaxes(plot, yax, p_vc, basecolor):
     if yax == MOTION:
         plot.ylabel('Motion')
     elif yax == COLOUR:
-        plot.ylabel('Colour')
+        plot.ylabel('Color')
 
     return np.concatenate(xall), np.concatenate(yall)
 
@@ -816,7 +816,7 @@ def plot_statespace(trialsfile, sortedfile, betafile, plots):
     # Load sorted trials
     with open(sortedfile) as f:
         t, sorted_trials = pickle.load(f)
-    
+
     # Load task axes
     with open(betafile) as f:
         M = pickle.load(f).T
@@ -851,7 +851,7 @@ def plot_statespace(trialsfile, sortedfile, betafile, plots):
     #-------------------------------------------------------------------------------------
 
     plot = plots['m1']
-    
+
     p_vc = {}
     for cond, r in sorted_trials['motion_choice'].items():
         if cond[2] == 'm':
@@ -987,7 +987,7 @@ def do(action, args, p):
         plot.ylabel('Choice to right (\%)')
 
         plot = plots['c']
-        plot.xlabel('Colour coherence (\%)')
+        plot.xlabel('Color coherence (\%)')
         plot.ylabel('Choice to green (\%)')
 
         #---------------------------------------------------------------------------------
@@ -1046,7 +1046,7 @@ def do(action, args, p):
 
             w  = 0.55
             x0 = 0.3
-            
+
             h  = 0.17
             dy = h + 0.06
             y0 = 0.77
@@ -1064,7 +1064,7 @@ def do(action, args, p):
             #-----------------------------------------------------------------------------
             # Plot
             #-----------------------------------------------------------------------------
-            
+
             plot_unit(unit, sortedfile, plots, sortby_fontsize=7)
             plots['context_choice'].xlabel('Time (ms)')
 

@@ -67,7 +67,7 @@ colors = {
         }
 
 # Integration threshold
-threshold = 0.8
+threshold = 0.9
 
 #=========================================================================================
 
@@ -110,8 +110,8 @@ def run_trials(p, args):
             trial_func = m.generate_trial
             trial_args = {
                 'name':   'test',
-                'catch':  False, 
-                'coh':    coh, 
+                'catch':  False,
+                'coh':    coh,
                 'in_out': in_out
                 }
             info = rnn.run(inputs=(trial_func, trial_args), rng=rng)
@@ -168,7 +168,7 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
     ncorrect = 0
     for trial in trials:
         info = trial['info']
-        
+
         # Signed coherence
         coh = info['in_out']*info['coh']
 
@@ -294,7 +294,7 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
     trials, ntrials = load_trials(trialsfile)
 
     #-------------------------------------------------------------------------------------
-    # Compute psychometric performance by RT 
+    # Compute psychometric performance by RT
     #-------------------------------------------------------------------------------------
 
     correct_rt_by_coh = {}
@@ -412,7 +412,7 @@ def sort_trials_stim_onset(trialsfile, sortedfile):
 
     # Number of units
     nunits = trials[0]['r'].shape[0]
-    
+
     # Number of time points
     stimulus = [np.ptp(trial['info']['epochs']['stimulus']) for trial in trials]
     idx      = np.argmax(stimulus)
@@ -431,7 +431,7 @@ def sort_trials_stim_onset(trialsfile, sortedfile):
 
     for trial in trials:
         info = trial['info']
-        
+
         # Include only correct trials
         coh    = info['coh']
         choice = get_choice(trial)
@@ -493,7 +493,7 @@ def sort_trials_response(trialsfile, sortedfile):
         # Include only correct trials
         if choice != info['choice']:
             continue
-        
+
         valid_trial_idx.append(i)
         valid_rt_idx.append(w[0]+1)
     print("[ {}.sort_trials_response ] {}/{} trials did not reach threshold."
@@ -505,7 +505,7 @@ def sort_trials_response(trialsfile, sortedfile):
 
     # Number of units
     nunits = trials[0]['r'].shape[0]
-    
+
     # Number of time points
     idx    = np.argmax(valid_rt_idx)
     w      = valid_rt_idx[idx]
@@ -710,7 +710,7 @@ def do(action, args, p):
 
             #-----------------------------------------------------------------------------
 
-            fig.save(path=p['figspath'], 
+            fig.save(path=p['figspath'],
                      name=p['name']+'_stim_onset_unit{:03d}'.format(i))
             fig.close()
 
@@ -759,7 +759,7 @@ def do(action, args, p):
 
             #-----------------------------------------------------------------------------
 
-            fig.save(path=p['figspath'], 
+            fig.save(path=p['figspath'],
                      name=p['name']+'_response_unit_{:03d}'.format(i))
             fig.close()
 
@@ -770,7 +770,7 @@ def do(action, args, p):
     elif action == 'selectivity':
         # Model
         m = p['model']
-        
+
         trialsfile = get_trialsfile(p)
         dprime     = get_choice_selectivity(trialsfile)
 

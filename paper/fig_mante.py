@@ -135,8 +135,7 @@ plotlabels = {
     'A': (x0, y0),
     'B': (x1, y0),
     'C': (x0, y1),
-    'D': (x2, y1),
-    'E': (x3, y1)
+    'D': (x2, y1)
     }
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 
@@ -152,11 +151,11 @@ mante.psychometric_function(trialsfile, mante_plots, ms=4.5)
 
 plot = plots['psy_m']
 plot.xlabel('Motion coherence (\%)')
-plot.ylabel('Choice to right (\%)')
+plot.ylabel('Percent choice 1 (\%)')
 
 plot = plots['psy_c']
-plot.xlabel('Colour coherence (\%)')
-plot.ylabel('Choice to green (\%)')
+plot.xlabel('Color coherence (\%)')
+plot.ylabel('Percent choice 1 (\%)')
 
 prop = {'prop': {'size': 5}, 'handlelength': 1.1,
         'handletextpad': 0.8, 'labelspacing': 0.5}
@@ -170,7 +169,7 @@ mante_plots = {s: plots[s] for s in ['m1', 'm2', 'm3', 'c1', 'c2', 'c3']}
 mante.plot_statespace(trialsfile, sortedfile, betafile, mante_plots)
 
 plots['m2'].text_upper_center('Motion context', dy=0.1, fontsize=7, color='k')
-plots['c2'].text_upper_center('Colour context', dy=0.1, fontsize=7, 
+plots['c2'].text_upper_center('Color context', dy=0.1, fontsize=7,
                               color=Figure.colors('darkblue'))
 
 #=========================================================================================
@@ -207,7 +206,7 @@ for i, unit in enumerate(units):
         sortby_fontsize = 6
 
     yall.append(mante.plot_unit(unit, sortedfile, mante_plots, t0=stimulus_start,
-                                tmin=stimulus_start, tmax=stimulus_end, 
+                                tmin=stimulus_start, tmax=stimulus_end,
                                 sortby_fontsize=sortby_fontsize, unit_fontsize=6))
 
 # Shared x tick labels
@@ -237,7 +236,7 @@ for i in xrange(1, len(units)):
 # Regression coefficients
 #=========================================================================================
 
-mante_plots = {s: plots[s] for s 
+mante_plots = {s: plots[s] for s
                in ['motion_choice', 'colour_choice', 'context_choice',
                    'colour_motion', 'context_motion', 'context_colour']}
 mante.plot_regress(betafile, mante_plots)

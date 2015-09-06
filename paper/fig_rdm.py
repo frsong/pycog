@@ -100,8 +100,8 @@ plot = plots['B']
 plot.text_upper_center('Reaction time version', dy=0.1, fontsize=8)
 
 plot = plots['C']
-plot.xlabel(r'\% coherence toward $T_\text{in}$')
-plot.ylabel(r'Percent $T_\text{in}$')
+plot.xlabel(r'\% coherence toward choice 1')
+plot.ylabel(r'Percent choice 1')
 
 plot = plots['E']
 plot.xlabel('Stimulus duration (ms)')
@@ -111,7 +111,7 @@ plot = plots['F']
 plot.ylabel('Reaction time (ms)')
 
 plot = plots['F']
-plot.xlabel(r'\% coherence toward $T_\text{in}$')
+plot.xlabel(r'\% coherence toward choice 1')
 
 plot = plots['G']
 plot.xlabel('Time from stimulus onset (ms)')
@@ -222,8 +222,8 @@ plot      = plots['F']
 plot_dist = plots['Finset']
 
 rdm.chronometric_function(rt_trialsfile, plot, plot_dist, ms=5)
-plot.ylim(200, 1000)
-plot.yticks(range(200, 1000+1, 200))
+plot.ylim(200, 1200)
+plot.yticks(range(200, 1200+1, 200))
 plot_dist.xlim(0, 1500)
 plot_dist.xticks([0, 1500])
 plot_dist.axis_off('left')

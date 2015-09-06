@@ -16,6 +16,18 @@ class Connectivity(object):
     """
     @staticmethod
     def is_connected(C):
+        """
+        Check whether the square connection matrix `C` is connected (every unit is
+        reachable from every other unit).
+
+        Note
+        ----
+
+        This function only performs the check if the NetworkX package is available:
+
+          https://networkx.github.io/
+
+        """
         if nx is None:
             return True
 
@@ -28,7 +40,7 @@ class Connectivity(object):
 
         Parameters
         ----------
-        
+
         C_or_N : 2D numpy.ndarray or int
                  If ``int``, create a random binary mask with density `p`.
 
