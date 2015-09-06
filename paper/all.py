@@ -6,8 +6,9 @@ Note
 ----
 
 Everything means EVERYTHING, i.e., train, run trials, analyze, and make figures.
-This is mostly for us to check our work and for you to see exactly what we did; 
-we don't recommend that you actually run this script.
+This is mostly for us to check our work and for you to see exactly what we did;
+we don't recommend that you actually run this script in toto. Instead, you can run
+this script for individual figures by giving the name as a command-line argument.
 
 """
 import argparse
@@ -25,7 +26,8 @@ a = p.parse_args()
 
 args = a.args
 if not args:
-    args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory', 'lee']
+    args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory', 'lee',
+            'performance']
 
 #=========================================================================================
 # Shared steps
@@ -56,7 +58,7 @@ def trials(model, analysis=None, ntrials=None):
         ntrials = ''
     else:
         ntrials = ' {}'.format(ntrials)
-        
+
     call("{}/do.py {}/{} run {}/{} trials{}"
          .format(examples_dir, models_dir, model, analysis_dir, analysis, ntrials))
 
