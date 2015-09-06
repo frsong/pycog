@@ -24,8 +24,8 @@ varstim_trialsfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
 varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
                           'rdm_varstim_sorted_stim_onset.pkl')
 
-rt_trialsfile = paper.scratchpath + '/rdm_rt/trials/rdm_rt_trials.pkl'
-rt_sortedfile = paper.scratchpath + '/rdm_rt/trials/rdm_rt_sorted_response.pkl'
+rt_trialsfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_trials.pkl')
+rt_sortedfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_sorted_response.pkl')
 
 varstim_unit = 11
 rt_unit      = 11

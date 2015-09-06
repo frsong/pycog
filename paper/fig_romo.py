@@ -20,11 +20,11 @@ import paper
 
 here     = get_here(__file__)
 base     = os.path.abspath(os.path.join(here, os.pardir))
-figspath = os.path.join(here, 'figs')
+figspath = join(here, 'figs')
 
-modelfile  = os.path.join(base, 'examples', 'models', 'romo.py')
-trialsfile = os.path.join(paper.scratchpath, 'romo', 'trials', 'romo_trials.pkl')
-sortedfile = os.path.join(paper.scratchpath, 'romo', 'trials', 'romo_sorted.pkl')
+modelfile  = join(base, 'examples', 'models', 'romo.py')
+trialsfile = join(paper.scratchpath, 'romo', 'trials', 'romo_trials.pkl')
+sortedfile = join(paper.scratchpath, 'romo', 'trials', 'romo_sorted.pkl')
 
 #=========================================================================================
 # Setup
@@ -222,9 +222,9 @@ plot.plot(delay, 1.1*ymax*np.ones(2), color='k', lw=1.5)
 plot.text(np.mean(delay), 1.15*ymax, 'Delay', ha='center', va='bottom', fontsize=5.5)
 
 # Conditions
-plots['>'].text(np.mean(delay), 0.9*ymax, '$f_1 > f_2$', ha='center', va='top', 
+plots['>'].text(np.mean(delay), 0.9*ymax, '$f_1 > f_2$', ha='center', va='top',
                 color=Figure.colors('orange'), fontsize=6)
-plots['<'].text(np.mean(delay), 0.9*ymax, '$f_1 < f_2$', ha='center', va='top', 
+plots['<'].text(np.mean(delay), 0.9*ymax, '$f_1 < f_2$', ha='center', va='top',
                 color=Figure.colors('purple'), fontsize=6)
 
 #=========================================================================================
@@ -241,10 +241,10 @@ plot.ylabel('$f_2$ (Hz)')
 # Tuning analysis
 #=========================================================================================
 
-romo.tuning_corr(trialsfile, sortedfile, 
+romo.tuning_corr(trialsfile, sortedfile,
                  plot_corr=plots['tune'],
                  plot_sig=plots['sig'],
-                 plot_stim=plots['stim'], 
+                 plot_stim=plots['stim'],
                  plot_delay=plots['delay'],
                  t0=t0, ms=1.5)
 
@@ -287,9 +287,9 @@ for name, unit in units.items():
 
     if name == 'pos':
         ymin, ymax = plot.get_ylim()
-        plot.text(1e-3*((f1_start + f1_end)/2 - t0), 1.03*ymax, '$f_1$', 
+        plot.text(1e-3*((f1_start + f1_end)/2 - t0), 1.03*ymax, '$f_1$',
                   ha='center', va='bottom', fontsize=7)
-        plot.text(1e-3*((f2_start + f2_end)/2 - t0), 1.03*ymax, '$f_2$', 
+        plot.text(1e-3*((f2_start + f2_end)/2 - t0), 1.03*ymax, '$f_2$',
                   ha='center', va='bottom', fontsize=7)
 
 #=========================================================================================
