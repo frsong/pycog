@@ -3,7 +3,7 @@ A more convenient interface to matplotlib.
 
   Note
   ----
-  
+
   It appears that matplotlib's savefig has a bug in certain versions. Update your
   matplotlib to the latest version and this problem will go away.
 
@@ -82,7 +82,7 @@ def gradient(cmin, cmax):
         'blue':  [(0, 0,       cmin[2]),
                   (1, cmax[2], 1)]
         }
-    
+
     return mpl.colors.LinearSegmentedColormap('cmap', cdict, N=1000)
 
 #=========================================================================================
@@ -109,7 +109,7 @@ colors = {
     'lightblue':    '#8fbcdb',
     'orange':       apply_alpha('#e58c2c'),
     'magenta':      apply_alpha('#c42d95'),
-    'purple':       apply_alpha('#8064a2'),    
+    'purple':       apply_alpha('#8064a2'),
     'lightgreen':   '#78cd71',
     'darkblue':     '#084594',#'#315d7d',
     'gray':         '0.5',
@@ -169,7 +169,7 @@ class Subplot(object):
         elif style == 'none':
             for s in self.spines.values():
                 s.set_visible(False)
-            
+
             self.xticks()
             self.yticks()
 
@@ -183,19 +183,19 @@ class Subplot(object):
     def plot(self, *args, **kwargs):
         kwargs.setdefault('clip_on', False)
         kwargs.setdefault('zorder', 10)
-        
+
         return self.ax.plot(*args, **kwargs)
 
     def xlabel(self, *args, **kwargs):
         kwargs.setdefault('fontsize', self.p['axislabelsize'])
         kwargs.setdefault('labelpad', self.p['labelpadx'])
-        
+
         return self.set_xlabel(*args, **kwargs)
 
     def ylabel(self, *args, **kwargs):
         kwargs.setdefault('fontsize', self.p['axislabelsize'])
         kwargs.setdefault('labelpad', self.p['labelpady'])
-        
+
         return self.set_ylabel(*args, **kwargs)
 
     def xticks(self, *args, **kwargs):
@@ -237,17 +237,17 @@ class Subplot(object):
 
     def text_upper_center(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
         return self.text(0.5+dx, 1+dy, s, ha='center', va='bottom',
-                         fontsize=fontsize, color=color, 
+                         fontsize=fontsize, color=color,
                          transform=self.transAxes, **kwargs)
 
     def text_upper_left(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
         return self.text(0.04+dx, 0.97+dy, s, ha='left', va='top',
-                         fontsize=fontsize, color=color, 
+                         fontsize=fontsize, color=color,
                          transform=self.transAxes, **kwargs)
 
     def text_upper_right(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
         return self.text(0.97+dx, 0.97+dy, s, ha='right', va='top',
-                         fontsize=fontsize, color=color, 
+                         fontsize=fontsize, color=color,
                          transform=self.transAxes, **kwargs)
 
     #/////////////////////////////////////////////////////////////////////////////////////
@@ -363,7 +363,7 @@ class Subplot(object):
             'rwidth':   1,
             'histtype': 'stepfilled'
             }
-        
+
         # Fill parameters
         for k in defaults:
             kwargs.setdefault(k, defaults[k])
@@ -380,7 +380,7 @@ class Subplot(object):
 
         # Modify appearance
         plt.setp(patches, 'facecolor', kwargs['color'], 'linewidth', 0)
-        
+
         if get_binedges:
             return pdf, binedges
         return pdf
@@ -400,7 +400,7 @@ class Subplot3D(object):
     def __init__(self, fig, p, rect):
         self.p     = p
         self.ax    = fig.add_axes(rect, projection='3d')
-    
+
     #/////////////////////////////////////////////////////////////////////////////////////
 
     def xlabel(self, *args, **kwargs):
@@ -517,7 +517,7 @@ class Figure(object):
     def plotlabels(self, labels, **kwargs):
         plot = self.plots[0]
         for label, (x, y) in labels.items():
-            plot.text(x, y, label, ha='left', va='bottom', 
+            plot.text(x, y, label, ha='left', va='bottom',
                       transform=self.transFigure, **kwargs)
 
     #/////////////////////////////////////////////////////////////////////////////////////
@@ -525,7 +525,7 @@ class Figure(object):
     def shared_lim(self, plots, axis, data, **kwargs):
         """
         Make the axis scale the same in all the plots.
-        
+
         """
         try:
             data = np.concatenate(data)
@@ -535,7 +535,7 @@ class Figure(object):
 
         for plot in plots:
             lim = plot.lim(axis, data, **kwargs)
-                
+
         return lim
 
     #/////////////////////////////////////////////////////////////////////////////////////

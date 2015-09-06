@@ -17,8 +17,8 @@ class Connectivity(object):
     @staticmethod
     def is_connected(C):
         """
-        Check whether the square connection matrix `C` is connected (every unit is
-        reachable from every other unit).
+        Return `True` if the square connection matrix `C` is connected, i.e., every
+        unit is reachable from every other unit, otherwise `False`.
 
         Note
         ----
