@@ -2,8 +2,8 @@
 """
 Sample script for performing common tasks.
 
-If you use this script to run jobs on a cluster don't forget to change the ``queue``
-argument in ``write_jobfile``. Of course, you may have to modify the function
+If you use this script to run jobs on a cluster don't forget to change the `queue`
+argument in `write_jobfile`. Of course, you may have to modify the function
 itself depending on your setup.
 
 """
@@ -146,7 +146,7 @@ elif action == 'submit':
     cmd     = ('python {} {} {}{}'
                .format(join(here, 'do.py'), modelfile, action, sargs))
     pbspath = join(workpath, 'pbs')
-    jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath, 
+    jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath,
                                      ppn=ppn, gpus=gpus, queue='s48')
     subprocess.call(['qsub', jobfile])
 
@@ -244,46 +244,50 @@ elif action == 'costs':
 #=========================================================================================
 
 elif action == 'run':
-    if len(args) > 0:
+    # Get analysis script
+    try:
         runfile = args[0]
-        if not runfile.endswith('.py'):
-            runfile += '.py'
+    except IndexError:
+        print("Please specify the analysis script.")
+        sys.exit()
+    if not runfile.endswith('.py'):
+        runfile += '.py'
 
-        # Load analysis module
-        try:
-            r = imp.load_source('analysis', runfile)
-        except IOError:
-            print("Couldn't load analysis module from {}".format(runfile))
-            sys.exit()
+    # Load analysis module
+    try:
+        r = imp.load_source('analysis', runfile)
+    except IOError:
+        print("Couldn't load analysis module from {}".format(runfile))
+        sys.exit()
 
-        # Load model
-        try:
-            m = imp.load_source('model', modelfile)
-        except IOError:
-            print("Couldn't load model module from {}".format(modelfile))
-            sys.exit()
+    # Load model
+    try:
+        m = imp.load_source('model', modelfile)
+    except IOError:
+        print("Couldn't load model module from {}".format(modelfile))
+        sys.exit()
 
-        # Reset args
-        args = args[1:]
-        if len(args) > 0:
-            action = args[0]
-            args   = args[1:]
-        else:
-            action = None
-            args   = []
+    # Reset args
+    args = args[1:]
+    if len(args) > 0:
+        action = args[0]
+        args   = args[1:]
+    else:
+        action = None
+        args   = []
 
-        params = {
-            'seed':       seed,
-            'model':      m,
-            'savefile':   savefile,
-            'name':       name,
-            'datapath':   datapath,
-            'figspath':   figspath,
-            'trialspath': trialspath,
-            'dt':         0.5,
-            'dt_save':    2
-            }
-        r.do(action, args, params)
+    params = {
+        'seed':       seed,
+        'model':      m,
+        'savefile':   savefile,
+        'name':       name,
+        'datapath':   datapath,
+        'figspath':   figspath,
+        'trialspath': trialspath,
+        'dt':         0.5,
+        'dt_save':    2
+        }
+    r.do(action, args, params)
 
 #=========================================================================================
 

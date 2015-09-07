@@ -1,7 +1,7 @@
 """
 Integration task, loosely inspired by the random dot motion task.
 
-  Response of neurons in the lateral intraparietal area during a combined visual 
+  Response of neurons in the lateral intraparietal area during a combined visual
   discrimination reaction time task.
   J. D. Roitman & M. N. Shadlen, JNS 2002.
 
@@ -36,9 +36,6 @@ EXC_IN  = EXC[:Nexc//2]
 INH_IN  = INH[:Ninh//2]
 EXC_OUT = EXC[Nexc//2:]
 INH_OUT = INH[Nexc//2:]
-
-# Time constant
-tau = 100
 
 #-----------------------------------------------------------------------------------------
 # Input connectivity

@@ -3,6 +3,7 @@ from __future__ import division
 import cPickle as pickle
 import os
 import sys
+from   os.path import join
 
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d as smooth
@@ -18,7 +19,7 @@ THIS = "examples.analysis.mante"
 
 # File to store trials in
 def get_trialsfile(p):
-    return '{}/{}_trials.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_trials.pkl')
 
 # Load trials
 def load_trials(trialsfile):
@@ -29,11 +30,11 @@ def load_trials(trialsfile):
 
 # File to store sorted trials in
 def get_sortedfile(p):
-    return '{}/{}_sorted.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_sorted.pkl')
 
 # File to store regression coefficients in
 def get_betafile(p):
-    return '{}/{}_beta.pkl'.format(p['datapath'], p['name'])
+    return join(p['datapath'], p['name'] + '_beta.pkl')
 
 # Simple choice function
 def get_choice(trial):
@@ -47,7 +48,7 @@ def is_active(r):
 # Trials
 #=========================================================================================
 
-def run_trials(p, args, dt=0.5, dt_save=2):
+def run_trials(p, args, dt, dt_save):
     # Model
     m = p['model']
 
