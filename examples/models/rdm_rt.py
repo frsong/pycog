@@ -1,11 +1,11 @@
 """
 Integration task, loosely inspired by the random dot motion task.
 
-  Response of neurons in the lateral intraparietal area during a combined visual 
+  Response of neurons in the lateral intraparietal area during a combined visual
   discrimination reaction time task.
   J. D. Roitman & M. N. Shadlen, JNS 2002.
 
-Reaction time version.
+Reaction-time version.
 
 """
 from __future__ import division
