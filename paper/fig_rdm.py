@@ -28,7 +28,7 @@ rt_trialsfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_trials.pkl')
 rt_sortedfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_sorted_response.pkl')
 
 varstim_unit = 11
-rt_unit      = 11
+rt_unit      = 19
 
 #=========================================================================================
 # Figure setup

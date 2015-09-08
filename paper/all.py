@@ -2,14 +2,6 @@
 """
 Reproduce every figure in the paper from scratch.
 
-Note
-----
-
-Everything means EVERYTHING, i.e., train, run trials, analyze, and make figures.
-This is mostly for us to check our work and for you to see exactly what we did;
-we don't recommend that you actually run this script in toto. Instead, you can run
-this script for individual figures by giving the name as a command-line argument.
-
 """
 import argparse
 import os
@@ -90,7 +82,7 @@ def figure(fig):
 #=========================================================================================
 
 if 'structure' in args:
-    print("=> fig_structure")
+    print("=> Fig. 1")
     seeds   = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 99}
     ntrials = 22000
     for m, seed in seeds.items():
@@ -101,7 +93,7 @@ if 'structure' in args:
     figure('fig_structure')
 
 if 'rdm' in args:
-    print("=> fig_rdm")
+    print("=> RDM")
     models  = ['rdm_rt']
     ntrials = 22000
     for m in models:
@@ -132,7 +124,7 @@ if 'mante' in args:
     figure('fig_mante')
 
 if 'lee' in args:
-    print("=> Lee sequence generation task")
+    print("=> Sequence generation task")
     clean('lee')
     train('lee')
     trials('lee')

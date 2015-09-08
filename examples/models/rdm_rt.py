@@ -91,7 +91,7 @@ def generate_trial(rng, dt, params):
         else:
             fixation = 100
             stimulus = 1000
-        no_reward = 500
+        no_reward = 300
         T         = fixation + stimulus
 
         epochs = {
