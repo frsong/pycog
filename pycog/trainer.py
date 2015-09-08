@@ -28,6 +28,7 @@ class Trainer(object):
     """
     required = ['Nout']
     defaults = {
+        'extra_info':        {},
         'Nin':               0,
         'N':                 100,
         'rectify_inputs':    True,
@@ -247,7 +248,7 @@ class Trainer(object):
         ----------
 
         savefile : str
-        
+
         task : Python function
 
         recover : bool, optional
@@ -266,7 +267,7 @@ class Trainer(object):
         if not recover:
             if os.path.isfile(savefile):
                 os.remove(savefile)
-        
+
         #---------------------------------------------------------------------------------
         # Are we using GPUs?
         #---------------------------------------------------------------------------------
@@ -292,9 +293,9 @@ class Trainer(object):
         settings['distribution (Wout)'] = self.p['distribution_out']
 
         if Nin > 0:
-            Win_0 = self.init_weights(rng, self.p['Cin'], N, Nin, 
+            Win_0 = self.init_weights(rng, self.p['Cin'], N, Nin,
                                       self.p['distribution_in'])
-        Wrec_0 = self.init_weights(rng, self.p['Crec'], 
+        Wrec_0 = self.init_weights(rng, self.p['Crec'],
                                    N, N, self.p['distribution_rec'])
         Wout_0 = self.init_weights(rng, self.p['Cout'],
                                    Nout, N, self.p['distribution_out'])
@@ -525,7 +526,7 @@ class Trainer(object):
 
                 return [x_t, r_t]
 
-            [x, r], _ = theano.scan(fn=rnn, 
+            [x, r], _ = theano.scan(fn=rnn,
                                     outputs_info=[x0_, f_hidden(x0_)],
                                     sequences=u,
                                     non_sequences=[Win_.T, Wrec_.T])
@@ -568,7 +569,7 @@ class Trainer(object):
         z = f_output(T.dot(r, Wout_.T) + bout)
 
         #---------------------------------------------------------------------------------
-        # Deduce whether the task specification contains an output mask -- use a 
+        # Deduce whether the task specification contains an output mask -- use a
         # temporary dataset so it doesn't affect the training.
         #---------------------------------------------------------------------------------
 
@@ -714,6 +715,6 @@ class Trainer(object):
 
         print_settings(settings)
 
-        sgd = SGD(trainables, inputs, costs, regs, x, z, self.p, save_values, 
+        sgd = SGD(trainables, inputs, costs, regs, x, z, self.p, save_values,
                   {'Wrec_': Wrec_, 'd_f_hidden': d_f_hidden})
         sgd.train(gradient_data, validation_data, savefile)

@@ -123,17 +123,17 @@ class RNN(object):
         ----------
 
         savefile:  str, optional
-                   File name for trained network. If None, create a default network.
+                   File name for trained network. If `None`, create a default network.
 
         rnnparams: dict, optional
-                   These parameters will override those in savefile in RNN.defaults
+                   These parameters will override those in savefile in `RNN.defaults`.
 
         verbose: bool, optional
-                 If True, report information about the RNN.
+                 If `True`, report information about the RNN.
 
         """
         self.verbose = verbose
-        
+
         if savefile is not None:
             # Check that file exists
             if not os.path.isfile(savefile):
@@ -233,25 +233,25 @@ class RNN(object):
         ----------
 
         T : float, optional
-            Duration for which to run the network. If None, it is assumed that
-            inputs is None and the the network will be run for the trial duration.
+            Duration for which to run the network. If `None`, `inputs` must not be
+            `None` so that the network can be run for the trial duration.
 
         inputs : (input_func, input_args), optional
-        
+
         rng : numpy.random.RandomState
-              Random number generator. If None, one will be created using seed
+              Random number generator. If `None`, one will be created using seed.
 
         seed : int, optional
                Seed for the random number generator.
 
         """
         if self.verbose:
-            settings = OrderedDict()
+            config = OrderedDict()
 
-            settings['dt']        = '{} ms'.format(self.p['dt'])
-            settings['threshold'] = self.p['threshold']
+            config['dt']        = '{} ms'.format(self.p['dt'])
+            config['threshold'] = self.p['threshold']
 
-            print_settings(settings)
+            print_settings(config)
 
         # Random number generator
         if rng is None:
@@ -299,7 +299,7 @@ class RNN(object):
             trial  = ifunc(rng, dt, iargs)
             info   = trial['info']
             self.t = np.concatenate(([0], trial['t']))
-            
+
             u = np.zeros((len(self.t), trial['inputs'].shape[1]), dtype=dtype)
             u[1:,:] = trial['inputs']
 
@@ -320,7 +320,7 @@ class RNN(object):
         self.z = np.zeros((Nt, Nout), dtype=dtype)
 
         #---------------------------------------------------------------------------------
-        # Activation functions                                                                  
+        # Activation functions
         #---------------------------------------------------------------------------------
 
         f_hidden = activation_functions[self.p['hidden_activation']]
@@ -381,7 +381,7 @@ class RNN(object):
             euler(alpha, x_t, r_t, self.Win, self.Wrec, self.Wout, self.brec,
                   self.bout, self.u, noise_rec, f_hidden, self.r)
         else:
-            euler_no_Win(alpha, x_t, r_t, self.Wrec, self.Wout, self.brec, 
+            euler_no_Win(alpha, x_t, r_t, self.Wrec, self.Wout, self.brec,
                          self.bout, noise_rec, f_hidden, self.r)
         self.z = f_output(self.r.dot(self.Wout.T) + self.bout)
 
@@ -468,7 +468,7 @@ class RNN(object):
         plot.lim('y', cost, lower=0)
 
         plot.ylabel('Error')
-        
+
         #---------------------------------------------------------------------------------
 
         return fig
@@ -517,11 +517,11 @@ class RNN(object):
         plot.imshow(im, interpolation='nearest', aspect='auto')
 
     #/////////////////////////////////////////////////////////////////////////////////////
-        
+
     def plot_structure(self, sortby=None):
         """
         Create a summary figure for the network's structure.
-        
+
         """
         try:
             from .figtools import Figure, mpl
@@ -563,7 +563,7 @@ class RNN(object):
 
         hspace = 0.02
         vspace = r*hspace
-        
+
         x0 = 0.07
         y0 = 0.14
 
@@ -632,7 +632,7 @@ class RNN(object):
             W = self.Win
             exc.append( np.ravel(W[np.where(W > 0)]))
             inh.append(-np.ravel(W[np.where(W < 0)]))
-                                 
+
         W = self.Wrec
         exc.append( np.ravel(W[np.where(W > 0)]))
         inh.append(-np.ravel(W[np.where(W < 0)]))
@@ -701,7 +701,7 @@ class RNN(object):
             Win = self.Win
         else:
             Win = np.zeros((self.p['N'], 1))
-        
+
         plot = plots['Win']
 
         RNN.plot_connection_matrix(plot, self.Win[order,:], smap_exc, smap_inh)
@@ -721,7 +721,7 @@ class RNN(object):
         #---------------------------------------------------------------------------------
 
         plot = plots['Wrec']
-        
+
         Wrec = self.Wrec[order,:][:,order]
         RNN.plot_connection_matrix(plot, Wrec, smap_exc, smap_inh)
 
@@ -730,7 +730,7 @@ class RNN(object):
         #---------------------------------------------------------------------------------
 
         plot = plots['Wout']
-        
+
         RNN.plot_connection_matrix(plot, self.Wout[:,order], smap_exc, smap_inh)
 
         # Output labels
@@ -768,7 +768,7 @@ class RNN(object):
 
             plot.lim('x', Wexc, lower=0)
             plot.lim('y', pdf_exc, lower=0)
-            
+
             # x-ticks
             xmin, xmax = plot.get_xlim()
             step = max(1, int(2*xmax/3))
@@ -786,7 +786,7 @@ class RNN(object):
         plot = plots['Wrec_dist']
 
         # Label
-        plot.text_upper_right(r'$\boldsymbol{W}_\text{\textbf{rec}}$', 
+        plot.text_upper_right(r'$\boldsymbol{W}_\text{\textbf{rec}}$',
                               fontsize=7, dy=-0.02)
 
         W = self.Wrec
@@ -823,25 +823,25 @@ class RNN(object):
 
         # Separate connection densities for E and I units.
         if self.p['ei'] is not None:
-            plot.text(0.97, 0.97-0.15, s, color='k', 
+            plot.text(0.97, 0.97-0.15, s, color='k',
                       fontsize=6, ha='right', va='top', transform=plot.transAxes)
 
             Ne = len(np.where(self.p['ei'] > 0)[0])
             Ni = len(np.where(self.p['ei'] < 0)[0])
 
             s = r'$p_\mathrm{E}$' + ' = {:.2f}\%'.format(len(Wexc)/(N*Ne)*100)
-            plot.text(0.97, 0.97-0.15-0.125, s, color=Figure.colors('blue'), 
+            plot.text(0.97, 0.97-0.15-0.125, s, color=Figure.colors('blue'),
                       fontsize=6, ha='right', va='top', transform=plot.transAxes)
 
             s = r'$p_\mathrm{I}$' + ' = {:.2f}\%'.format(len(Winh)/(N*Ni)*100)
             plot.text(0.97, 0.97-0.15-0.24, s, color=Figure.colors('red'),
                       fontsize=6, ha='right', va='top', transform=plot.transAxes)
         else:
-            plot.text(0.97, 0.97-0.15, s, color='k', 
+            plot.text(0.97, 0.97-0.15, s, color='k',
                       fontsize=6, ha='right', va='top', transform=plot.transAxes)
 
             s = r'$p_+$' + ' = {:.2f}\%'.format(len(Wexc)/(N**2)*100)
-            plot.text(0.97, 0.97-0.15-0.125, s, color=Figure.colors('blue'), 
+            plot.text(0.97, 0.97-0.15-0.125, s, color=Figure.colors('blue'),
                       fontsize=6, ha='right', va='top', transform=plot.transAxes)
 
             s = r'$p_-$' + ' = {:.2f}\%'.format(len(Winh)/(N**2)*100)
@@ -853,9 +853,9 @@ class RNN(object):
         #---------------------------------------------------------------------------------
 
         plot = plots['Wout_dist']
-    
+
         # Label
-        plot.text_upper_right(r'$\boldsymbol{W}_\text{\textbf{out}}$', 
+        plot.text_upper_right(r'$\boldsymbol{W}_\text{\textbf{out}}$',
                               fontsize=7, dy=-0.02)
 
         W = self.Wout

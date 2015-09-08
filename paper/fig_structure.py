@@ -23,25 +23,46 @@ here     = get_here(__file__)
 base     = get_parent(here)
 figspath = join(here, 'figs')
 
-nodale_trialsfile = join(paper.scratchpath, 
+nodale_trialsfile = join(paper.scratchpath,
                          'rdm_nodale', 'trials', 'rdm_nodale_trials.pkl')
-dense_trialsfile  = join(paper.scratchpath, 
+dense_trialsfile  = join(paper.scratchpath,
                          'rdm_dense', 'trials', 'rdm_dense_trials.pkl')
-fixdd_trialsfile  = join(paper.scratchpath, 
+fixed_trialsfile  = join(paper.scratchpath,
                          'rdm_fixed', 'trials', 'rdm_fixed_trials.pkl')
 
 # Load model
 modelfile   = join(base, 'examples', 'models', 'rdm_fixed.py')
 m_rdm_fixed = imp.load_source('model', modelfile)
 
+#-----------------------------------------------------------------------------------------
+# Load RNNs to compare
+#-----------------------------------------------------------------------------------------
+
+datapath = join(base, 'examples', 'work', 'data')
+
+savefile      = join(datapath, 'rdm_nodale', 'rdm_nodale.pkl')
+rnn_nodale    = RNN(savefile, verbose=True)
+dprime_nodale = join(datapath, 'rdm_nodale', 'rdm_nodale_dprime.txt')
+sortby_nodale = join(datapath, 'rdm_nodale', 'rdm_nodale_selectivity.txt')
+
+savefile     = join(datapath, 'rdm_dense', 'rdm_dense.pkl')
+rnn_dense    = RNN(savefile, verbose=True)
+dprime_dense = join(datapath, 'rdm_dense', 'rdm_dense_dprime.txt')
+sortby_dense = join(datapath, 'rdm_dense', 'rdm_dense_selectivity.txt')
+
+savefile     = join(datapath, 'rdm_fixed', 'rdm_fixed.pkl')
+rnn_fixed    = RNN(savefile, verbose=True)
+dprime_fixed = join(datapath, 'rdm_fixed', 'rdm_fixed_dprime.txt')
+sortby_fixed = join(datapath, 'rdm_fixed', 'rdm_fixed_selectivity.txt')
+
 #=========================================================================================
 # Figure setup
 #=========================================================================================
 
 w   = 7.5
-h   = 6.5
+h   = 6.7
 r   = w/h
-fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=6, labelpady=6, thickness=0.6, 
+fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=6, labelpady=6, thickness=0.6,
              ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 w_rec = 0.25
@@ -67,7 +88,7 @@ x1_psy = x1 + offset
 x2_psy = x2 + offset
 
 w_psy = 0.2
-h_psy = 0.172
+h_psy = 0.18
 
 dy = 0.09
 y0 = 0.44
@@ -83,18 +104,18 @@ plots = {
 
     'Cpsy': fig.add([x0_psy,          y0,              w_psy, h_psy]),
     'Crec': fig.add([x0,              y1,              w_rec, h_rec], None),
-    'Cin':  fig.add([x0+w_rec+hspace, y1,              w_in,  h_in],  None), 
-    'Cout': fig.add([x0,              y1-vspace-h_out, w_out, h_out], None, 
+    'Cin':  fig.add([x0+w_rec+hspace, y1,              w_in,  h_in],  None),
+    'Cout': fig.add([x0,              y1-vspace-h_out, w_out, h_out], None,
                     ticklabelpadx=1.5),
 
     'Dpsy': fig.add([x1_psy,          y0,              w_psy, h_psy]),
     'Drec': fig.add([x1,              y1,              w_rec, h_rec], None),
-    'Din':  fig.add([x1+w_rec+hspace, y1,              w_in,  h_in],  None), 
+    'Din':  fig.add([x1+w_rec+hspace, y1,              w_in,  h_in],  None),
     'Dout': fig.add([x1,              y1-vspace-h_out, w_out, h_out], None),
 
     'Epsy': fig.add([x2_psy,          y0,              w_psy, h_psy]),
     'Erec': fig.add([x2,              y1,              w_rec, h_rec], None),
-    'Ein':  fig.add([x2+w_rec+hspace, y1,              w_in,  h_in],  None), 
+    'Ein':  fig.add([x2+w_rec+hspace, y1,              w_in,  h_in],  None),
     'Eout': fig.add([x2,              y1-vspace-h_out, w_out, h_out], None)
     }
 
@@ -115,25 +136,6 @@ plotlabels = {
     'E': (x2,     y1)
     }
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
-
-#=========================================================================================
-# Load RNNs to compare
-#=========================================================================================
-
-savefile      = here + '/../examples/work/data/rdm_nodale/rdm_nodale.pkl'
-rnn_nodale    = RNN(savefile, verbose=True)
-dprime_nodale = here + '/../examples/work/data/rdm_nodale/rdm_nodale_dprime.txt'
-sortby_nodale = here + '/../examples/work/data/rdm_nodale/rdm_nodale_selectivity.txt'
-
-savefile     = here + '/../examples/work/data/rdm_dense/rdm_dense.pkl'
-rnn_dense    = RNN(savefile, verbose=True)
-dprime_dense = here + '/../examples/work/data/rdm_dense/rdm_dense_dprime.txt'
-sortby_dense = here + '/../examples/work/data/rdm_dense/rdm_dense_selectivity.txt'
-
-savefile     = here + '/../examples/work/data/rdm_fixed/rdm_fixed.pkl'
-rnn_fixed    = RNN(savefile, verbose=True)
-dprime_fixed = here + '/../examples/work/data/rdm_fixed/rdm_fixed_dprime.txt'
-sortby_fixed = here + '/../examples/work/data/rdm_fixed/rdm_fixed_selectivity.txt'
 
 #=========================================================================================
 # Create color maps for weights
@@ -166,7 +168,8 @@ def generate_cmap(Ws):
     smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
 
     cmap_inh_r = gradient(red, white)
-    norm_inh_r = mpl.colors.Normalize(vmin=-np.round(inh[-inh_ignore], 1), vmax=0, clip=True)
+    norm_inh_r = mpl.colors.Normalize(vmin=-np.round(inh[-inh_ignore], 1), vmax=0,
+                                      clip=True)
     smap_inh_r = mpl.cm.ScalarMappable(norm_inh_r, cmap_inh_r)
 
     return smap_exc, smap_inh
@@ -181,7 +184,7 @@ smap_exc_out, smap_inh_out = generate_cmap([rnn.Wout for rnn in rnns])
 # Labels
 #=========================================================================================
 
-textprop = dict(dy=0.18, fontsize=7)
+textprop = dict(dy=0.14, fontsize=7)
 
 plot = plots['Cpsy']
 plot.xlabel(r'Percent coherence toward choice 1')
@@ -189,10 +192,10 @@ plot.ylabel(r'Percent choice 1', labelpad=4)
 plot.text_upper_center('No Dale\'s principle', **textprop)
 
 plot = plots['Dpsy']
-plot.text_upper_center('Dale\'s principle, dense connectivity', **textprop)
+plot.text_upper_center('Dale, dense initial connectivity', **textprop)
 
 plot = plots['Epsy']
-plot.text_upper_center('Dale\'s principle, fixed connectivity', **textprop)
+plot.text_upper_center('Dale, constrained connectivity', **textprop)
 
 #=========================================================================================
 # Psychometric curves
@@ -231,27 +234,27 @@ RNN.plot_connection_matrix(plot, abs(rnn_fixed.Wrec), smap_exc, smap_inh)
 #-----------------------------------------------------------------------------------------
 
 plot = plots['Bcon']
-plot.text(1.09, 0.5, '=', ha='left', va='center', fontsize=10, 
+plot.text(1.09, 0.5, '=', ha='left', va='center', fontsize=10,
           transform=plot.transAxes)
-plot.text(0.5, +1.05, 'Pre', ha='center', va='bottom', fontsize=7, 
+plot.text(0.5, +1.05, 'Pre', ha='center', va='bottom', fontsize=7,
           transform=plot.transAxes)
-plot.text(-0.05, 0.5, 'Post', ha='right', va='center', fontsize=7, 
+plot.text(-0.05, 0.5, 'Post', ha='right', va='center', fontsize=7,
           transform=plot.transAxes, rotation='vertical')
-plot.text(0.5, -0.15, r'$W^\text{rec}$', ha='center', va='top', fontsize=10, 
+plot.text(0.5, -0.15, r'$W^\text{rec}$', ha='center', va='top', fontsize=10,
           transform=plot.transAxes)
 
 plot = plots['Bmask']
-plot.text(1.09, 0.5, r'$\odot$', ha='left', va='center', fontsize=10, 
+plot.text(1.09, 0.5, r'$\odot$', ha='left', va='center', fontsize=10,
           transform=plot.transAxes)
 plot.text(0.5, +1.2, 'Fixed structure mask', ha='center', va='top', fontsize=7,
           transform=plot.transAxes)
-plot.text(0.5, -0.15, r'$M^\text{rec}$', ha='center', va='top', fontsize=10, 
+plot.text(0.5, -0.15, r'$M^\text{rec}$', ha='center', va='top', fontsize=10,
           transform=plot.transAxes)
 
 plot = plots['Belem']
-plot.text(0.5, +1.2, 'Trained positive weights', ha='center', va='top', fontsize=7, 
+plot.text(0.5, +1.2, 'Trained positive weights', ha='center', va='top', fontsize=7,
           transform=plot.transAxes)
-plot.text(0.5, -0.15, r'$W^\text{rec,+}$', ha='center', va='top', fontsize=10, 
+plot.text(0.5, -0.15, r'$W^\text{rec,+}$', ha='center', va='top', fontsize=10,
           transform=plot.transAxes)
 
 #=========================================================================================

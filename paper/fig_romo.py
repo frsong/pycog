@@ -19,7 +19,7 @@ import paper
 #=========================================================================================
 
 here     = get_here(__file__)
-base     = os.path.abspath(os.path.join(here, os.pardir))
+base     = os.path.abspath(join(here, os.pardir))
 figspath = join(here, 'figs')
 
 modelfile  = join(base, 'examples', 'models', 'romo.py')
