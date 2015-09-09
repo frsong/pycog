@@ -12,16 +12,16 @@ import theano.tensor as T
 #=========================================================================================
 
 def rectify(x):
-    return T.switch(x < 0, 0, x)
+    return T.switch(x > 0, x, 0)
 
 def d_rectify(x):
-    return T.switch(x < 0, 0, 1)
+    return T.switch(x > 0, 1, 0)
 
 def rectify_power(x, n=2):
-    return T.switch(x < 0, 0, x**n)
+    return T.switch(x > 0, x**n, 0)
 
 def d_rectify_power(x, n=2):
-    return T.switch(x < 0, 0, n*x**(n-1))
+    return T.switch(x > 0, n*x**(n-1), 0)
 
 sigmoid = T.nnet.sigmoid
 
@@ -37,7 +37,7 @@ def rtanh(x):
     return rectify(tanh(x))
 
 def d_rtanh(x):
-    return T.switch(x < 0, 0, d_tanh(x))
+    return T.switch(x > 0, d_tanh(x), 0)
 
 def softplus(x):
     return T.log(1 + T.exp(x))
@@ -140,7 +140,7 @@ def get_processor_type():
 
     """
     rng = np.random.RandomState(22)
-    
+
     n = 10*30*768
     x = shared(rng.rand(n))
     f = function([], T.exp(x))

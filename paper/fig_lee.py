@@ -10,7 +10,7 @@ import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import Figure, mpl, PCA
-from pycog.utils       import get_here
+from pycog.utils       import get_here, get_parent
 from examples.analysis import lee
 
 import paper
@@ -20,13 +20,14 @@ import paper
 #=========================================================================================
 
 here     = get_here(__file__)
+base     = get_parent(here)
 figspath = join(here, 'figs')
 
-savefile   = here + '/../examples/work/data/lee/lee.pkl'
-trialsfile = paper.scratchpath + '/lee/trials/lee_trials.pkl'
+savefile   = join(base, 'examples', 'work', 'data', 'lee', 'lee.pkl')
+trialsfile = join(paper.scratchpath, 'lee', 'trials', 'lee_trials.pkl')
 
 # Model
-modelfile = here + '/../models/lee.py'
+modelfile = join(base, 'examples', 'models', 'lee.py')
 m         = imp.load_source('model', modelfile)
 
 #=========================================================================================
@@ -80,7 +81,7 @@ h_task_screen = r*w_task_screen
 
 plots = {}
 plots['task'] = fig.add([x0, y_task, w_task, h_task], style='none')
-plots['task_fixation'] = fig.add([x_task_screen - w_task_screen/2, 
+plots['task_fixation'] = fig.add([x_task_screen - w_task_screen/2,
                                   y_task_screen, w_task_screen, h_task_screen], 'none')
 plots['task_M1']       = fig.add([x_task_screen + w_task_screen,
                                   y_task_screen, w_task_screen, h_task_screen], 'none')
@@ -107,7 +108,7 @@ y2 = 0.5
 plotlabels = {
     'A': (x0, y0),
     'B': (x0, y1),
-    'C': (x1, y0), 
+    'C': (x1, y0),
     'D': (x0, y2),
     }
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
@@ -215,7 +216,7 @@ plot.xlim(-r_screen, r_screen)
 plot.ylim(-r_screen, r_screen)
 
 # Arrow properties
-arrowp = dict(head_width=0.1, head_length=0.1, lw=1, 
+arrowp = dict(head_width=0.1, head_length=0.1, lw=1,
               fc=Figure.colors('strongblue'), ec=Figure.colors('strongblue'))
 alen   = 0.22
 
@@ -333,7 +334,7 @@ for seq in xrange(1, 1+m.nseq):
 
     # Dots
     dot0, dot1, dot2, dot3 = m.sequences[seq]
-    
+
     # Starting point
     plot.plot(x[M1[0]], y[M1[0]], '^', mfc=colors[dot0], mec=colors[dot0], ms=3, mew=1)
 
@@ -365,7 +366,7 @@ plot.xlabel('PC 1')
 plot.ylabel('PC 2')
 
 # Legend
-props = {'prop': {'size': 5.5}, 'handlelength': 1, 
+props = {'prop': {'size': 5.5}, 'handlelength': 1,
          'handletextpad': 1, 'labelspacing': 0.5}
 plot.legend(bbox_to_anchor=(1, 1), **props)
 
@@ -478,7 +479,7 @@ for i in xrange(m.nseq):
 
     plot = plots[str(i)+'_screen']
     plot.equal()
-    
+
     # Target dots
     for k in xrange(9):
         plot.circle(m.target_position(k), r_target,
