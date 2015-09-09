@@ -87,7 +87,7 @@ dx, dy = +0.5, +0.5
 def target_position(k):
     j = 2 - k//3
     i = k % 3
-    
+
     return x0+i*dx, y0+j*dy
 
 def generate_trial(rng, dt, params):
@@ -165,11 +165,8 @@ def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
 
     if params.get('target_output', False):
-        # Output matrix
-        Y = np.zeros((len(t), Nout))
-
-        # Mask matrix
-        M = np.zeros((len(t), Nout))
+        Y = np.zeros((len(t), Nout)) # Output matrix
+        M = np.zeros((len(t), Nout)) # Mask matrix
 
         # Hold gaze
         Y[e['fixation'],:] = target_position(sequence[0])

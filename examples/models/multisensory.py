@@ -4,6 +4,8 @@ A multisensory integration task, loosely inspired by
   A category-free neural population supports evolving demands during decision-making.
   D. Raposo, M. T. Kaufman, & A. K. Churchland, Nature Neurosci. 2014.
 
+  http://www.nature.com/neuro/journal/v17/n12/full/nn.3865.html
+
 """
 from __future__ import division
 

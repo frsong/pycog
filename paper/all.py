@@ -106,14 +106,6 @@ if 'rdm' in args:
             do_action(m, 'sort_response', 'rdm')
     figure('fig_rdm')
 
-if 'multisensory' in args:
-    print("=> Multisensory integration task")
-    clean('multisensory')
-    train('multisensory')
-    trials('multisensory', ntrials=24000)
-    do_action('multisensory', 'sort')
-    figure('fig_multisensory')
-
 if 'mante' in args:
     print("=> Context-dependent integration task")
     clean('mante')
@@ -122,6 +114,22 @@ if 'mante' in args:
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     figure('fig_mante')
+
+if 'multisensory' in args:
+    print("=> Multisensory integration task")
+    clean('multisensory')
+    train('multisensory')
+    trials('multisensory', ntrials=48000)
+    do_action('multisensory', 'sort')
+    figure('fig_multisensory')
+
+if 'romo' in arg:
+    print("=> Parametric working memory task")
+    clean('romo')
+    train('romo')
+    trials('romo', ntrials=10000)
+    do_action('romo', 'sort')
+    figure('fig_romo')
 
 if 'lee' in args:
     print("=> Sequence generation task")

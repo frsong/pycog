@@ -235,6 +235,7 @@ plot_dist.axis_off('left')
 # Variable stimulus
 plot = plots['G']
 rdm.plot_unit(varstim_unit, varstim_sortedfile, plot, tmin=-200, tmax=600, lw=1.5)
+plot.yticks([0, 1])
 
 # Legend
 prop = {'prop': {'size': 5},
@@ -245,6 +246,7 @@ plot.legend(bbox_to_anchor=(0.34, 1.11), **prop)
 plot = plots['H']
 rdm.plot_unit(rt_unit, rt_sortedfile, plot, tmin=-400, lw=1.5)
 plot.xticks(range(-400, 100, 100))
+plot.yticks([0, 1])
 
 #=========================================================================================
 

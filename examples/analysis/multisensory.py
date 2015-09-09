@@ -1,4 +1,4 @@
-""" 
+"""
 Analyze variants of the multisensory integration task.
 
 """
@@ -73,7 +73,7 @@ def run_trials(p, args):
             trial_func = m.generate_trial
             trial_args = {
                 'name':     'test',
-                'catch':    False, 
+                'catch':    False,
                 'modality': modality,
                 'freq':     freq
                 }
@@ -178,7 +178,7 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
         sigmas = {}
         for mod in ['v', 'a', 'va']:
             freqs, p0 = results[mod]
-            
+
             # Data
             prop = {'ms':     kwargs.get('ms',  6),
                     'mfc':    kwargs.get('mfc', colors[mod]),
@@ -220,7 +220,8 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
 
         # Is it optimal?
         print("")
-        print("Optimality test")
+        print("  Optimality test")
+        print("  ----------")
         for mod in ['v', 'a', 'va']:
             print("  sigma_{:<2} = {:.6f}".format(mod, sigmas[mod]))
         print("  1/sigma_v**2 + 1/sigma_a**2 = {:.6f}"
