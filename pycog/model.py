@@ -18,7 +18,7 @@ class Struct():
     Treat a dictionary like a module.
 
     """
-    def __init__(self, **entries): 
+    def __init__(self, **entries):
         self.__dict__.update(entries)
 
 class Model(object):
@@ -28,12 +28,12 @@ class Model(object):
     """
     def __init__(self, modelfile=None, **kwargs):
         """
-        If modelfile is provided infer everything from the file, otherwise the
-        user is responsible for providing the necessary parameters through kwargs.
+        If `modelfile` is provided infer everything from the file, otherwise the
+        user is responsible for providing the necessary parameters through `kwargs`.
 
         Parameters
         ----------
-    
+
         modelfile: str
                    A Python script containing model parameters.
 
@@ -44,7 +44,7 @@ class Model(object):
           generate_trial : function
                            Return a dictionary containing trial information.
                            This function should take as its arguments
-                            
+
                            rng    : numpy.random.RandomState
                            dt     : float
                            params : dict

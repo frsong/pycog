@@ -167,7 +167,7 @@ elif action == 'train':
     model.train(savefile, seed=seed, compiledir=compiledir, gpus=gpus)
 
 #=========================================================================================
-# Test spontaneous state
+# Test resting state
 #=========================================================================================
 
 elif action == 'spontaneous':
