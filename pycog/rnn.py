@@ -64,7 +64,7 @@ class RNN(object):
 
     """
     defaults = {
-        'threshold': 0,
+        'threshold': 1e-4,
         'sigma0':    0
         }
     ou_defaults = {

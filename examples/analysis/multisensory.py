@@ -221,7 +221,7 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
         # Is it optimal?
         print("")
         print("  Optimality test")
-        print("  ----------")
+        print("  ---------------")
         for mod in ['v', 'a', 'va']:
             print("  sigma_{:<2} = {:.6f}".format(mod, sigmas[mod]))
         print("  1/sigma_v**2 + 1/sigma_a**2 = {:.6f}"

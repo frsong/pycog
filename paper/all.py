@@ -123,7 +123,7 @@ if 'multisensory' in args:
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
 
-if 'romo' in arg:
+if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
     train('romo')
@@ -136,5 +136,4 @@ if 'lee' in args:
     clean('lee')
     train('lee')
     trials('lee')
-    do_action('lee', 'sort')
     figure('fig_lee')
