@@ -15,10 +15,10 @@ class Dataset(object):
 
     def __init__(self, size, task, floatX, p, batch_size=None, seed=1, name='Dataset'):
         """
-        
+
         Parameters
         ----------
-        
+
         size : int
                Number of trials in each minibatch.
 
@@ -31,13 +31,13 @@ class Dataset(object):
             Parameters.
 
         batch_size : int, optional
-                     Number of trials to store. If None, same as `size`.
+                     Number of trials to store. If `None`, same as `size`.
 
         seed : int
                Seed for random number generator.
 
         name : str
-               Name of the dataset, which can be used by task, e.g., to distinguish
+               Name of the dataset, which can be used by `task`, e.g., to distinguish
                between gradient and validation datasets.
 
         """
@@ -94,7 +94,7 @@ class Dataset(object):
                      The best costs, not including the loss.
 
         update : bool
-                 If True, return a new set of trials.
+                 If `True`, return a new set of trials.
 
         """
         if update:
@@ -117,7 +117,7 @@ class Dataset(object):
         `self.outputs`. For speed (but at the cost of memory), we store `batch_size`
         trials and only create new trials if we run out of trials.
 
-        For both inputs and outputs, the first two dimensions contain time and 
+        For both inputs and outputs, the first two dimensions contain time and
         trials, respectively. For the third dimension,
 
           self.inputs [:,:,:Nin]  contains the inputs (including baseline and noise),
