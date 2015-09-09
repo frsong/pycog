@@ -494,17 +494,15 @@ class Trainer(object):
         act = self.p['output_activation']
         f_output = theanotools.output_activations[act]
 
-        if act in ['linear', 'rectify']:
-            settings['output activation/loss'] = act + '/squared'
-            f_loss = theanotools.L2
-        elif act == 'sigmoid':
+        if act == 'sigmoid':
             settings['output activation/loss'] = 'sigmoid/binary cross entropy'
             f_loss = theanotools.binary_crossentropy
         elif act == 'softmax':
             settings['output activation/loss'] = 'softmax/categorical cross entropy'
             f_loss = theanotools.categorical_crossentropy
         else:
-            raise NotImplementedError("No loss function for output activation " + act)
+            settings['output activation/loss'] = act + '/squared'
+            f_loss = theanotools.L2
 
         #---------------------------------------------------------------------------------
         # RNN
