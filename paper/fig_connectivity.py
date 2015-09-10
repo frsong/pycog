@@ -60,7 +60,7 @@ sortby_fixed = join(datapath, 'rdm_fixed', 'rdm_fixed_selectivity.txt')
 #=========================================================================================
 
 w   = 7.5
-h   = 6.7
+h   = 2.8
 r   = w/h
 fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=6, labelpady=6, thickness=0.6,
              ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
@@ -82,58 +82,37 @@ x0 = 0.035
 x1 = x0 + w_rec + hspace + w_in + dx
 x2 = x1 + w_rec + hspace + w_in + dx
 
-offset = 0.03
-x0_psy = x0 + offset
-x1_psy = x1 + offset
-x2_psy = x2 + offset
-
 w_psy = 0.2
-h_psy = 0.18
+h_psy = 0.7
 
-dy = 0.09
-y0 = 0.44
-y1 = y0 - h_rec - dy
-
-w_mask = 0.12
-h_mask = r*w_mask
+y = 0.15
 
 plots = {
-    'Bcon':  fig.add([0.55,  0.77, w_mask, h_mask], None),
-    'Bmask': fig.add([0.705, 0.77, w_mask, h_mask], None),
-    'Belem': fig.add([0.86,  0.77, w_mask, h_mask], None),
-
-    'Cpsy': fig.add([x0_psy,          y0,              w_psy, h_psy]),
-    'Crec': fig.add([x0,              y1,              w_rec, h_rec], None),
-    'Cin':  fig.add([x0+w_rec+hspace, y1,              w_in,  h_in],  None),
-    'Cout': fig.add([x0,              y1-vspace-h_out, w_out, h_out], None,
+    'Arec': fig.add([x0,              y,              w_rec, h_rec], None),
+    'Ain':  fig.add([x0+w_rec+hspace, y,              w_in,  h_in],  None),
+    'Aout': fig.add([x0,              y-vspace-h_out, w_out, h_out], None,
                     ticklabelpadx=1.5),
 
-    'Dpsy': fig.add([x1_psy,          y0,              w_psy, h_psy]),
-    'Drec': fig.add([x1,              y1,              w_rec, h_rec], None),
-    'Din':  fig.add([x1+w_rec+hspace, y1,              w_in,  h_in],  None),
-    'Dout': fig.add([x1,              y1-vspace-h_out, w_out, h_out], None),
+    'Brec': fig.add([x1,              y,              w_rec, h_rec], None),
+    'Bin':  fig.add([x1+w_rec+hspace, y,              w_in,  h_in],  None),
+    'Bout': fig.add([x1,              y-vspace-h_out, w_out, h_out], None),
 
-    'Epsy': fig.add([x2_psy,          y0,              w_psy, h_psy]),
-    'Erec': fig.add([x2,              y1,              w_rec, h_rec], None),
-    'Ein':  fig.add([x2+w_rec+hspace, y1,              w_in,  h_in],  None),
-    'Eout': fig.add([x2,              y1-vspace-h_out, w_out, h_out], None)
+    'Crec': fig.add([x2,              y,              w_rec, h_rec], None),
+    'Cin':  fig.add([x2+w_rec+hspace, y,              w_in,  h_in],  None),
+    'Cout': fig.add([x2,              y-vspace-h_out, w_out, h_out], None)
     }
 
 dx2 = x2 - x1
-x0  = 0.01
+x0  = 0.02
 x1  = x0 + dx2
 x2  = x1 + dx2
-x_mask = 0.525
 
-y0 = 0.97
-y1 = 0.64
+y = 0.85
 
 plotlabels = {
-    'A': (x0,     y0),
-    'B': (x_mask, y0),
-    'C': (x0,     y1),
-    'D': (x1,     y1),
-    'E': (x2,     y1)
+    'A': (x0, y),
+    'B': (x1, y),
+    'C': (x2, y)
     }
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 
@@ -181,89 +160,12 @@ smap_exc_rec, smap_inh_rec = generate_cmap([rnn.Wrec for rnn in rnns])
 smap_exc_out, smap_inh_out = generate_cmap([rnn.Wout for rnn in rnns])
 
 #=========================================================================================
-# Labels
-#=========================================================================================
-
-textprop = dict(dy=0.14, fontsize=7)
-
-plot = plots['Cpsy']
-plot.xlabel(r'Percent coherence toward choice 1')
-plot.ylabel(r'Percent choice 1', labelpad=4)
-plot.text_upper_center('No Dale\'s principle', **textprop)
-
-plot = plots['Dpsy']
-plot.text_upper_center('Dale, dense initial connectivity', **textprop)
-
-plot = plots['Epsy']
-plot.text_upper_center('Dale, constrained connectivity', **textprop)
-
-#=========================================================================================
-# Psychometric curves
-#=========================================================================================
-
-# No Dale
-plot = plots['Cpsy']
-rdm.psychometric_function(nodale_trialsfile, plot, ms=5)
-
-# Dale, dense
-plot = plots['Dpsy']
-rdm.psychometric_function(dense_trialsfile, plot, ms=5)
-
-# Dale, fixed
-plot = plots['Epsy']
-rdm.psychometric_function(fixed_trialsfile, plot, ms=5)
-
-#=========================================================================================
-# Masking illustration
-#=========================================================================================
-
-plot = plots['Bcon']
-RNN.plot_connection_matrix(plot, rnn_fixed.Wrec, smap_exc_rec, smap_inh_rec)
-
-plot = plots['Bmask']
-W = m_rdm_fixed.Crec*m_rdm_fixed.ei
-RNN.plot_connection_matrix(plot, np.sign(W), smap_exc_rec, smap_inh_rec)
-
-plot = plots['Belem']
-smap_exc = mpl.cm.ScalarMappable(smap_exc_rec.norm, mpl.cm.gray_r)
-smap_inh = mpl.cm.ScalarMappable(smap_inh_rec.norm, mpl.cm.gray_r)
-RNN.plot_connection_matrix(plot, abs(rnn_fixed.Wrec), smap_exc, smap_inh)
-
-#-----------------------------------------------------------------------------------------
-# Labels
-#-----------------------------------------------------------------------------------------
-
-plot = plots['Bcon']
-plot.text(1.09, 0.5, '=', ha='left', va='center', fontsize=10,
-          transform=plot.transAxes)
-plot.text(0.5, +1.05, 'Pre', ha='center', va='bottom', fontsize=7,
-          transform=plot.transAxes)
-plot.text(-0.05, 0.5, 'Post', ha='right', va='center', fontsize=7,
-          transform=plot.transAxes, rotation='vertical')
-plot.text(0.5, -0.15, r'$W^\text{rec}$', ha='center', va='top', fontsize=10,
-          transform=plot.transAxes)
-
-plot = plots['Bmask']
-plot.text(1.09, 0.5, r'$\odot$', ha='left', va='center', fontsize=10,
-          transform=plot.transAxes)
-plot.text(0.5, +1.2, 'Fixed structure mask', ha='center', va='top', fontsize=7,
-          transform=plot.transAxes)
-plot.text(0.5, -0.15, r'$M^\text{rec}$', ha='center', va='top', fontsize=10,
-          transform=plot.transAxes)
-
-plot = plots['Belem']
-plot.text(0.5, +1.2, 'Trained positive weights', ha='center', va='top', fontsize=7,
-          transform=plot.transAxes)
-plot.text(0.5, -0.15, r'$W^\text{rec,+}$', ha='center', va='top', fontsize=10,
-          transform=plot.transAxes)
-
-#=========================================================================================
 # Connection matrices
 #=========================================================================================
 
 for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
                                           [sortby_nodale, sortby_dense, sortby_fixed],
-                                          ['C', 'D', 'E'],
+                                          ['A', 'B', 'C'],
                                           [dprime_nodale, dprime_dense, dprime_fixed]):
     idx = np.loadtxt(sortbyfile, dtype=int)
     RNN.plot_connection_matrix(plots[s+'in'], rnn.Win[idx,:],
@@ -280,7 +182,7 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
             transitions.append(i)
 
     plot = plots[s+'rec']
-    if s == 'C':
+    if s == 'A':
         n = transitions[0]
         plot.text(n-0.5, -1.5, '|', ha='center', va='center', fontsize=8)
         plot.text(n-0.5-0.5, -1.3, r'$\leftarrow$\ Selective for 1',
@@ -306,14 +208,14 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
         plot.text(n-0.5+0.5, -1.5, r'$\rightarrow$', color=Figure.colors('red'),
                   ha='left', va='center', fontsize=6)
 
-plot = plots['Cin']
+plot = plots['Ain']
 plot.xaxis.set_tick_params(pad=-3)
 plot.xticks(np.arange(2)+0.1)
 plot.xticklabels(['Choice 1', 'Choice 2'], rotation='vertical', fontsize=5.5)
 
-plot = plots['Cout']
+plot = plots['Aout']
 plot.yaxis.set_tick_params(pad=-2)
-plot.yticks(np.arange(2)+0.14)
+plot.yticks(np.arange(2)+0.05)
 plot.yticklabels(['Choice 1', 'Choice 2'], fontsize=5.5)
 
 #=========================================================================================
