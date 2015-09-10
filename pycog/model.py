@@ -118,7 +118,7 @@ class Model(object):
             try:
                 params[k] = getattr(self.m, k)
             except:
-                print("[ Model.train ] Required parameter missing.")
+                print("[ {}.Model.train ] Required parameter missing.".format(THIS))
                 sys.exit()
 
         # Seed, if given
