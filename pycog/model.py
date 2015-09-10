@@ -51,7 +51,11 @@ class Model(object):
 
         """
         if modelfile is not None:
-            self.m = imp.load_source('model', modelfile)
+            try:
+                self.m = imp.load_source('model', modelfile)
+            except IOError:
+                print("[ {}.Model ] Could not load model file {}".format(THIS, modelfile))
+                sys.exit()
         else:
             self.m = Struct(**kwargs)
 
@@ -74,9 +78,9 @@ class Model(object):
 
         # generate_trial : usage
         if args != ['rng', 'dt', 'params']:
-            print(("[ {}.Model ] Warning: Function generate_trial doesn't have the expected"
-                   " list of argument names. It is OK if only the names are different.")
-                  .format(THIS))
+            print(("[ {}.Model ] Warning: Function generate_trial doesn't have the"
+                   " expected list of argument names. It is OK if only the names are"
+                   " different.").format(THIS))
 
         # var_in : size
         if (hasattr(self.m, 'var_in') and isinstance(self.m.var_in, np.ndarray)
