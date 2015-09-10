@@ -36,7 +36,7 @@ Cout[:,EXC] = 1
 #-----------------------------------------------------------------------------------------
 
 var_in  = 0.01**2
-var_rec = 0.1**2
+var_rec = 0.2**2
 
 #-----------------------------------------------------------------------------------------
 # Task structure
@@ -215,7 +215,7 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(pcorrect_history):
-    return np.mean(pcorrect_history[-5:]) > 95
+    return np.mean(pcorrect_history[-5:]) > 90
 
 # Validation dataset
 n_validation = 100*(nconditions_training + 1)

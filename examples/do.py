@@ -16,7 +16,7 @@ import sys
 import time
 from   os.path import join
 
-from pycog.utils import mkdir_p
+from pycog.utils import get_here, mkdir_p
 
 #=========================================================================================
 # Command line
@@ -29,6 +29,8 @@ p.add_argument('args', nargs='*')
 p.add_argument('-s', '--seed', type=int, default=100)
 p.add_argument('-p', '--ppn', type=int, default=1)
 p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
+p.add_argument('--dt', type=float, default=0.5)
+p.add_argument('--dt_save', type=float, default=2)
 a = p.parse_args()
 
 # Model file
@@ -36,11 +38,13 @@ modelfile = os.path.abspath(a.model_file)
 if not modelfile.endswith('.py'):
     modelfile += '.py'
 
-action = a.action
-args   = a.args
-seed   = a.seed
-ppn    = a.ppn
-gpus   = a.gpus
+action  = a.action
+args    = a.args
+seed    = a.seed
+ppn     = a.ppn
+gpus    = a.gpus
+dt      = a.dt
+dt_save = a.dt_save
 
 print("MODELFILE: " + str(modelfile))
 print("ACTION:    " + str(action))
@@ -52,7 +56,7 @@ print("SEED:      " + str(seed))
 #=========================================================================================
 
 # Location of script
-here   = os.path.abspath(os.path.dirname(__file__))
+here   = get_here(__file__)
 prefix = os.path.basename(here)
 
 # Name to use
@@ -143,8 +147,7 @@ elif action == 'submit':
     else:
         sargs = ''
 
-    cmd     = ('python {} {} {}{}'
-               .format(join(here, 'do.py'), modelfile, action, sargs))
+    cmd     = 'python {} {} {}{}'.format(join(here, 'do.py'), modelfile, action, sargs)
     pbspath = join(workpath, 'pbs')
     jobfile = pbstools.write_jobfile(cmd, jobname, pbspath, scratchpath,
                                      ppn=ppn, gpus=gpus, queue='s48')
@@ -170,12 +173,12 @@ elif action == 'train':
 # Test resting state
 #=========================================================================================
 
-elif action == 'spontaneous':
+elif action == 'restingstate':
     import numpy as np
 
     from pycog import RNN
 
-    rnn = RNN(savefile, {'dt': 0.5}, verbose=True)
+    rnn = RNN(savefile, {'dt': dt}, verbose=True)
     rnn.run(1000)
 
     mean = np.mean(rnn.u, axis=1)
@@ -284,8 +287,8 @@ elif action == 'run':
         'datapath':   datapath,
         'figspath':   figspath,
         'trialspath': trialspath,
-        'dt':         0.5,
-        'dt_save':    2
+        'dt':         dt,
+        'dt_save':    dt_save
         }
     r.do(action, args, params)
 

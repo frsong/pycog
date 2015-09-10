@@ -83,7 +83,8 @@ def run_trials(p, args):
     try:
         ntrials = int(args[0])
     except:
-        ntrials = 100*m.nconditions
+        ntrials = 100
+    ntrials *= m.nconditions
 
     # RNN
     rng = np.random.RandomState(p['seed'])
@@ -105,7 +106,7 @@ def run_trials(p, args):
             trial_func = m.generate_trial
             trial_args = {
                 'name':  'test',
-                'catch': False, 
+                'catch': False,
                 'fpair': fpair,
                 'gt_lt': gt_lt
                 }
@@ -164,7 +165,7 @@ def psychometric_function(trialsfile, plot=None, smap=None, **kwargs):
     ncorrect = 0
     for trial in trials:
         info = trial['info']
-        
+
         # Signed coherence
         f1 = info['f1']
         f2 = info['f2']
@@ -256,7 +257,7 @@ def plot_unit(unit, sortedfile, plot, smap, t0=0, tmin=-np.inf, tmax=np.inf, **k
     unit : int
     sortedfile : str
     plot : pycog.figtools.Subplot
-    
+
     """
     # Load sorted trials
     with open(sortedfile) as f:
@@ -336,7 +337,7 @@ def tuning(sortedfile):
 
     return units, a1s, pvals
 
-def tuning_corr(trialsfile, sortedfile, plot_sig, plot_corr=None, 
+def tuning_corr(trialsfile, sortedfile, plot_sig, plot_corr=None,
                 plot_stim=None, plot_delay=None, t0=0, **kwargs):
     """
     Plot correlation of a1 between different times.
@@ -358,7 +359,7 @@ def tuning_corr(trialsfile, sortedfile, plot_sig, plot_corr=None,
 
     t_delay   = np.mean(info['epochs']['delay'])
     idx_delay = np.where(t >= t_delay)[0][0]
-    
+
     t_delay_end   = info['epochs']['delay'][1]
     idx_delay_end = np.where(t > t_delay_end)[0][0]
 
@@ -528,7 +529,7 @@ def do(action, args, p):
     elif action == 'selectivity':
         # Model
         m = p['model']
-        
+
         trialsfile = get_trialsfile(p)
         dprime     = get_choice_selectivity(trialsfile)
 

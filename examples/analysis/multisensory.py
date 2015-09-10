@@ -52,7 +52,8 @@ def run_trials(p, args):
     try:
         ntrials = int(args[0])
     except:
-        ntrials = 150*m.nconditions
+        ntrials = 100
+    ntrials *= m.nconditions
 
     # RNN
     rng = np.random.RandomState(p['seed'])

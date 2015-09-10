@@ -43,7 +43,8 @@ def run_trials(p, args):
     try:
         ntrials = int(args[0])
     except:
-        ntrials = m.nseq
+        ntrials = 1
+    ntrials *= m.nseq
 
     # RNN
     rng = np.random.RandomState(p['seed'])

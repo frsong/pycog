@@ -55,19 +55,14 @@ def train(model, seed=None):
     call("{} {} train{}"
          .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
 
-def trials(model, analysis=None, ntrials=None):
+def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
         analysis = model
 
-    if ntrials is None:
-        ntrials = ''
-    else:
-        ntrials = ' {}'.format(ntrials)
-
-    call("{} {} run {} trials{}".format(join(examplespath, 'do.py'),
-                                        join(modelspath, model),
-                                        join(analysispath, analysis),
-                                        ntrials))
+    call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
+                                            join(modelspath, model),
+                                            join(analysispath, analysis),
+                                            ntrials, args))
 
 def do_action(model, action, analysis=None):
     if analysis is None:
@@ -83,23 +78,21 @@ def figure(fig):
 
 if 'structure' in args:
     print("=> Fig. 1")
-    seeds   = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 99}
-    ntrials = 22000
+    seeds = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 99}
     for m, seed in seeds.items():
         clean(m)
         train(m, seed=seed)
-        trials(m, 'rdm', ntrials=ntrials)
+        trials(m, 2000, 'rdm')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
 
 if 'rdm' in args:
     print("=> RDM")
-    models  = ['rdm_rt']
-    ntrials = 22000
+    models = ['rdm_varstim', 'rdm_rt']
     for m in models:
         clean(m)
         train(m)
-        trials(m, 'rdm', ntrials=ntrials)
+        trials(m, 2000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
         elif m == 'rdm_rt':
@@ -110,7 +103,7 @@ if 'mante' in args:
     print("=> Context-dependent integration task")
     clean('mante')
     train('mante')
-    trials('mante')
+    trials('mante', 500, args='--dt_save 5')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     figure('fig_mante')
@@ -119,7 +112,7 @@ if 'multisensory' in args:
     print("=> Multisensory integration task")
     clean('multisensory')
     train('multisensory')
-    trials('multisensory', ntrials=48000)
+    trials('multisensory', 2000)
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
 
@@ -127,7 +120,7 @@ if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
     train('romo')
-    trials('romo', ntrials=10000)
+    trials('romo', 1000)
     do_action('romo', 'sort')
     figure('fig_romo')
 
@@ -135,5 +128,5 @@ if 'lee' in args:
     print("=> Sequence generation task")
     clean('lee')
     train('lee')
-    trials('lee')
+    trials('lee', 100)
     figure('fig_lee')

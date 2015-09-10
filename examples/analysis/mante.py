@@ -48,7 +48,7 @@ def is_active(r):
 # Trials
 #=========================================================================================
 
-def run_trials(p, args, dt, dt_save):
+def run_trials(p, args):
     # Model
     m = p['model']
 
@@ -56,11 +56,12 @@ def run_trials(p, args, dt, dt_save):
     try:
         ntrials = int(args[0])
     except:
-        ntrials = 100*m.nconditions
+        ntrials = 100
+    ntrials *= m.nconditions
 
     # RNN
     rng = np.random.RandomState(p['seed'])
-    rnn = RNN(p['savefile'], {'dt': dt}, verbose=False)
+    rnn = RNN(p['savefile'], {'dt': p['dt']}, verbose=False)
 
     w = len(str(ntrials))
     trials = []
@@ -102,7 +103,7 @@ def run_trials(p, args, dt, dt_save):
 
             # Save
             dt    = rnn.t[1] - rnn.t[0]
-            step  = int(dt_save/dt)
+            step  = int(p['dt_save']/dt)
             trial = {
                 't':    rnn.t[::step],
                 'u':    rnn.u[:,::step],
