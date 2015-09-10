@@ -1,5 +1,5 @@
 """
-Train a recurrent neural network using minibatch stochastic gradient descent 
+Train a recurrent neural network using minibatch stochastic gradient descent
 with the modifications described in
 
   On the difficulty of training recurrent neural networks.
@@ -34,13 +34,13 @@ class SGD(object):
     """
     @staticmethod
     def clip_norm(v, norm, maxnorm):
-        """ 
+        """
         Renormalize the vector v if norm exceeds maxnorm.
 
         """
         return T.switch(norm > maxnorm, maxnorm*v/norm, v)
 
-    def __init__(self, trainables, inputs, costs, regs, x, z, params, save_values, 
+    def __init__(self, trainables, inputs, costs, regs, x, z, params, save_values,
                  extras):
         """
         Construct the necessary Theano functions.
@@ -66,7 +66,7 @@ class SGD(object):
 
         z : Theano variable
             Outputs.
-        
+
         params : dict
                  All parameters associated with the training of this network -- this
                  will be saved as part of the RNN savefile.
@@ -75,10 +75,10 @@ class SGD(object):
                       List of Theano variables to save.
 
         extras : dict
-                 Additinal information needed by the SGD training algorithm 
-                 (specifically, for computing the regularization term) that may not 
+                 Additinal information needed by the SGD training algorithm
+                 (specifically, for computing the regularization term) that may not
                  be needed by other training algorithms (e.g., Hessian-free).
-        
+
         """
         self.trainables  = trainables
         self.p           = params
@@ -236,7 +236,7 @@ class SGD(object):
     def train(self, gradient_data, validation_data, savefile):
         """
         Train the RNN.
-        
+
         Paramters
         ---------
 
@@ -301,7 +301,7 @@ class SGD(object):
 
             # Save initial conditions
             save = {
-                'params':         {k: v for k, v in self.p.items() 
+                'params':         {k: v for k, v in self.p.items()
                                    if k not in save_exclude},
                 'varlist':        self.trainable_names,
                 'iter':           1,
@@ -388,11 +388,11 @@ class SGD(object):
                     rho = RNN.spectral_radius(self.Wrec_.eval())
 
                     # Format
-                    Omega = ('n/a' if tr_Omega is None 
+                    Omega = ('n/a' if tr_Omega is None
                              else '{:.8f}'.format(float(tr_Omega)))
-                    gnorm = ('n/a' if tr_gnorm is None 
+                    gnorm = ('n/a' if tr_gnorm is None
                              else '{:.8f}'.format(float(tr_gnorm)))
-                    
+
                     # Info
                     print("| Omega      (last iter) = {}".format(Omega))
                     print("| grad. norm (last iter) = {}".format(gnorm))
