@@ -98,6 +98,7 @@ class Model(object):
         seed : int, optional
         compiledir : str, optional
         recover : bool, optional
+        gpus : int, optional
 
         """
         # Theano setup
