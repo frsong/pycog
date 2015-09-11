@@ -9,9 +9,9 @@ from   setuptools.command.install import install
 
 import numpy as np
 
-# Warn
-#if sys.version_info >= (3,):
-#    print("Please note that the software was only tested with Python 2.7.")
+# Version warning
+if sys.version_info >= (3,):
+    print("Please note that this software was only tested with Python 2.7.")
 
 # Determine whether Cython is available
 try:
@@ -50,15 +50,15 @@ cmdclass['install'] = pycog_install
 
 # Setup
 setup(
-    name='pycog', 
+    name='pycog',
     version='0.1',
     license='MIT',
     author='H. Francis Song',
     author_email='song.francis@gmail',
     url='https://github.com/frsong/pycog',
-    cmdclass=cmdclass, 
+    cmdclass=cmdclass,
     ext_modules=ext_modules,
-    packages=find_packages(),
+    packages=find_packages(exclude=['examples', 'examples.*', 'paper']),
     setup_requires=['numpy'],
     install_requires=['theano'],
     classifiers=[

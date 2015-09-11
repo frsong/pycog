@@ -23,7 +23,7 @@ a = p.parse_args()
 simulate = a.simulate
 args     = a.args
 if not args:
-    args = ['structure', 'connectivity', 'rdm_varstim', 'rdm_rt',
+    args = ['structure', 'lee_areas', 'connectivity', 'rdm_varstim', 'rdm_rt',
             'mante', 'multisensory', 'lee', 'performance']
 
 #=========================================================================================
@@ -92,6 +92,10 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee')
     figure('fig_lee_areas')
+
+if 'connectivity' in args:
+    print("=> Connectivity")
+    figure('fig_connectivity')
 
 if 'rdm' in args:
     print("=> RDM")

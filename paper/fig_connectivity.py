@@ -8,10 +8,9 @@ from   os.path import join
 
 import numpy as np
 
-from pycog             import RNN
-from pycog.figtools    import gradient, mpl, Figure
-from pycog.utils       import get_here, get_parent
-from examples.analysis import rdm
+from pycog           import RNN
+from pycog.figtools  import gradient, mpl, Figure
+from pycog.utils     import get_here, get_parent
 
 import paper
 
