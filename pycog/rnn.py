@@ -655,8 +655,8 @@ class RNN(object):
         #---------------------------------------------------------------------------------
 
         white = 'w'
-        blue  = '#2171b5'
-        red   = '#cb181d'
+        blue  = Figure.colors('strongblue')
+        red   = Figure.colors('strongred')
 
         from .figtools import gradient
 

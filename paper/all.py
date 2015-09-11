@@ -23,8 +23,8 @@ a = p.parse_args()
 simulate = a.simulate
 args     = a.args
 if not args:
-    args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory', 'lee',
-            'performance']
+    args = ['structure', 'connectivity', 'rdm_varstim', 'rdm_rt',
+            'mante', 'multisensory', 'lee', 'performance']
 
 #=========================================================================================
 # Shared steps
@@ -85,6 +85,13 @@ if 'structure' in args:
         trials(m, 2000, 'rdm')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
+
+if 'lee_areas' in args:
+    print("=> Sequence generation task (with areas)")
+    clean('lee_areas')
+    train('lee_areas')
+    trials('lee_areas', 100, 'lee')
+    figure('fig_lee_areas')
 
 if 'rdm' in args:
     print("=> RDM")
