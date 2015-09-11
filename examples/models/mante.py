@@ -18,7 +18,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 6
-N    = 200
+N    = 300
 Nout = 2
 
 # E/I
@@ -30,6 +30,8 @@ ei, EXC, INH = tasktools.generate_ei(N)
 
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
+
+Crec = tasktools.generate_Crec(ei, p_exc=0.5, p_inh=1)
 
 #-----------------------------------------------------------------------------------------
 # Noise

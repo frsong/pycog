@@ -728,8 +728,19 @@ def plot_regress(betafile, plots):
         Y, X = k.split('_')
 
         plot.equal()
-        plot.xlabel(X.capitalize())
-        plot.ylabel(Y.capitalize())
+
+        # Annoying result of copying the Mante paper
+        if X == 'colour':
+            s = 'color'
+        else:
+            s = X
+        plot.xlabel(s.capitalize())
+
+        if Y == 'colour':
+            s = 'color'
+        else:
+            s = Y
+        plot.ylabel(s.capitalize())
 
         x = beta[:,regaxes[X]]
         y = beta[:,regaxes[Y]]

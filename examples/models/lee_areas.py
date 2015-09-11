@@ -74,13 +74,37 @@ tau = 50
 # Input connectivity
 #-----------------------------------------------------------------------------------------
 
-
+Cin = np.zeros((N, Nin))
+Cin[EXC_SENSORY + INH_SENSORY,:] = 1
 
 #-----------------------------------------------------------------------------------------
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-Crec = tasktools.generate_Crec(ei, p_exc=1, p_inh=1)
+Crec = np.zeros((N, N))
+for i in EXC_SENSORY:
+    Crec[i,EXC_SENSORY] = 1
+    Crec[i,i] = 0
+    Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
+for i in EXC_MOTOR:
+    Crec[i,EXC] = 1
+    Crec[i,i] = 0
+    Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
+for i in INH_SENSORY:
+    Crec[i,EXC] = 1
+    Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
+    Crec[i,i] = 0
+for i in INH_MOTOR:
+    Crec[i,EXC] = 1
+    Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
+    Crec[i,i] = 0
+
+#-----------------------------------------------------------------------------------------
+# Output connectivity
+#-----------------------------------------------------------------------------------------
+
+Cout = np.zeros((Nout, N))
+Cout[:,EXC_MOTOR + INH_MOTOR] = 1
 
 #-----------------------------------------------------------------------------------------
 # Noise
