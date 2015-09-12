@@ -7,6 +7,7 @@ from __future__ import division
 import cPickle as pickle
 import os
 import sys
+from   os.path import join
 
 import numpy       as np
 import scipy.stats as stats
@@ -22,7 +23,7 @@ THIS = "examples.analysis.romo"
 
 # File to store trials in
 def get_trialsfile(p):
-    return '{}/{}_trials.pkl'.format(p['trialspath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_trials.pkl')
 
 # Load trials
 def load_trials(trialsfile):
@@ -33,15 +34,7 @@ def load_trials(trialsfile):
 
 # File to store sorted trials in
 def get_sortedfile(p):
-    return '{}/{}_sorted.pkl'.format(p['trialspath'], p['name'])
-
-# File to store d'
-def get_dprimefile(p):
-    return '{}/{}_dprime.txt'.format(p['datapath'], p['name'])
-
-# File to store selectivity
-def get_selectivityfile(p):
-    return '{}/{}_selectivity.txt'.format(p['datapath'], p['name'])
+    return join(p['trialspath'], p['name'] + '_sorted.pkl')
 
 # Simple choice function
 def get_choice(trial):
@@ -477,7 +470,7 @@ def do(action, args, p):
 
         # Remove existing files
         print("[ {}.do ]".format(THIS))
-        filenames = glob('{}/{}_unit*'.format(p['figspath'], p['name']))
+        filenames = glob('{}_unit*'.format(join(p['figspath'], p['name'])))
         for filename in filenames:
             os.remove(filename)
             print("  Removed {}".format(filename))
@@ -521,55 +514,6 @@ def do(action, args, p):
 
             fig.save(path=p['figspath'], name=p['name']+'_unit{:03d}'.format(i))
             fig.close()
-
-    #-------------------------------------------------------------------------------------
-    # Selectivity
-    #-------------------------------------------------------------------------------------
-
-    elif action == 'selectivity':
-        # Model
-        m = p['model']
-
-        trialsfile = get_trialsfile(p)
-        dprime     = get_choice_selectivity(trialsfile)
-
-        def get_first(x, p):
-            return x[:int(p*len(x))]
-
-        psig  = 0.25
-        units = np.arange(len(dprime))
-        try:
-            idx = np.argsort(abs(dprime[m.EXC]))[::-1]
-            exc = get_first(units[m.EXC][idx], psig)
-
-            idx = np.argsort(abs(dprime[m.INH]))[::-1]
-            inh = get_first(units[m.INH][idx], psig)
-
-            idx = np.argsort(dprime[exc])[::-1]
-            units_exc = list(exc[idx])
-
-            idx = np.argsort(dprime[inh])[::-1]
-            units_inh = list(units[inh][idx])
-
-            units  = units_exc + units_inh
-            dprime = dprime[units]
-        except AttributeError:
-            idx = np.argsort(abs(dprime))[::-1]
-            all = get_first(units[idx], psig)
-
-            idx    = np.argsort(dprime[all])[::-1]
-            units  = list(units[all][idx])
-            dprime = dprime[units]
-
-        # Save d'
-        filename = get_dprimefile(p)
-        np.savetxt(filename, dprime)
-        print("[ {}.do ] d\' saved to {}".format(THIS, filename))
-
-        # Save selectivity
-        filename = get_selectivityfile(p)
-        np.savetxt(filename, units, fmt='%d')
-        print("[ {}.do ] Choice selectivity saved to {}".format(THIS, filename))
 
     #-------------------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 """
-A parametric working memory task, loosely inspired by the vibrotactile delayed 
+A parametric working memory task, loosely inspired by the vibrotactile delayed
 discrimination task.
 
   Neuronal population coding of parametric working memory.
@@ -19,7 +19,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 2
-N    = 100
+N    = 200
 Nout = 2
 
 # E/I
