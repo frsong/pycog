@@ -21,6 +21,8 @@ from .rnn          import RNN
 from .sgd          import SGD
 from .utils        import print_settings
 
+THIS = 'pycog.trainer'
+
 class Trainer(object):
     """
     Train an RNN.
@@ -200,6 +202,7 @@ class Trainer(object):
               Random number generator.
 
         C : Connectivity
+            Specify which weights are plastic and nonzero.
 
         m, n : int
                Number of rows and columns, respectively.
@@ -232,8 +235,8 @@ class Trainer(object):
             sigma = np.sqrt(np.log(1 + var/mean**2))
             w     = rng.lognormal(mu, sigma, size=size)
         else:
-            raise NotImplementedError("[ Trainer.train ] distribution: {}"
-                                      .format(distribution))
+            raise NotImplementedError("[ {}.Trainer.init_weights ] distribution: {}"
+                                      .format(THIS, distribution))
 
         if C is not None:
             W = np.zeros(m*n)
@@ -252,10 +255,10 @@ class Trainer(object):
 
         savefile : str
 
-        task : Python function
+        task : function
 
         recover : bool, optional
-                  If True, will attempt to recover from a previously saved run.
+                  If `True`, will attempt to recover from a previously saved run.
 
         """
         N     = self.p['N']
@@ -454,7 +457,7 @@ class Trainer(object):
             Wout_ = Wout
 
         #---------------------------------------------------------------------------------
-        # Dale's Law
+        # Dale's law
         #---------------------------------------------------------------------------------
 
         if self.p['ei'] is not None:

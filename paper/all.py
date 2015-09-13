@@ -131,7 +131,7 @@ if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
     train('romo')
-    trials('romo', 1000)
+    trials('romo', 1000, args='--dt_save 10')
     do_action('romo', 'sort')
     figure('fig_romo')
 
