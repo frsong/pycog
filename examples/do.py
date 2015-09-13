@@ -50,8 +50,6 @@ print("MODELFILE: " + str(modelfile))
 print("ACTION:    " + str(action))
 print("ARGS:      " + str(args))
 print("SEED:      " + str(seed))
-print("DT:        " + str(dt) + " ms")
-print("DT_SAVE:   " + str(dt_save) + " ms")
 
 #=========================================================================================
 # Setup paths
