@@ -165,16 +165,17 @@ class RNN(object):
             # Get best info
             best        = save['best']
             best_i      = best['iter']
-            best_error  = best['other_costs'][0] if len(best['other_costs']) > 0 else np.inf
+            best_error  = (best['other_costs'][0] if len(best['other_costs']) > 0
+                           else np.inf)
             best_params = best['params']
             self.Win, self.Wrec, self.Wout, self.brec, self.bout, self.x0 = best_params
 
             print("[ {}.RNN ] {} updates, best error = {:.8f}, spectral radius = {:.8f}"
                   .format(THIS, best_i-1, best_error, RNN.spectral_radius(self.Wrec)))
 
-            #---------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------
             # Fill in parameters
-            #---------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------
 
             # Default
             for k in RNN.defaults:
@@ -192,8 +193,6 @@ class RNN(object):
                 RNN.clip_weights('Wrec', self.Wrec, threshold)
                 RNN.clip_weights('Wout', self.Wout, threshold)
         else:
-            print("No savefile.")
-
             # Parameters
             self.p = self.ou_defaults.copy()
 
@@ -201,9 +200,9 @@ class RNN(object):
             self.costs_history = None
             self.Omega_history = None
 
-            #---------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------
             # Fill in parameters
-            #---------------------------------------------------------------------------------
+            #-----------------------------------------------------------------------------
 
             # Default
             for k in RNN.defaults:
@@ -220,8 +219,8 @@ class RNN(object):
             self.brec = np.zeros(self.p['N'])
             self.bout = None
             self.x0   = 0.1*np.ones(self.p['N'])
-            print("[ {}.RNN ] No savefile provided. Created an Ornstein-Uhlenbeck process."
-                  .format(THIS))
+            print("[ {}.RNN ] No savefile provided,"
+                  " created independent Ornstein-Uhlenbeck processes.".format(THIS))
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
