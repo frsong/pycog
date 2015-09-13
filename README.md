@@ -32,7 +32,7 @@ python setup.py build_ext --inplace
 
 ## Example
 
-The networks used to generate the figures in the paper were trained using the specifications contained in /examples/models. It's instructive, however, to consider an example that strips away the embellishments such as different sets of trials for gradient and validation datasets.
+The networks used to generate the figures in the paper were trained using the specifications contained in /examples/models. For an even simpler example, consider the following:
 
 * TODO
 
