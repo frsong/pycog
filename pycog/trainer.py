@@ -98,8 +98,8 @@ class Trainer(object):
         params : dict
                  Parameters. See RNN.defaults for the default values.
 
-          Values
-          ------
+          Entries
+          -------
 
           Nout : int
                  Number of output units.
@@ -113,10 +113,79 @@ class Trainer(object):
           train_brec : bool, optional
                        Whether to train recurrent biases.
 
+          brec : float, optional
+                 Initial value of the recurrent bias.
+
           train_bout : bool, optional
                        Whether to train output biases.
 
+          bout : float, optional
+                 Initial value of the output bias
+
+          train_x0 : bool, optional
+                     Whether to optimize the initial conditions.
+
+          x0 : float, optional
+               Initial value of the initial conditions.
+
+          mode : str, optional
+                 `continuous` or `batch` training/running mode.
+
+          tau : float or numpy.ndarray, optional
+                Time constant(s) for recurrent units.
+
+          Cin : numpy.ndarray or Connectivity, optional
+                Input weight structure.
+
+          Crec : numpy.ndarray or Connectivity, optional
+                 Recurrent weight structure.
+
+          Cout : numpy.ndarray or Connectivity, optional
+                 Output weight structure.
+
+          ei : numpy.ndarray, optional
+               E-I signature.
+
+          ei_positive_func : str, optional
+                             Function to use to keep weights positive.
+
           TODO
+
+          'hidden_activation': 'rectify',
+          'output_activation': 'linear',
+          'n_gradient':        20,
+          'n_validation':      1000,
+          'batch_size':        1000,
+          'lambda_Omega':      2,
+          'lambda1_in':        0,
+          'lambda1_rec':       0,
+          'lambda1_out':       0,
+          'lambda2_in':        0,
+          'lambda2_rec':       0,
+          'lambda2_out':       0,
+          'lambda2_r':         0,
+          'min_error':         0,
+          'learning_rate':     1e-2,
+          'max_gradient_norm': 1,
+          'bound':             1e-20,
+          'baseline_in':       0.2,
+          'var_in':            0.01**2,
+          'var_rec':           0.01**2,
+          'seed':              1234,
+          'structure':         {},
+          'rho0':              1.5,
+          'max_iter':          int(1e7),
+          'dt':                None,
+          'distribution_in':   None,
+          'distribution_rec':  None,
+          'distribution_out':  None,
+          'gamma_k':           2,
+          'checkfreq':         None,
+          'patience':          None,
+          'init_momentum':     0,     # Not used currently
+          'momentum':          False, # Not used currently
+          'mu':                0.9,   # Not used currently
+          'method':            'sgd'  # Not used currently
 
         floatX : str, optional
                  Floating-point type.
