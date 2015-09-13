@@ -1,11 +1,13 @@
 """
 Integration task, loosely inspired by the random dot motion discrimination task.
-                                                                                              
+
 Variable stimulus durations taken from
 
-  Bounded integration in parietal cortex underlies decisions even when viewing                
-  duration is dictated by the environment.                                                    
-  R. Kiani, T. D. Hanks, & M. N. Shadlen, JNS 2008.   
+  Bounded integration in parietal cortex underlies decisions even when viewing
+  duration is dictated by the environment.
+  R. Kiani, T. D. Hanks, & M. N. Shadlen, JNS 2008.
+
+  http://www.jneurosci.org/content/28/12/3017.full
 
 """
 from __future__ import division

@@ -1,7 +1,7 @@
 """
 Integration task, loosely inspired by the random dot motion task.
 
-  Response of neurons in the lateral intraparietal area during a combined visual 
+  Response of neurons in the lateral intraparietal area during a combined visual
   discrimination reaction time task.
   J. D. Roitman & M. N. Shadlen, JNS 2002.
 
@@ -21,19 +21,6 @@ from pycog import tasktools
 Nin  = 2
 N    = 100
 Nout = 2
-
-# E/I
-#ei, EXC, INH = tasktools.generate_ei(N)
-
-# Time constant
-tau = 100
-
-#-----------------------------------------------------------------------------------------
-# Output connectivity
-#-----------------------------------------------------------------------------------------
-
-#Cout = np.zeros((Nout, N))
-#Cout[:,EXC] = 1
 
 #-----------------------------------------------------------------------------------------
 # Noise

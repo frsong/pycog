@@ -51,17 +51,6 @@ Cin[EXC_AUDITORY + INH_AUDITORY, AUDITORY_P] = 1
 Cin[EXC_AUDITORY + INH_AUDITORY, AUDITORY_N] = 1
 
 #-----------------------------------------------------------------------------------------
-# Recurrent connectivity
-#-----------------------------------------------------------------------------------------
-
-#distribution_in  = 'uniform'
-#distribution_out = 'uniform'
-
-#Crec = tasktools.generate_Crec(ei, p_exc=1, p_inh=1)
-
-#lambda1_rec = 0.5
-
-#-----------------------------------------------------------------------------------------
 # Output connectivity: read out from excitatory units only
 #-----------------------------------------------------------------------------------------
 
@@ -74,7 +63,6 @@ Cout[:,EXC] = 1
 
 baseline_in = 0.2
 
-#var_in  = np.array([0.01**2, 0.01**2, 0.01**2])
 var_in  = 0.01**2
 var_rec = 0.15**2
 

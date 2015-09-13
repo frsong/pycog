@@ -5,6 +5,8 @@ Integration task, loosely inspired by the random dot motion task.
   discrimination reaction time task.
   J. D. Roitman & M. N. Shadlen, JNS 2002.
 
+  http://www.jneurosci.org/content/22/21/9475.abstract
+
 Reaction-time version.
 
 """
