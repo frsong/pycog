@@ -14,7 +14,7 @@ Optional but recommended for analysis and visualization of the networks (includi
 
 * matplotlib
 
-This code uses (but doesn't require) one function from the [NetworkX](https://networkx.github.io/) package to check if the recurrent weight matrix is connected (all units are reachable by other units), which is useful if you plan to train very sparse connection matrices.
+The code uses (but doesn't require) one function from the [NetworkX](https://networkx.github.io/) package to check if the recurrent weight matrix is connected (all units are reachable by other units), which is useful if you plan to train very sparse connection matrices.
 
 ## Installation
 
