@@ -130,8 +130,8 @@ if 'multisensory' in args:
 if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
-    train('romo')
-    trials('romo', 200, args='--dt_save 10')
+    train('romo', seed=99)
+    trials('romo', 400, args='--dt_save 10')
     do_action('romo', 'sort')
     figure('fig_romo')
 

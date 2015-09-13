@@ -47,8 +47,8 @@ tmin = 0
 tmax = f2_end
 
 units = {
-    'pos':    95,
-    'switch': 69,
+    'pos':    46,
+    'switch': 4,
     }
 
 # Color map

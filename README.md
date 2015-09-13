@@ -6,13 +6,15 @@ This code is written in Python (tested with 2.7) and requires
 
 * [Theano](http://deeplearning.net/software/theano/)
 
-Optional but recommended if you plan to run many trials with the trained networks, outside of Theano, for analysis purposes:
+Optional but recommended if you plan to run many trials with the trained networks (no Theano):
 
 * [Cython](http://cython.org/)
 
-Also optional but recommended for analysis and visualization of the networks (including examples from the paper):
+Optional but recommended for analysis and visualization of the networks (including examples from the paper):
 
 * matplotlib
+
+This code uses (but doesn't require) one function from the [NetworkX](https://networkx.github.io/) to check if the recurrent weight matrix is connected (all units are reachable by other units), which is useful if you plan to train very sparse connection matrices.
 
 ## Installation
 
