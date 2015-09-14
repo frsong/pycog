@@ -5,6 +5,7 @@ Analyze variants of the multisensory integration task.
 from __future__ import division
 
 import cPickle as pickle
+import os
 import sys
 from   os.path import join
 
@@ -30,6 +31,10 @@ def get_sortedfile(p):
 # Simple choice function
 def get_choice(trial):
     return np.argmax(trial['z'][:,-1])
+
+# Define "active" units
+def is_active(r):
+    return np.std(r) > 0.1
 
 # Colors
 colors = {
@@ -263,24 +268,21 @@ def sort_trials(trialsfile, sortedfile):
                 ntrials_by_cond[c] += 1
     for c in conds:
         sorted_trials[c] /= ntrials_by_cond[c]
-    sorted_trials['t'] = t
 
     #-------------------------------------------------------------------------------------
     # Save
     #-------------------------------------------------------------------------------------
 
     with open(sortedfile, 'wb') as f:
-        pickle.dump(sorted_trials, f, pickle.HIGHEST_PROTOCOL)
-    print("[ {}.sort_trials ] Condition-averaged trials saved to {}"
-          .format(THIS, sortedfile))
+        pickle.dump((t, sorted_trials), f, pickle.HIGHEST_PROTOCOL)
+    print("[ {}.sort_trials ] Sorted trials saved to {}".format(THIS, sortedfile))
 
 def plot_unit(unit, sortedfile, plot, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs):
     # Load sorted trials
     with open(sortedfile) as f:
-        sorted_trials = pickle.load(f)
+        t, sorted_trials = pickle.load(f)
 
     # Time
-    t  = sorted_trials.pop('t')
     w, = np.where((tmin <= t) & (t <= tmax))
     t  = t[w] - t0
 
@@ -367,16 +369,25 @@ def do(action, args, p):
     #-------------------------------------------------------------------------------------
 
     elif action == 'units':
+        from glob import glob
+
+        # Remove existing files
+        print("[ {}.do ]".format(THIS))
+        filenames = glob('{}_unit*'.format(join(p['figspath'], p['name'])))
+        for filename in filenames:
+            os.remove(filename)
+            print("  Removed {}".format(filename))
+
         # Load sorted trials
         sortedfile = get_sortedfile(p)
         with open(sortedfile) as f:
-            sorted_trials = pickle.load(f)
+            t, sorted_trials = pickle.load(f)
 
         for i in xrange(p['model'].N):
             # Check if the unit does anything
             active = False
-            for condition_averaged in sorted_trials.values():
-                if np.std(condition_averaged[i]) > 0.05:
+            for r in sorted_trials.values():
+                if is_active(r[i]):
                     active = True
                     break
             if not active:

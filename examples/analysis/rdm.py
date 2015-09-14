@@ -56,6 +56,10 @@ def safe_divide(x):
         return 0
     return 1/x
 
+# Define "active" units
+def is_active(r):
+    return np.std(r) > 0.1
+
 # Nice colors to represent coherences
 colors = {
         0:  '#c6dbef',
@@ -449,11 +453,10 @@ def sort_trials_stim_onset(trialsfile, sortedfile):
         ntrials_by_cond[c][:w_i]  += 1
     for c in conds:
         sorted_trials[c] *= np.array([safe_divide(x) for x in ntrials_by_cond[c]])
-    sorted_trials['t'] = t
 
     # Save
     with open(sortedfile, 'wb') as f:
-        pickle.dump(sorted_trials, f, pickle.HIGHEST_PROTOCOL)
+        pickle.dump((t, sorted_trials), f, pickle.HIGHEST_PROTOCOL)
         print(("[ {}.sort_trials_stim_onset ]"
                " Trials sorted and aligned to stimulus onset, saved to {}")
               .format(THIS, sortedfile))
@@ -529,11 +532,10 @@ def sort_trials_response(trialsfile, sortedfile):
         ntrials_by_cond[c][-w:] += 1
     for c in conds:
         sorted_trials[c] *= np.array([safe_divide(x) for x in ntrials_by_cond[c]])
-    sorted_trials['t'] = t
 
     # Save
     with open(sortedfile, 'wb') as f:
-        pickle.dump(sorted_trials, f, pickle.HIGHEST_PROTOCOL)
+        pickle.dump((t, sorted_trials), f, pickle.HIGHEST_PROTOCOL)
         print(("[ {}.sort_trials_response ]"
                " Trials sorted and aligned to response, saved to {}")
               .format(THIS, sortedfile))
@@ -543,10 +545,9 @@ def sort_trials_response(trialsfile, sortedfile):
 def plot_unit(unit, sortedfile, plot, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs):
     # Load sorted trials
     with open(sortedfile) as f:
-        sorted_trials = pickle.load(f)
+        t, sorted_trials = pickle.load(f)
 
     # Time
-    t  = sorted_trials.pop('t')
     w, = np.where((tmin <= t) & (t <= tmax))
     t  = t[w] - t0
 
@@ -682,13 +683,13 @@ def do(action, args, p):
         # Load sorted trials
         sortedfile = get_sortedfile_stim_onset(p)
         with open(sortedfile) as f:
-            sorted_trials = pickle.load(f)
+            t, sorted_trials = pickle.load(f)
 
         for i in xrange(p['model'].N):
             # Check if the unit does anything
             active = False
-            for condition_averaged in sorted_trials.values():
-                if np.std(condition_averaged[i]) > 0.05:
+            for r in sorted_trials.values():
+                if is_active(r[i]):
                     active = True
                     break
             if not active:
@@ -731,13 +732,13 @@ def do(action, args, p):
         # Load sorted trials
         sortedfile = get_sortedfile_response(p)
         with open(sortedfile) as f:
-            sorted_trials = pickle.load(f)
+            t, sorted_trials = pickle.load(f)
 
         for i in xrange(p['model'].N):
             # Check if the unit does anything
             active = False
             for r in sorted_trials.values():
-                if np.std(r[i]) > 0.1:
+                if is_active(r[i]):
                     active = True
                     break
             if not active:

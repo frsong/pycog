@@ -114,16 +114,16 @@ if 'mante' in args:
     print("=> Context-dependent integration task")
     #clean('mante')
     #train('mante')
-    trials('mante', 500, args='--dt_save 10')
-    #do_action('mante', 'sort')
-    #do_action('mante', 'regress')
-    #figure('fig_mante')
+    trials('mante', 100, args='--dt_save 10')
+    do_action('mante', 'sort')
+    do_action('mante', 'regress')
+    figure('fig_mante')
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
     clean('multisensory')
     train('multisensory')
-    trials('multisensory', 2000)
+    trials('multisensory', 500, args='--dt_save 5')
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
 

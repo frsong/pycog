@@ -62,7 +62,7 @@ units = {
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=6.3, h=3.9, axislabelsize=7, labelpadx=5, labelpady=5.5, thickness=0.6, 
+fig = Figure(w=6.3, h=3.9, axislabelsize=7, labelpadx=5, labelpady=5.5, thickness=0.6,
              ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 #-----------------------------------------------------------------------------------------
@@ -190,7 +190,7 @@ def plot_inputs(trial, mod, all):
         plots[mod+'_v'].plot(t, boundary_v*np.ones_like(t),
                              color=Figure.colors('darkblue'), lw=0.75, zorder=10)
     if 'a' in mod:
-        plots[mod+'_a'].plot(t, boundary_a*np.ones_like(t), 
+        plots[mod+'_a'].plot(t, boundary_a*np.ones_like(t),
                              color=Figure.colors('darkgreen'), lw=0.75, zorder=10)
 
     T  = trial['t']
@@ -259,7 +259,7 @@ plot.text_upper_center('boundary', dy=0.06, fontsize=6)
 
 all = []
 for name, unit in units.items():
-    all.append(multisensory.plot_unit(unit, sortedfile, plots[name], 
+    all.append(multisensory.plot_unit(unit, sortedfile, plots[name],
                                       t0=t0, tmin=tmin, tmax=tmax, lw=1.25))
 
 #plots['choice'].yticks([])

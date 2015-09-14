@@ -18,7 +18,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 4
-N    = 150
+N    = 200
 Nout = 2
 
 # E/I
@@ -33,12 +33,12 @@ VISUAL_N   = 2 # Negatively tuned visual input
 AUDITORY_N = 3 # Negatively tuned auditory input
 
 # Units receiving visual input
-EXC_VISUAL = EXC[:Ne//3]
-INH_VISUAL = INH[:Ni//3]
+EXC_VISUAL = EXC[:Ne//4]
+INH_VISUAL = INH[:Ni//4]
 
 # Units receiving auditory input
-EXC_AUDITORY = EXC[Ne//3:Ne*2//3]
-INH_AUDITORY = INH[Ni//3:Ni*2//3]
+EXC_AUDITORY = EXC[Ne//4:Ne//2]
+INH_AUDITORY = INH[Ni//4:Ni//2]
 
 #-----------------------------------------------------------------------------------------
 # Input connectivity
@@ -58,14 +58,10 @@ Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
 #-----------------------------------------------------------------------------------------
-# Noise
+# Baseline input
 #-----------------------------------------------------------------------------------------
 
 baseline_in = 0.2
-
-var_in  = 0.01**2
-var_rec = 0.15**2
-var_rec = 0.2**2
 
 #-----------------------------------------------------------------------------------------
 # Task structure
@@ -211,7 +207,7 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 85
+    return np.mean(performance_history[-5:]) > 90
 
 # Validation dataset
 n_validation = 100*(len(modalities)*len(training_freqs) + 1)

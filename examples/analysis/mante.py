@@ -1038,7 +1038,7 @@ def do(action, args, p):
 
         # Remove existing files
         print("[ {}.do ]".format(THIS))
-        filenames = glob('{}/{}_unit*'.format(p['figspath'], p['name']))
+        filenames = glob('{}_unit*'.format(join(p['figspath'], p['name'])))
         for filename in filenames:
             os.remove(filename)
             print("  Removed {}".format(filename))
