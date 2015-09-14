@@ -140,10 +140,8 @@ class SGD(object):
         Omega  = Omega.mean(axis=1).sum()/nelems.sum()
 
         tmp_g_Wrec = theanotools.grad(Omega, Wrec)
-        Omega, tmp_g_Wrec, nelems = theano.clone(
-            [Omega, tmp_g_Wrec, nelems.mean()], replace=[(d_xt, g_x), (xt, x)]
-            )
-
+        Omega, tmp_g_Wrec, nelems = theano.clone([Omega, tmp_g_Wrec, nelems.mean()],
+                                                 replace=[(d_xt, g_x), (xt, x)])
         g_Wrec += lambda_Omega * tmp_g_Wrec
 
         #---------------------------------------------------------------------------------
