@@ -66,7 +66,7 @@ class Trainer(object):
         'bound':             1e-20,
         'baseline_in':       0.2,
         'var_in':            0.01**2,
-        'var_rec':           0.01**2,
+        'var_rec':           0.2**2,
         'seed':              1234,
         'structure':         {},
         'rho0':              1.5,

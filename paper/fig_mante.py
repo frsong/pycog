@@ -168,8 +168,8 @@ plots['psy_m'].legend(bbox_to_anchor=(0.58, 1.12), **prop)
 mante_plots = {s: plots[s] for s in ['m1', 'm2', 'm3', 'c1', 'c2', 'c3']}
 mante.plot_statespace(trialsfile, sortedfile, betafile, mante_plots)
 
-plots['m2'].text_upper_center('Motion context', dy=0.1, fontsize=7, color='k')
-plots['c2'].text_upper_center('Color context', dy=0.1, fontsize=7,
+plots['m2'].text_upper_center('Motion context', dy=0.08, fontsize=7, color='k')
+plots['c2'].text_upper_center('Color context', dy=0.08, fontsize=7,
                               color=Figure.colors('darkblue'))
 
 #=========================================================================================
@@ -192,7 +192,7 @@ epochs = trials[0]['info']['epochs']
 stimulus_start, stimulus_end  = epochs['stimulus']
 
 # Plot units
-units = [12, 45, 51, 77]
+units = [100, 125, 138, 385]
 yall  = []
 for i, unit in enumerate(units):
     mante_plots = {

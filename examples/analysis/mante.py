@@ -744,9 +744,9 @@ def plot_regress(betafile, plots):
 
         x = beta[:,regaxes[X]]
         y = beta[:,regaxes[Y]]
-        plot.plot(x, y, 'o', mfc='0.2', mec='w', ms=3.5, mew=0.5, zorder=10)
+        plot.plot(x, y, 'o', mfc='0.2', mec='w', ms=2.5, mew=0.3, zorder=10)
 
-        M = 0.5
+        M = 0.3
         #assert np.all(abs(x) <= M)
         #assert np.all(abs(y) <= M)
 

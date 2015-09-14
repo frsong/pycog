@@ -44,7 +44,7 @@ def generate_ei(N, pE=0.8):
 
 def get_idx(t, interval):
     start, end = interval
-    
+
     return list(np.where((start < t) & (t <= end))[0])
 
 def get_epochs_idx(dt, epochs):

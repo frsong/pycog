@@ -112,9 +112,9 @@ if 'rdm' in args:
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
-    clean('mante')
-    train('mante')
-    trials('mante', 500, args='--dt_save 5')
+    #clean('mante')
+    #train('mante')
+    trials('mante', 100, args='--dt_save 10')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     figure('fig_mante')
