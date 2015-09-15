@@ -59,10 +59,14 @@ def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
         analysis = model
 
-    call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
-                                            join(modelspath, model),
-                                            join(analysispath, analysis),
-                                            ntrials, args))
+    rv = call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
+                                                 join(modelspath, model),
+                                                 join(analysispath, analysis),
+                                                 ntrials, args))
+    print(rv)
+    #if rv != 0:
+    #    print("Trials aborted.")
+    #    sys.exit()
 
 def do_action(model, action, analysis=None):
     if analysis is None:
@@ -123,7 +127,7 @@ if 'multisensory' in args:
     print("=> Multisensory integration task")
     clean('multisensory')
     train('multisensory')
-    trials('multisensory', 500, args='--dt_save 5')
+    trials('multisensory', 400, args='--dt_save 5')
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
 

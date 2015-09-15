@@ -237,13 +237,15 @@ class Trainer(object):
 
                 C = np.zeros((N, N))
                 for i in exc:
-                    C[i,exc] = 1
-                    C[i,i]   = 0
-                    C[i,inh] = np.sum(C[i,exc])/len(inh)
+                    C[i,exc]  = 1
+                    C[i,i]    = 0
+                    C[i,inh]  = 1
+                    C[i,inh] *= np.sum(C[i,exc])/len(inh)
                 for i in inh:
                     C[i,exc] = 1
-                    C[i,inh] = np.sum(C[i,exc])/(len(inh)-1)
+                    C[i,inh] = 1
                     C[i,i]   = 0
+                    C[i,inh] *= np.sum(C[i,exc])/len(inh)
 
                 self.p['Crec'] = C
             else:

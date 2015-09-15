@@ -106,13 +106,18 @@ def generate_Crec(ei, p_exc=1, p_inh=1, rng=None, seed=1, allow_self=False):
     inh, = np.where(ei < 0)
 
     C = np.zeros((N, N))
-    for i in xrange(N):
-        C[i,exc]  = 1*(rng.uniform(size=len(exc)) < p_exc)
+    for i in exc:
+        C[i,exc] = 1*(rng.uniform(size=len(exc)) < p_exc)
+        if not allow_self:
+            C[i,i] = 0
         C[i,inh]  = 1*(rng.uniform(size=len(inh)) < p_inh)
         C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
-
-    if not allow_self:
-        np.fill_diagonal(C, 0)
+    for i in inh:
+        C[i,exc] = 1*(rng.uniform(size=len(exc)) < p_exc)
+        C[i,inh] = 1*(rng.uniform(size=len(inh)) < p_inh)
+        if not allow_self:
+            C[i,i] = 0
+        C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
 
     return C
 
