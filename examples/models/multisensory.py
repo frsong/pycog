@@ -73,7 +73,8 @@ boundary    = 12.5
 nconditions = len(modalities)*len(freqs)
 pcatch      = 1/(nconditions + 1)
 
-training_freqs = [6, 7, 8] + freqs + [17, 18, 19]
+training_freqs       = [6, 7, 8] + freqs + [17, 18, 19]
+nconditions_training = len(modalities)*len(training_freqs)
 
 fmin = min(training_freqs)
 fmax = max(training_freqs)
@@ -103,11 +104,12 @@ def generate_trial(rng, dt, params):
             modality = params.get('modality', rng.choice(modalities))
             freq     = params.get('freq',     rng.choice(training_freqs))
     elif params['name'] == 'validation':
-        b = params['minibatch_index'] % (len(modalities)*len(training_freqs) + 1)
+        b = params['minibatch_index'] % (nconditions_training + 1)
         if b == 0:
             catch_trial = True
         else:
-            k1, k2   = tasktools.unravel_index(b-1, (len(modalities), len(training_freqs)))
+            k1, k2   = tasktools.unravel_index(b-1, (len(modalities),
+                                               len(training_freqs)))
             modality = modalities[k1]
             freq     = training_freqs[k2]
     else:
@@ -210,4 +212,4 @@ def terminate(performance_history):
     return np.mean(performance_history[-5:]) > 95
 
 # Validation dataset
-n_validation = 100*(len(modalities)*len(training_freqs) + 1)
+n_validation = 100*(nconditions_training + 1)

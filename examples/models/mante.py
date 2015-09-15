@@ -47,9 +47,6 @@ left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
 pcatch      = 1/(nconditions + 1)
 
-training_cohs        = cohs
-nconditions_training = len(contexts)*(len(training_cohs)*len(left_rights))**2
-
 SCALE = 5
 def scale(coh):
     return (1 + SCALE*coh/100)/2
@@ -68,23 +65,23 @@ def generate_trial(rng, dt, params):
             context = params.get('context', rng.choice(contexts))
 
             # Coherences
-            coh_m = params.get('coh_m', rng.choice(training_cohs))
-            coh_c = params.get('coh_c', rng.choice(training_cohs))
+            coh_m = params.get('coh_m', rng.choice(cohs))
+            coh_c = params.get('coh_c', rng.choice(cohs))
 
             # Left/right
             left_right_m = params.get('left_right_m', rng.choice(left_rights))
             left_right_c = params.get('left_right_c', rng.choice(left_rights))
     elif params['name'] == 'validation':
-        b = params['minibatch_index'] % (nconditions_training + 1)
+        b = params['minibatch_index'] % (nconditions + 1)
         if b == 0:
             catch_trial = True
         else:
             k = tasktools.unravel_index(b-1, (len(contexts),
-                                              len(training_cohs), len(training_cohs),
+                                              len(cohs), len(cohs),
                                               len(left_rights), len(left_rights)))
             context      = contexts[k[0]]
-            coh_m        = training_cohs[k[1]]
-            coh_c        = training_cohs[k[2]]
+            coh_m        = cohs[k[1]]
+            coh_c        = cohs[k[2]]
             left_right_m = left_rights[k[3]]
             left_right_c = left_rights[k[4]]
     else:
@@ -217,4 +214,4 @@ def terminate(pcorrect_history):
     return np.mean(pcorrect_history[-5:]) > 90
 
 # Validation dataset
-n_validation = 100*(nconditions_training + 1)
+n_validation = 100*(nconditions + 1)
