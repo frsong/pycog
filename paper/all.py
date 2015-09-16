@@ -63,10 +63,6 @@ def trials(model, ntrials, analysis=None, args=''):
                                                  join(modelspath, model),
                                                  join(analysispath, analysis),
                                                  ntrials, args))
-    print(rv)
-    #if rv != 0:
-    #    print("Trials aborted.")
-    #    sys.exit()
 
 def do_action(model, action, analysis=None):
     if analysis is None:
@@ -125,9 +121,9 @@ if 'mante' in args:
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
-    clean('multisensory')
-    train('multisensory')
-    trials('multisensory', 400, args='--dt_save 5')
+    #clean('multisensory')
+    #train('multisensory')
+    trials('multisensory', 500, args='--dt_save 10')
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
 

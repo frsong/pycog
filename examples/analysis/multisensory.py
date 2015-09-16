@@ -297,11 +297,11 @@ def plot_unit(unit, sortedfile, plot, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs)
 
         prop = {'color': colors[mod],
                 'lw':    kwargs.get('lw', 1.5)}
-        if choice == 0:
-            label += "high"
+        if choice == 1:
+            label += "low"
             prop['ls'] = '-'
         else:
-            label += "low"
+            label += "high"
             prop['ls']     = '--'
             prop['dashes'] = kwargs.get('dashes', [3.5, 2.5])
 

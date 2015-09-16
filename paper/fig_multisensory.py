@@ -53,9 +53,9 @@ tmax = stimulus_end
 
 # Units to display
 units = {
-    'choice':   2,
-    'modality': 39,
-    'mixed':    42
+    'choice':   1,
+    'modality': 101,
+    'mixed':    16
     }
 
 #=========================================================================================
@@ -177,12 +177,12 @@ prop = dict(lw=0.5, zorder=10)
 def plot_inputs(trial, mod, all):
     # Visual input
     r = trial['u'][m.VISUAL_P][w]
-    plots[mod+'_v'].plot(t, r, color=multisensory.colors['v'], lw=0.5, zorder=5)
+    plots[mod+'_v'].plot(t, r, color=multisensory.colors['v'], lw=0.6, zorder=5)
     all.append(r)
 
     # Auditory input
     r = trial['u'][m.AUDITORY_P][w]
-    plots[mod+'_a'].plot(t, r, color=multisensory.colors['a'], lw=0.5, zorder=5)
+    plots[mod+'_a'].plot(t, r, color=multisensory.colors['a'], lw=0.6, zorder=5)
     all.append(r)
 
     # Boundaries

@@ -1,96 +1,49 @@
 """
-A multisensory integration task, loosely inspired by
+Integration task, loosely inspired by the random dot motion task.
 
-  A category-free neural population supports evolving demands during decision-making.
-  D. Raposo, M. T. Kaufman, & A. K. Churchland, Nature Neurosci. 2014.
+  Response of neurons in the lateral intraparietal area during a combined visual
+  discrimination reaction time task.
+  J. D. Roitman & M. N. Shadlen, JNS 2002.
 
-  http://www.nature.com/neuro/journal/v17/n12/full/nn.3865.html
+  http://www.jneurosci.org/content/22/21/9475.abstract
 
 """
 from __future__ import division
 
 import numpy as np
 
-from pycog import tasktools
+from pycog import Model, tasktools
 
 #-----------------------------------------------------------------------------------------
 # Network structure
 #-----------------------------------------------------------------------------------------
 
-Nin  = 4
-N    = 150
+Nin  = 2
+N    = 100
 Nout = 2
 
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
-Ne = len(EXC)
-Ni = len(INH)
-
-# Input labels
-VISUAL_P   = 0 # Positively tuned visual input
-AUDITORY_P = 1 # Positively tuned auditory input
-VISUAL_N   = 2 # Negatively tuned visual input
-AUDITORY_N = 3 # Negatively tuned auditory input
-
-# Units receiving visual input
-EXC_VISUAL = EXC[:Ne//3]
-INH_VISUAL = INH[:Ni//3]
-
-# Units receiving auditory input
-EXC_AUDITORY = EXC[Ne//3:Ne*2//3]
-INH_AUDITORY = INH[Ni//3:Ni*2//3]
 
 #-----------------------------------------------------------------------------------------
-# Input connectivity
-#-----------------------------------------------------------------------------------------
-
-Cin = np.zeros((N, Nin))
-Cin[EXC_VISUAL   + INH_VISUAL,   VISUAL_P]   = 1
-Cin[EXC_VISUAL   + INH_VISUAL,   VISUAL_N]   = 1
-Cin[EXC_AUDITORY + INH_AUDITORY, AUDITORY_P] = 1
-Cin[EXC_AUDITORY + INH_AUDITORY, AUDITORY_N] = 1
-
-#-----------------------------------------------------------------------------------------
-# Output connectivity: read out from excitatory units only
+# Output connectivity
 #-----------------------------------------------------------------------------------------
 
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
 #-----------------------------------------------------------------------------------------
-# Baseline input
-#-----------------------------------------------------------------------------------------
-
-baseline_in = 0.2
-
-#-----------------------------------------------------------------------------------------
 # Task structure
 #-----------------------------------------------------------------------------------------
 
-modalities  = ['v', 'a', 'va']
-freqs       = range(9, 16+1)
-boundary    = 12.5
-nconditions = len(modalities)*len(freqs)
+cohs        = [1, 2, 4, 8, 16]
+in_outs     = [1, -1]
+nconditions = len(cohs)*len(in_outs)
 pcatch      = 1/(nconditions + 1)
 
-# So the performance isn't perfect for the frequencies of interest
-training_freqs       = [6, 7, 8] + freqs + [17, 18, 19]
-nconditions_training = len(modalities)*len(training_freqs)
-
-fmin = min(training_freqs)
-fmax = max(training_freqs)
-
-def scale_v_p(f):
-    return 0.5 + 0.6*(f - fmin)/(fmax - fmin)
-
-def scale_a_p(f):
-    return 0.5 + 0.6*(f - fmin)/(fmax - fmin)
-
-def scale_v_n(f):
-    return 0.5 + 0.6*(fmax - f)/(fmax - fmin)
-
-def scale_a_n(f):
-    return 0.5 + 0.6*(fmax - f)/(fmax - fmin)
+SCALE = 3.2
+def scale(coh):
+    return (1 + SCALE*coh/100)/2
 
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
@@ -102,19 +55,18 @@ def generate_trial(rng, dt, params):
         if params.get('catch', rng.rand() < pcatch):
             catch_trial = True
         else:
-            modality = params.get('modality', rng.choice(modalities))
-            freq     = params.get('freq',     rng.choice(training_freqs))
+            coh    = params.get('coh',    rng.choice(cohs))
+            in_out = params.get('in_out', rng.choice(in_outs))
     elif params['name'] == 'validation':
-        b = params['minibatch_index'] % (nconditions_training + 1)
+        b = params['minibatch_index'] % (nconditions + 1)
         if b == 0:
             catch_trial = True
         else:
-            k1, k2   = tasktools.unravel_index(b-1,
-                                               (len(modalities), len(training_freqs)))
-            modality = modalities[k1]
-            freq     = training_freqs[k2]
+            k0, k1 = tasktools.unravel_index(b-1, (len(cohs), len(in_outs)))
+            coh    = cohs[k0]
+            in_out = in_outs[k1]
     else:
-        raise ValueError("Unknown trial type.")
+        raise ValueError("[ rdm_dense.generate_trial ] Unknown trial type.")
 
     #-------------------------------------------------------------------------------------
     # Epochs
@@ -124,12 +76,12 @@ def generate_trial(rng, dt, params):
         epochs = {'T': 1000}
     else:
         if params['name'] == 'test':
-            fixation = 500
+            fixation = 300
         else:
             fixation = 100
-        stimulus = 1000
+        stimulus = 800
         decision = 300
-        T       = fixation + stimulus + decision
+        T        = fixation + stimulus + decision
 
         epochs = {
             'fixation': (0, fixation),
@@ -149,13 +101,13 @@ def generate_trial(rng, dt, params):
         trial['info'] = {}
     else:
         # Correct choice
-        if freq > boundary:
+        if in_out > 0:
             choice = 0
         else:
             choice = 1
 
         # Trial info
-        trial['info'] = {'modality':  modality, 'freq': freq, 'choice': choice}
+        trial['info'] = {'coh': coh, 'in_out': in_out, 'choice': choice}
 
     #-------------------------------------------------------------------------------------
     # Inputs
@@ -163,12 +115,9 @@ def generate_trial(rng, dt, params):
 
     X = np.zeros((len(t), Nin))
     if not catch_trial:
-        if 'v' in modality:
-            X[e['stimulus'],VISUAL_P] = scale_v_p(freq)
-            X[e['stimulus'],VISUAL_N] = scale_v_n(freq)
-        if 'a' in modality:
-            X[e['stimulus'],AUDITORY_P] = scale_a_p(freq)
-            X[e['stimulus'],AUDITORY_N] = scale_a_n(freq)
+        # Stimulus
+        X[e['stimulus'],choice]   = scale(+coh)
+        X[e['stimulus'],1-choice] = scale(-coh)
     trial['inputs'] = X
 
     #-------------------------------------------------------------------------------------
@@ -176,8 +125,8 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if params.get('target_output', False):
-        Y = np.zeros((len(t), Nout)) # Output matrix
-        M = np.zeros_like(Y)         # Mask matrix
+        Y = np.zeros((len(t), Nout)) # Output
+        M = np.zeros_like(Y)         # Mask
 
         # Hold values
         hi = 1
@@ -210,7 +159,15 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 90
+    return np.mean(performance_history[-5:]) > 80
 
 # Validation dataset
-n_validation = 100*(nconditions_training + 1)
+n_validation = 100*(nconditions + 1)
+
+#-----------------------------------------------------------------------------------------
+# Train model
+#-----------------------------------------------------------------------------------------
+
+model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, generate_trial=generate_trial,
+              performance=performance, terminate=terminate, n_validation=n_validation)
+model.train('savefile.pkl')
