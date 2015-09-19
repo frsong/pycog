@@ -1,22 +1,16 @@
 """
-Integration task, loosely inspired by the random dot motion task.
-
-  Response of neurons in the lateral intraparietal area during a combined visual
-  discrimination reaction time task.
-  J. D. Roitman & M. N. Shadlen, JNS 2002.
-
-  http://www.jneurosci.org/content/22/21/9475.abstract
+Perceptual decision-making task, loosely based on the random dot motion task.
 
 """
 from __future__ import division
 
 import numpy as np
 
-from pycog import Model, tasktools
+from pycog import Model, RNN, tasktools
 
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Network structure
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 Nin  = 2
 N    = 100
@@ -25,16 +19,13 @@ Nout = 2
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
 
-#-----------------------------------------------------------------------------------------
 # Output connectivity
-#-----------------------------------------------------------------------------------------
-
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Task structure
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 cohs        = [1, 2, 4, 8, 16]
 in_outs     = [1, -1]
@@ -46,9 +37,9 @@ def scale(coh):
     return (1 + SCALE*coh/100)/2
 
 def generate_trial(rng, dt, params):
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
     # Select task condition
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
     catch_trial = False
     if params['name'] in ['gradient', 'test']:
@@ -65,20 +56,15 @@ def generate_trial(rng, dt, params):
             k0, k1 = tasktools.unravel_index(b-1, (len(cohs), len(in_outs)))
             coh    = cohs[k0]
             in_out = in_outs[k1]
-    else:
-        raise ValueError("[ rdm_dense.generate_trial ] Unknown trial type.")
 
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
     # Epochs
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
     if catch_trial:
         epochs = {'T': 1000}
     else:
-        if params['name'] == 'test':
-            fixation = 300
-        else:
-            fixation = 100
+        fixation = 100
         stimulus = 800
         decision = 300
         T        = fixation + stimulus + decision
@@ -90,11 +76,11 @@ def generate_trial(rng, dt, params):
             }
         epochs['T'] = T
 
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
     # Trial info
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
-    t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs in discrete time
+    t, e  = tasktools.get_epochs_idx(dt, epochs) # In discrete time
     trial = {'t': t, 'epochs': epochs}           # Trial
 
     if catch_trial:
@@ -109,39 +95,34 @@ def generate_trial(rng, dt, params):
         # Trial info
         trial['info'] = {'coh': coh, 'in_out': in_out, 'choice': choice}
 
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
     # Inputs
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
     X = np.zeros((len(t), Nin))
     if not catch_trial:
-        # Stimulus
         X[e['stimulus'],choice]   = scale(+coh)
         X[e['stimulus'],1-choice] = scale(-coh)
     trial['inputs'] = X
 
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
     # Target output
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
     if params.get('target_output', False):
         Y = np.zeros((len(t), Nout)) # Output
         M = np.zeros_like(Y)         # Mask
 
-        # Hold values
-        hi = 1
-        lo = 0.2
-
         if catch_trial:
-            Y[:] = lo
+            Y[:] = 0.2
             M[:] = 1
         else:
             # Fixation
-            Y[e['fixation'],:] = lo
+            Y[e['fixation'],:] = 0.2
 
             # Decision
-            Y[e['decision'],choice]   = hi
-            Y[e['decision'],1-choice] = lo
+            Y[e['decision'],choice]   = 1
+            Y[e['decision'],1-choice] = 0.2
 
             # Only care about fixation and decision periods
             M[e['fixation']+e['decision'],:] = 1
@@ -150,7 +131,7 @@ def generate_trial(rng, dt, params):
         trial['outputs'] = Y
         trial['mask']    = M
 
-    #-------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 
     return trial
 
@@ -159,15 +140,25 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 80
+    return np.mean(performance_history[-5:]) > 85
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)
 
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Train model
-#-----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, generate_trial=generate_trial,
-              performance=performance, terminate=terminate, n_validation=n_validation)
+              performance=performance, terminate=terminate,
+              n_validation=n_validation)
 model.train('savefile.pkl')
+
+#-------------------------------------------------------------------------------
+# Run the trained network with 51.2% coherence for choice 1
+#-------------------------------------------------------------------------------
+
+rnn        = RNN('savefile.pkl', {'dt': 0.5})
+trial_func = generate_trial
+trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'in_out': 1}
+info       = rnn.run(inputs=(trial_func, trial_args))

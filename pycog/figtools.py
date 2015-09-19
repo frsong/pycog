@@ -250,6 +250,21 @@ class Subplot(object):
                          fontsize=fontsize, color=color,
                          transform=self.transAxes, **kwargs)
 
+    def text_lower_center(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
+        return self.text(0.5+dx, dy, s, ha='center', va='bottom',
+                         fontsize=fontsize, color=color,
+                         transform=self.transAxes, **kwargs)
+
+    def text_lower_left(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
+        return self.text(0.04+dx, 0.03+dy, s, ha='left', va='bottom',
+                         fontsize=fontsize, color=color,
+                         transform=self.transAxes, **kwargs)
+
+    def text_lower_right(self, s, dx=0, dy=0, fontsize=7.5, color='k', **kwargs):
+        return self.text(0.97+dx, 0.03+dy, s, ha='right', va='bottom',
+                         fontsize=fontsize, color=color,
+                         transform=self.transAxes, **kwargs)
+
     #/////////////////////////////////////////////////////////////////////////////////////
 
     def hline(self, y, **kwargs):

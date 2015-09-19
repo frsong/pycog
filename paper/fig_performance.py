@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 from __future__ import division
 
-from os.path import join
+import os
+from   os.path import join
 
 import numpy as np
 
@@ -16,29 +17,30 @@ import paper
 # Setup
 #=========================================================================================
 
-here     = get_here(__file__)
-base     = get_parent(here)
-figspath = join(here, 'figs')
+here      = get_here(__file__)
+base      = get_parent(here)
+paperpath = join(base, 'paper')
+figspath  = join(here, 'figs')
 
 def savefile(model):
     return join(base, 'examples', 'work', 'data', model, model+'.pkl')
 
-models = [('rdm_nodale', '1C: Integration (no Dale)'),
-          ('rdm_dense', '1D: Integration (Dale, dense)'),
-          ('rdm_fixed', '1E: Integration (Dale, fixed)'),
-          ('rdm_varstim', '2A: Integration (variable stim.)'),
-          ('rdm_rt', '2B: Integration (reaction-time)'),
-          ('mante', 'Context-dependent int.'),
-          ('multisensory', 'Multisensory int.'),
-          ('romo', 'Parametric working memory'),
-          ('lee', 'Lee')]
+models = [('rdm_varstim', '1A: Decision-making (variable stim.)'),
+          ('rdm_rt', '1B: Decision-making (reaction-time)'),
+          ('rdm_nodale', '2A: Decision-making (no Dale)'),
+          ('rdm_dense', '2B: Decision-making (Dale, dense)'),
+          ('rdm_fixed', '2C: Decision-making (Dale, fixed)'),
+          ('mante', '3: Context-dependent int.'),
+          ('multisensory', '4: Multisensory int.'),
+          ('romo', '5: Parametric working memory'),
+          ('lee', '6: Lee')]
 labels = list('ABCDEFGHI')
 
 #=========================================================================================
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5, thickness=0.6, 
+fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5, thickness=0.6,
              ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
 ncols = 3
@@ -64,7 +66,7 @@ for k in xrange(len(models)):
     else:
         pady = 0.02
     plots[models[k][0]]   = fig.add([xall[j], yall[i]-pady, w, h])
-    plotlabels[labels[k]] = (xall[j]-0.06, yall[i]-pady+h+0.01)
+    plotlabels[labels[k]] = (xall[j]-0.062, yall[i]-pady+h+0.01)
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 
 #=========================================================================================
@@ -99,15 +101,15 @@ for model, _ in models:
     performance = [costs[1][-1] for costs in rnn.costs_history]
 
     if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed', 'rdm_rt']:
-        target = 80
+        target = 85
     elif model in ['rdm_varstim', 'multisensory']:
         target = 85
     elif model in ['mante']:
-        target = 95
+        target = 90
     elif model in ['romo']:
         target = 94
     elif model in ['lee']:
-        target = 0.06
+        target = 0.05
     else:
         raise ValueError("Unknown task {}".format(model))
 
@@ -122,6 +124,16 @@ for model, _ in models:
         plot.yscale('log')
     else:
         plot.ylim(40, 100)
+
+    # Training time
+    timefile = join(paperpath, 'times', model + '_time.txt')
+    if os.path.isfile(timefile):
+        time = '{} mins'.format(int(np.loadtxt(timefile)))
+    else:
+        time = 'X mins'
+
+    # Display
+    plot.text_lower_right(time, dy=0.02, fontsize=7, color=Figure.colors('strongblue'))
 
 #=========================================================================================
 

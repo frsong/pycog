@@ -106,7 +106,10 @@ units  = m.EXC_SENSORY
 label  = '"Sensory" area (exc)'
 
 groups  = [m.EXC_SENSORY, m.EXC_MOTOR, m.INH_SENSORY, m.INH_MOTOR]
-labels  = ['"Sensory" area (E)', '"Motor" area (E)', '(I)', '(I)']
+labels  = [r"``Sensory'' area ($\text{E}_\text{S}$)",
+           r"``Motor'' area ($\text{E}_\text{M}$)",
+           r"($\text{I}_\text{S}$)",
+           r"($\text{I}_\text{M}$)"]
 colors  = [Figure.colors('green'), Figure.colors('orange')]
 colors += colors
 for group, label, color in zip(groups, labels, colors):
@@ -117,6 +120,29 @@ for group, label, color in zip(groups, labels, colors):
 
     plots['Bin'].plot(1.2*np.ones(2), 1-extent, lw=2, color=color,
                       transform=plot.transAxes)
+
+E_S = m.EXC_SENSORY
+E_M = m.EXC_MOTOR
+x_S = np.mean([E_S[0], E_S[-1]])
+x_M = np.mean([E_M[0], E_M[-1]])
+
+plot = plots['Brec']
+plot.text(x_S, x_S,
+          r"$\text{\textbf{E}}_\text{\textbf{S}} \boldsymbol{\leftarrow}"
+          + r"\text{\textbf{E}}_\text{\textbf{S}}$",
+          ha='center', va='center', fontsize=9, color='k')
+plot.text(x_S, x_M,
+          r"$\text{\textbf{E}}_\text{\textbf{M}} \boldsymbol{\leftarrow}"
+          + r"\text{\textbf{E}}_\text{\textbf{S}}$",
+          ha='center', va='center', fontsize=9, color='k')
+plot.text(x_M, x_S,
+          r"$\text{\textbf{E}}_\text{\textbf{S}} \boldsymbol{\leftarrow}"
+          + r"\text{\textbf{E}}_\text{\textbf{M}}$",
+          ha='center', va='center', fontsize=9, color='0.5')
+plot.text(x_M, x_M,
+          r"$\text{\textbf{E}}_\text{\textbf{M}} \boldsymbol{\leftarrow}"
+          + r"\text{\textbf{E}}_\text{\textbf{M}}$",
+          ha='center', va='center', fontsize=9, color='k')
 
 #=========================================================================================
 # Create color maps for weights

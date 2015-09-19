@@ -56,7 +56,7 @@ def generate_trial(rng, dt, params):
             coh    = cohs[k0]
             in_out = in_outs[k1]
     else:
-        raise ValueError("[ rdm_dense.generate_trial ] Unknown trial type.")
+        raise ValueError("Unknown trial type.")
 
     #-------------------------------------------------------------------------------------
     # Epochs
@@ -149,7 +149,7 @@ performance = tasktools.performance_2afc
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 80
+    return np.mean(performance_history[-5:]) > 85
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)

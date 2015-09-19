@@ -2,14 +2,22 @@
 """
 Reproduce every figure in the paper from scratch.
 
+Note
+----
+For some tasks we run many trials to get pretty psychometric curves, and this is
+all done in memory.
+
 """
 import argparse
+import datetime
 import os
 import subprocess
 import sys
 from   os.path import join
 
-from pycog.utils import get_here
+import numpy as np
+
+from pycog.utils import get_here, mkdir_p
 
 #=========================================================================================
 # Command line
@@ -23,8 +31,8 @@ a = p.parse_args()
 simulate = a.simulate
 args     = a.args
 if not args:
-    args = ['structure', 'lee_areas', 'connectivity', 'rdm_varstim', 'rdm_rt',
-            'mante', 'multisensory', 'lee', 'performance']
+    args = ['structure', 'rdm_varstim', 'rdm_rt', 'mante', 'multisensory',
+            'lee', 'lee_areas', 'connectivity', 'performance']
 
 #=========================================================================================
 # Shared steps
@@ -36,6 +44,10 @@ examplespath = join(base, 'examples')
 modelspath   = join(examplespath, 'models')
 analysispath = join(examplespath, 'analysis')
 paperpath    = join(base, 'paper')
+timespath    = join(paperpath, 'times')
+
+# Make time path
+mkdir_p(timespath)
 
 def call(s):
     if simulate:
@@ -52,8 +64,15 @@ def train(model, seed=None):
     else:
         seed = ' -s {}'.format(seed)
 
+    tstart = datetime.datetime.now()
     call("{} {} train{}"
          .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
+    tend = datetime.datetime.now()
+
+    # Save training time
+    totalmins = int((tend - tstart).total_seconds()/60)
+    timefile = join(timespath, model + '_time.txt')
+    np.savetxt(timefile, [totalmins], fmt='%d')
 
 def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
@@ -76,27 +95,6 @@ def figure(fig):
 
 #=========================================================================================
 
-if 'structure' in args:
-    print("=> Fig. 1")
-    seeds = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 99}
-    for m, seed in seeds.items():
-        clean(m)
-        train(m, seed=seed)
-        trials(m, 2000, 'rdm')
-        do_action(m, 'selectivity', 'rdm')
-    figure('fig_structure')
-
-if 'lee_areas' in args:
-    print("=> Sequence generation task (with areas)")
-    clean('lee_areas')
-    train('lee_areas')
-    trials('lee_areas', 100, 'lee')
-    figure('fig_lee_areas')
-
-if 'connectivity' in args:
-    print("=> Connectivity")
-    figure('fig_connectivity')
-
 if 'rdm' in args:
     print("=> RDM")
     models = ['rdm_varstim', 'rdm_rt']
@@ -110,10 +108,21 @@ if 'rdm' in args:
             do_action(m, 'sort_response', 'rdm')
     figure('fig_rdm')
 
+if 'structure' in args:
+    print("=> Structure")
+    seeds = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 100}
+    for m, seed in seeds.items():
+        #if m != 'rdm_fixed': continue
+        clean(m)
+        train(m, seed=seed)
+        trials(m, 3000, 'rdm')
+        do_action(m, 'selectivity', 'rdm')
+    figure('fig_structure')
+
 if 'mante' in args:
     print("=> Context-dependent integration task")
-    #clean('mante')
-    #train('mante')
+    clean('mante')
+    train('mante')
     trials('mante', 100, args='--dt_save 10')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
@@ -121,8 +130,8 @@ if 'mante' in args:
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
-    #clean('multisensory')
-    #train('multisensory')
+    clean('multisensory')
+    train('multisensory')
     trials('multisensory', 500, args='--dt_save 10')
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
@@ -130,7 +139,7 @@ if 'multisensory' in args:
 if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
-    train('romo', seed=99)
+    train('romo', seed=100)
     trials('romo', 400, args='--dt_save 10')
     do_action('romo', 'sort')
     figure('fig_romo')
@@ -141,3 +150,18 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100)
     figure('fig_lee')
+
+if 'lee_areas' in args:
+    print("=> Sequence generation task (with areas)")
+    clean('lee_areas')
+    train('lee_areas')
+    trials('lee_areas', 100, 'lee')
+    figure('fig_lee_areas')
+
+if 'connectivity' in args:
+    print("=> Connectivity")
+    figure('fig_connectivity')
+
+if 'performance' in args:
+    print("=> Performance")
+    figure('fig_performance')
