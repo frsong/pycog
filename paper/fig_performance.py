@@ -125,6 +125,9 @@ for model, _ in models:
     else:
         plot.ylim(40, 100)
 
+    # Number of units
+    nunits = '{} units'.format(rnn.p['N'])
+
     # Training time
     timefile = join(paperpath, 'times', model + '_time.txt')
     if os.path.isfile(timefile):
@@ -132,8 +135,9 @@ for model, _ in models:
     else:
         time = 'X mins'
 
-    # Display
-    plot.text_lower_right(time, dy=0.02, fontsize=7, color=Figure.colors('strongblue'))
+    # Info
+    plot.text_lower_right(nunits, dy=0.13, fontsize=7, color=Figure.colors('green'))
+    plot.text_lower_right(time,   dy=0.02, fontsize=7, color=Figure.colors('strongblue'))
 
 #=========================================================================================
 

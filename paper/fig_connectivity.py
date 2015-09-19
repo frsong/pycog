@@ -128,20 +128,20 @@ x_M = np.mean([E_M[0], E_M[-1]])
 
 plot = plots['Brec']
 plot.text(x_S, x_S,
-          r"$\text{\textbf{E}}_\text{\textbf{S}} \boldsymbol{\leftarrow}"
-          + r"\text{\textbf{E}}_\text{\textbf{S}}$",
+          r"$\mathbf{E}_\mathbf{S} \boldsymbol{\leftarrow}"
+          + r" \mathbf{E}_\mathbf{S}$",
           ha='center', va='center', fontsize=9, color='k')
 plot.text(x_S, x_M,
-          r"$\text{\textbf{E}}_\text{\textbf{M}} \boldsymbol{\leftarrow}"
-          + r"\text{\textbf{E}}_\text{\textbf{S}}$",
+          r"$\mathbf{E}_\mathbf{M} \boldsymbol{\leftarrow}"
+          + r" \mathbf{E}_\mathbf{S}$",
           ha='center', va='center', fontsize=9, color='k')
 plot.text(x_M, x_S,
-          r"$\text{\textbf{E}}_\text{\textbf{S}} \boldsymbol{\leftarrow}"
-          + r"\text{\textbf{E}}_\text{\textbf{M}}$",
+          r"$\mathbf{E}_\mathbf{S} \boldsymbol{\leftarrow}"
+          + r" \mathbf{E}_\mathbf{M}$",
           ha='center', va='center', fontsize=9, color='0.5')
 plot.text(x_M, x_M,
-          r"$\text{\textbf{E}}_\text{\textbf{M}} \boldsymbol{\leftarrow}"
-          + r"\text{\textbf{E}}_\text{\textbf{M}}$",
+          r"$\mathbf{E}_\mathbf{M} \boldsymbol{\leftarrow}"
+          + r" \mathbf{E}_\mathbf{M}$",
           ha='center', va='center', fontsize=9, color='k')
 
 #=========================================================================================
@@ -172,7 +172,8 @@ def generate_cmap(Ws):
 
     if len(inh) > 0:
         cmap_inh = gradient(white, red)
-        norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.round(inh[-inh_ignore], 1), clip=True)
+        norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.round(inh[-inh_ignore], 1),
+                                        clip=True)
         smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
 
         cmap_inh_r = gradient(red, white)
