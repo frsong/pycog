@@ -142,6 +142,7 @@ if 'romo' in args:
     train('romo', seed=100)
     trials('romo', 400, args='--dt_save 10')
     do_action('romo', 'sort')
+    do_action('romo', 'units')
     figure('fig_romo')
 
 if 'lee' in args:

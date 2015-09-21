@@ -144,26 +144,40 @@ class Trainer(object):
                  Output weight structure.
 
           ei : numpy.ndarray, optional
-               E-I signature.
+               E/I signature.
 
           ei_positive_func : str, optional
                              Function to use to keep weights positive.
 
+          hidden_activation : str, optional
+                              Hidden activation function.
+
+          output_activation: str, optional
+                             Output activation function.
+
+          n_gradient : int, optional
+                       Minibatch size for gradient dataset.
+
+          n_validation : int, optional
+                         Minibatch size for validation dataset.
+
+          batch_size : int, optional
+                       Number of trials to precompute and store in each dataset.
+
+          lambda_Omega : float, optinonal
+                         Multiplier for the vanishing gradient regularizer.
+
+          lambda1_in, lambda1_rec, lambda1_out : float, optional
+                                                 Multipliers for L1 weight regularization.
+
+          lambda2_in, lambda2_rec, lambda2_out : float, optional
+                                                 Multipliers for L2 weight regularization.
+
+          lambda2_r : float, optional
+                      Multiplier for L2 firing rate regularization.
+
           TODO
 
-          'hidden_activation': 'rectify',
-          'output_activation': 'linear',
-          'n_gradient':        20,
-          'n_validation':      1000,
-          'batch_size':        1000,
-          'lambda_Omega':      2,
-          'lambda1_in':        0,
-          'lambda1_rec':       0,
-          'lambda1_out':       0,
-          'lambda2_in':        0,
-          'lambda2_rec':       0,
-          'lambda2_out':       0,
-          'lambda2_r':         0,
           'min_error':         0,
           'learning_rate':     1e-2,
           'max_gradient_norm': 1,

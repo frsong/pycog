@@ -1,5 +1,5 @@
 """
-A parametric working memory task, loosely inspired by the vibrotactile delayed
+A parametric working memory task, loosely based on the vibrotactile delayed
 discrimination task.
 
   Neuronal population coding of parametric working memory.
@@ -19,7 +19,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 2
-N    = 200
+N    = 500
 Nout = 2
 
 # E/I
@@ -33,7 +33,7 @@ NEG = 1
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-#Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=1)
+Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -41,13 +41,6 @@ NEG = 1
 
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
-
-#-----------------------------------------------------------------------------------------
-# Noise
-#-----------------------------------------------------------------------------------------
-
-var_in  = 0.01**2
-var_rec = 0.2**2
 
 #-----------------------------------------------------------------------------------------
 # Task structure
@@ -63,10 +56,10 @@ fmin = np.min(fall)
 fmax = np.max(fall)
 
 def scale_p(f):
-    return 0.2 + 0.8*(f - fmin)/(fmax - fmin)
+    return 0.3 + 0.7*(f - fmin)/(fmax - fmin)
 
 def scale_n(f):
-    return 0.2 + 0.8*(fmax - f)/(fmax - fmin)
+    return 0.3 + 0.7*(fmax - f)/(fmax - fmin)
 
 def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
