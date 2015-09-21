@@ -10,16 +10,15 @@ cimport cython
 @cython.nonecheck(False)
 @cython.wraparound(False)
 def euler(float alpha,
-          np.ndarray[np.float32_t, ndim=1] x_t, 
-          np.ndarray[np.float32_t, ndim=1] r_t, 
-          np.ndarray[np.float32_t, ndim=2] Win, 
-          np.ndarray[np.float32_t, ndim=2] Wrec, 
-          np.ndarray[np.float32_t, ndim=2] Wout, 
-          np.ndarray[np.float32_t, ndim=1] brec, 
-          np.ndarray[np.float32_t, ndim=1] bout, 
-          np.ndarray[np.float32_t, ndim=2] u, 
-          np.ndarray[np.float32_t, ndim=2] noise_rec, 
-          f_hidden, 
+          np.ndarray[np.float32_t, ndim=1] x_t,
+          np.ndarray[np.float32_t, ndim=1] r_t,
+          np.ndarray[np.float32_t, ndim=2] Win,
+          np.ndarray[np.float32_t, ndim=2] Wrec,
+          np.ndarray[np.float32_t, ndim=1] brec,
+          np.ndarray[np.float32_t, ndim=1] bout,
+          np.ndarray[np.float32_t, ndim=2] u,
+          np.ndarray[np.float32_t, ndim=2] noise_rec,
+          f_hidden,
           np.ndarray[np.float32_t, ndim=2] r):
     cdef Py_ssize_t i
     for i in xrange(1, r.shape[0]):
@@ -37,14 +36,13 @@ def euler(float alpha,
 @cython.nonecheck(False)
 @cython.wraparound(False)
 def euler_no_Win(float alpha,
-                 np.ndarray[np.float32_t, ndim=1] x_t, 
-                 np.ndarray[np.float32_t, ndim=1] r_t, 
-                 np.ndarray[np.float32_t, ndim=2] Wrec, 
-                 np.ndarray[np.float32_t, ndim=2] Wout, 
-                 np.ndarray[np.float32_t, ndim=1] brec, 
-                 np.ndarray[np.float32_t, ndim=1] bout, 
-                 np.ndarray[np.float32_t, ndim=2] noise_rec, 
-                 f_hidden, 
+                 np.ndarray[np.float32_t, ndim=1] x_t,
+                 np.ndarray[np.float32_t, ndim=1] r_t,
+                 np.ndarray[np.float32_t, ndim=2] Wrec,
+                 np.ndarray[np.float32_t, ndim=1] brec,
+                 np.ndarray[np.float32_t, ndim=1] bout,
+                 np.ndarray[np.float32_t, ndim=2] noise_rec,
+                 f_hidden,
                  np.ndarray[np.float32_t, ndim=2] r):
     cdef Py_ssize_t i
     for i in xrange(1, r.shape[0]):

@@ -76,18 +76,19 @@ class RNN(object):
         'baseline_in':       0,
         'rectify_inputs':    False,
         'var_in':            0.01,
-        'var_rec':           0.1,
+        'var_rec':           0.2,
         'dt':                0.5,
         'tau':               100,
         'mode':              'batch'
         }
+    dtype = np.float32
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
     @staticmethod
     def fill(p_, varlist, all=['Win', 'Wrec', 'Wout', 'brec', 'bout', 'x0']):
         """
-        Fill p_ with None's if some of the parameters are not trained.
+        Fill `p_` with `None`s if some of the parameters are not trained.
 
         """
         p = list(p_)
@@ -196,7 +197,7 @@ class RNN(object):
             # Parameters
             self.p = self.ou_defaults.copy()
 
-            # Get history
+            # Set history
             self.costs_history = None
             self.Omega_history = None
 
@@ -214,11 +215,11 @@ class RNN(object):
 
             # Get best info
             self.Win  = None
-            self.Wrec = np.zeros((self.p['N'], self.p['N']))
+            self.Wrec = np.zeros((self.p['N'], self.p['N']), dtype=RNN.dtype)
             self.Wout = None
-            self.brec = np.zeros(self.p['N'])
+            self.brec = np.zeros(self.p['N'], dtype=RNN.dtype)
             self.bout = None
-            self.x0   = 0.1*np.ones(self.p['N'])
+            self.x0   = 0.1*np.ones(self.p['N'], dtype=RNN.dtype)
             print("[ {}.RNN ] No savefile provided,"
                   " created independent Ornstein-Uhlenbeck processes.".format(THIS))
 
@@ -342,7 +343,7 @@ class RNN(object):
                     noise_in = np.zeros((Nt, Nin))
             else:
                 noise_in = rng.multivariate_normal(np.zeros(Nin), var_in, Nt)
-        noise_in = np.asarray(noise_in, dtype=dtype)
+            noise_in = np.asarray(noise_in, dtype=dtype)
 
         # Recurrent noise
         var_rec = 2*var_rec/alpha
@@ -377,12 +378,15 @@ class RNN(object):
 
         # Integrate
         if self.Win is not None:
-            euler(alpha, x_t, r_t, self.Win, self.Wrec, self.Wout, self.brec,
-                  self.bout, self.u, noise_rec, f_hidden, self.r)
+            euler(alpha, x_t, r_t, self.Win, self.Wrec, self.brec, self.bout,
+                  self.u, noise_rec, f_hidden, self.r)
         else:
-            euler_no_Win(alpha, x_t, r_t, self.Wrec, self.Wout, self.brec,
-                         self.bout, noise_rec, f_hidden, self.r)
-        self.z = f_output(self.r.dot(self.Wout.T) + self.bout)
+            euler_no_Win(alpha, x_t, r_t, self.Wrec, self.brec, self.bout,
+                         noise_rec, f_hidden, self.r)
+        if self.Wout is not None:
+            self.z = f_output(self.r.dot(self.Wout.T) + self.bout)
+        else:
+            self.z = self.r
 
         # Transpose so first dimension is units
         if self.u is not None:
