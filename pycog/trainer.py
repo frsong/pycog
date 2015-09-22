@@ -176,23 +176,55 @@ class Trainer(object):
           lambda2_r : float, optional
                       Multiplier for L2 firing rate regularization.
 
+          min_error : float, optional
+                      Target error. Terminate if error is less than or equal.
+
+          learning_rate : float, optional
+                          Learning rate for gradient descent.
+
+          max_gradient_norm : float, optional
+                              Clip gradient if its norm is greater than.
+
+          bound : float, optional
+                  Lower bound for denominator in vanishing gradient regularizer.
+
+          baseline_in : float, optional
+                        Baseline input rate.
+
+          var_in : float or numpy.ndarray, optional
+                   Variance(s) for inputs.
+
+          var_rec : float or numpy.ndarray, optional
+                    If `float` or 1D `numpy.ndarray`, then recurrent units receive
+                    independent noise. If 2D `numpy.ndarray`, then noise is drawn
+                    from a multivariable normal distribution.
+
+          seed : int, optional
+                 Seed for random number generator.
+
+          structure : dict, optional
+                      Convey structure information, such as what each input represents.
+
+          rho0 : float, optional
+                 Spectral radius for the initial recurrent weight matrix.
+
+          max_iter : int, optional
+                     Maximum number of iterations for gradient descent.
+
+          dt : float, optional
+               Integration time step.
+
+          distribution_in : str, optional
+                            Distribution for the initial input weight matrix.
+
+          distribution_rec : str, optional
+                             Distribution for the initial recurrent weight matrix.
+
+          distribution_out : str, optional
+                             Distribution for the initial output weight matrix.
+
           TODO
 
-          'min_error':         0,
-          'learning_rate':     1e-2,
-          'max_gradient_norm': 1,
-          'bound':             1e-20,
-          'baseline_in':       0.2,
-          'var_in':            0.01**2,
-          'var_rec':           0.01**2,
-          'seed':              1234,
-          'structure':         {},
-          'rho0':              1.5,
-          'max_iter':          int(1e7),
-          'dt':                None,
-          'distribution_in':   None,
-          'distribution_rec':  None,
-          'distribution_out':  None,
           'gamma_k':           2,
           'checkfreq':         None,
           'patience':          None,
