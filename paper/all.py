@@ -65,9 +65,12 @@ def train(model, seed=None):
         seed = ' -s {}'.format(seed)
 
     tstart = datetime.datetime.now()
-    call("{} {} train{}"
-         .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
+    rv = call("{} {} train{}"
+               .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
     tend = datetime.datetime.now()
+
+    if rv != 0:
+        sys.exit()
 
     # Save training time
     totalmins = int((tend - tstart).total_seconds()/60)
@@ -82,6 +85,7 @@ def trials(model, ntrials, analysis=None, args=''):
                                                  join(modelspath, model),
                                                  join(analysispath, analysis),
                                                  ntrials, args))
+    print(rv)
 
 def do_action(model, action, analysis=None):
     if analysis is None:
@@ -139,7 +143,7 @@ if 'multisensory' in args:
 if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
-    train('romo', seed=99)
+    train('romo', seed=100)
     trials('romo', 400, args='--dt_save 10')
     do_action('romo', 'sort')
     do_action('romo', 'units')

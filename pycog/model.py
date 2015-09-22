@@ -116,29 +116,23 @@ class Model(object):
         # Only involve Theano for training
         from .trainer import Trainer
 
-        # Required parameters
-        params = {}
-        for k in Trainer.required:
-            try:
-                params[k] = getattr(self.m, k)
-            except:
-                print("[ {}.Model.train ] Required parameter missing.".format(THIS))
-                sys.exit()
-
-        # Seed, if given
-        if seed is not None:
-            params['seed'] = seed
-
-        # Additional parameters
-        for k in Trainer.defaults:
-            if hasattr(self.m, k):
-                params[k] = getattr(self.m, k)
-
         # The task
         try:
             task = self.m.task
         except AttributeError:
             task = Struct(generate_trial=self.m.generate_trial)
+
+        # Parameters
+        params = {}
+
+        # Seed, if given
+        if seed is not None:
+            params['seed'] = seed
+
+        # Optional parameters
+        for k in Trainer.defaults:
+            if hasattr(self.m, k):
+                params[k] = getattr(self.m, k)
 
         # Train
         trainer = Trainer(params)

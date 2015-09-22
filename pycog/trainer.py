@@ -28,11 +28,11 @@ class Trainer(object):
     Train an RNN.
 
     """
-    required = ['Nout']
     defaults = {
         'extra_info':        {},
         'Nin':               0,
         'N':                 100,
+        'Nout':              0,
         'rectify_inputs':    True,
         'train_brec':        False,
         'brec':              0,
@@ -96,19 +96,19 @@ class Trainer(object):
         ----------
 
         params : dict
-                 Parameters. See RNN.defaults for the default values.
+                 All parameters have default values, see RNN.defaults.
 
           Entries
           -------
-
-          Nout : int
-                 Number of output units.
 
           Nin : int, optional
                 Number of input units.
 
           N : int, optional
               Number of recurrent units.
+
+          Nout : int, optional
+                 Number of output units.
 
           train_brec : bool, optional
                        Whether to train recurrent biases.
@@ -223,15 +223,23 @@ class Trainer(object):
           distribution_out : str, optional
                              Distribution for the initial output weight matrix.
 
-          TODO
+          gamma_k : float, optional
+                    k in Gamma(k, theta). Note mean = k*theta, var = k*theta^2.
 
-          'gamma_k':           2,
-          'checkfreq':         None,
-          'patience':          None,
-          'init_momentum':     0,     # Not used currently
-          'momentum':          False, # Not used currently
-          'mu':                0.9,   # Not used currently
-          'method':            'sgd'  # Not used currently
+          checkfreq : int, optional
+                      Frequency with which to evaluate validation error.
+
+          patience : int, optional
+                     Terminate training if the objective function doesn't change
+                     for longer than `patience`.
+
+          init_momentum : float, optional
+                          Initial value of the momentum.
+
+          Not used currently
+          ------------------
+
+          momentum, mu, method
 
         floatX : str, optional
                  Floating-point type.
@@ -420,8 +428,9 @@ class Trainer(object):
                                       self.p['distribution_in'])
         Wrec_0 = self.init_weights(rng, self.p['Crec'],
                                    N, N, self.p['distribution_rec'])
-        Wout_0 = self.init_weights(rng, self.p['Cout'],
-                                   Nout, N, self.p['distribution_out'])
+        if Nout > 0:
+            Wout_0 = self.init_weights(rng, self.p['Cout'],
+                                       Nout, N, self.p['distribution_out'])
 
         #---------------------------------------------------------------------------------
         # Enforce Dale's Law on the initial weights
@@ -437,7 +446,8 @@ class Trainer(object):
             if Nin > 0:
                 Win_0 = abs(Win_0) # If Dale, assume inputs are excitatory
             Wrec_0 = abs(Wrec_0)
-            Wout_0 = abs(Wout_0)
+            if Nout > 0:
+                Wout_0 = abs(Wout_0)
         else:
             settings['Dale\'s Law'] = 'no'
 
@@ -488,8 +498,13 @@ class Trainer(object):
 
         if Nin > 0:
             Win = theanotools.shared(Win_0, name='Win')
+        else:
+            Win = None
         Wrec = theanotools.shared(Wrec_0,   name='Wrec')
-        Wout = theanotools.shared(Wout_0,   name='Wout')
+        if Nout > 0:
+            Wout = theanotools.shared(Wout_0, name='Wout')
+        else:
+            Wout = None
         brec = theanotools.shared(brec_0,   name='brec')
         bout = theanotools.shared(bout_0,   name='bout')
         x0   = theanotools.shared(x0_0,     name='x0')
@@ -501,8 +516,9 @@ class Trainer(object):
         trainables = []
         if Win is not None:
             trainables += [Win]
-
-        trainables += [Wrec, Wout]
+        trainables += [Wrec]
+        if Wout is not None:
+            trainables += [Wout]
 
         if self.p['train_brec']:
             settings['train recurrent bias'] = 'yes'
@@ -595,7 +611,9 @@ class Trainer(object):
             # E/I
             ei    = theanotools.shared(self.p['ei'], name='ei')
             Wrec_ = make_positive(Wrec_)*ei
-            Wout_ = make_positive(Wout_)*ei
+
+            if Nout > 0:
+                Wout_ = make_positive(Wout_)*ei
 
         #---------------------------------------------------------------------------------
         # Variables to save
@@ -605,7 +623,12 @@ class Trainer(object):
             save_values = [Win_]
         else:
             save_values = [None]
-        save_values += [Wrec_, Wout_, brec, bout, x0]
+        save_values += [Wrec_]
+        if Nout > 0:
+            save_values += [Wout_]
+        else:
+            save_values += [None]
+        save_values += [brec, bout, x0]
 
         #---------------------------------------------------------------------------------
         # Activation functions
@@ -687,7 +710,10 @@ class Trainer(object):
         # Readout
         #---------------------------------------------------------------------------------
 
-        z = f_output(T.dot(r, Wout_.T) + bout)
+        if Nout > 0:
+            z = f_output(T.dot(r, Wout_.T) + bout)
+        else:
+            z = r
 
         #---------------------------------------------------------------------------------
         # Deduce whether the task specification contains an output mask -- use a
