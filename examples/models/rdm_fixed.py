@@ -1,5 +1,5 @@
 """
-Integration task, loosely inspired by the random dot motion task.
+Integration task, loosely based on the random dot motion task.
 
   Response of neurons in the lateral intraparietal area during a combined visual
   discrimination reaction time task.

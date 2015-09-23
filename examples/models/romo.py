@@ -19,7 +19,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 2
-N    = 200
+N    = 500
 Nout = 2
 
 # E/I
@@ -33,7 +33,7 @@ NEG = 1
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-#Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5)
+Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -95,8 +95,11 @@ def generate_trial(rng, dt, params):
             fixation = 500
         else:
             fixation = 100
-        f1       = 500
-        delay    = 3000
+        f1 = 500
+        if params['name'] == 'test':
+            delay = 3000
+        else:
+            delay = tasktools.uniform(rng, dt, 1500, 3500)
         f2       = 500
         decision = 300
         T        = fixation + f1 + delay + f2 + decision
@@ -164,7 +167,6 @@ def generate_trial(rng, dt, params):
         else:
             # Fixation
             Y[e['fixation'],:] = lo
-            Y[e['f1'] + e['delay'] + e['f2'],:] = lo
 
             # Decision
             Y[e['decision'],choice]   = hi
@@ -172,7 +174,6 @@ def generate_trial(rng, dt, params):
 
             # Mask
             M[e['fixation']+e['decision'],:] = 1
-            M[e['f1'] + e['delay'] + e['f2'],:] = 1
 
         trial['outputs'] = Y
         trial['mask']    = M

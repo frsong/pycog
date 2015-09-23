@@ -53,7 +53,10 @@ def call(s):
     if simulate:
         print(3*' ' + s)
     else:
-        subprocess.call(s, shell=True)
+        rv = subprocess.call(s.split())
+        if rv != 0:
+            print("Something went wrong (return code {}).".format(rv))
+            sys.exit()
 
 def clean(model):
     call("{} {} clean".format(join(examplespath, 'do.py'), join(modelspath, model)))
@@ -65,12 +68,9 @@ def train(model, seed=None):
         seed = ' -s {}'.format(seed)
 
     tstart = datetime.datetime.now()
-    rv = call("{} {} train{}"
-               .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
+    call("{} {} train{}"
+         .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
     tend = datetime.datetime.now()
-
-    if rv != 0:
-        sys.exit()
 
     # Save training time
     totalmins = int((tend - tstart).total_seconds()/60)
@@ -81,11 +81,10 @@ def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
         analysis = model
 
-    rv = call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
-                                                 join(modelspath, model),
-                                                 join(analysispath, analysis),
-                                                 ntrials, args))
-    print(rv)
+    call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
+                                            join(modelspath, model),
+                                            join(analysispath, analysis),
+                                            ntrials, args))
 
 def do_action(model, action, analysis=None):
     if analysis is None:
@@ -144,7 +143,7 @@ if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
     train('romo', seed=100)
-    trials('romo', 400, args='--dt_save 10')
+    trials('romo', 200, args='--dt_save 10')
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')

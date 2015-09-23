@@ -445,15 +445,15 @@ class RNN(object):
         plot.plot(ntrials, cost, color=Figure.colors('red'), lw=1, label='Reg. term')
         all.append(cost)
 
+        plot.xlim(0, ntrials[-1])
+        plot.lim('y', all, lower=0)
+
+        plot.xlabel(r'Number of trials ($\times 10^4$)')
+        plot.ylabel('Objective function terms')
+
         # Legend
         props = {'prop': {'size': 7}}
         plot.legend(bbox_to_anchor=(1, 1), **props)
-
-        plot.xlim(ntrials[0], ntrials[-1])
-        plot.lim('y', all, lower=0)
-
-        plot.ylabel('Loss terms')
-        plot.xlabel(r'Number of trials ($\times 10^4$)')
 
         #---------------------------------------------------------------------------------
         # Error

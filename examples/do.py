@@ -296,5 +296,3 @@ elif action == 'run':
 
 else:
     print("Unrecognized action \'{}\'.".format(action))
-
-sys.exit(0)

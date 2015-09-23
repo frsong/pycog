@@ -40,6 +40,10 @@ def get_sortedfile(p):
 def get_choice(trial):
     return np.argmax(trial['z'][:,-1])
 
+# Define "active" units
+def is_active(r):
+    return np.std(r) > 0.1
+
 def safe_divide(x):
     if x == 0:
         return 0
@@ -290,7 +294,7 @@ def get_active_units(sorted_trials):
     for i in xrange(N):
         active = False
         for r in sorted_trials.values():
-            if np.std(r[i]) > 0.1:
+            if is_active(r[i]):
                 active = True
                 break
         if active:
@@ -489,7 +493,7 @@ def do(action, args, p):
             # Check if the unit does anything
             active = False
             for condition_averaged in sorted_trials.values():
-                if np.std(condition_averaged[i]) > 0.1:
+                if is_active(condition_averaged[i]):
                     active = True
                     break
             if not active:

@@ -1,5 +1,5 @@
 """
-A multisensory integration task, loosely inspired by
+A multisensory integration task, loosely based on
 
   A category-free neural population supports evolving demands during decision-making.
   D. Raposo, M. T. Kaufman, & A. K. Churchland, Nature Neurosci. 2014.

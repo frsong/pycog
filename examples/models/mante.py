@@ -1,5 +1,5 @@
 """
-Context-dependent integration task, loosely inspired by
+Context-dependent integration task, loosely based on
 
   Context-dependent computation by recurrent dynamics in prefrontal cortex.
   V. Mante, D. Sussillo, K. V. Shinoy, & W. T. Newsome, Nature 2013.
