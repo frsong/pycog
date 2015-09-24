@@ -33,8 +33,16 @@ a = p.parse_args()
 simulate = a.simulate
 args     = a.args
 if not args:
-    args = ['rdm', 'structure', 'mante', 'multisensory', 'romo',
-            'lee', 'lee_areas', 'connectivity', 'performance']
+    args = [
+        'rdm',                       # Fig. 2
+        'structure',                 # Fig. 3
+        'mante',                     # Fig. 4
+        'multisensory',              # Fig. 5
+        'romo',                      # Fig. 6
+        'lee',                       # Fig. 7
+        'lee_areas', 'connectivity', # Fig. 8
+        'performance'                # Fig. 9
+        ]
 
 #=========================================================================================
 # Shared steps
