@@ -47,8 +47,8 @@ tmin = 0
 tmax = f2_end
 
 units = {
-    'pos':    46,
-    'switch': 4,
+    'L': 85,
+    'R': 363,
     }
 
 # Color map
@@ -117,13 +117,13 @@ x_sig = x2 + 0.015
 w_sig = 0.235
 
 plots.update({
-    'psy':    fig.add([x_psy, y_psy, w_psy, h_psy]),
-    'pos':    fig.add([x0, y1, w, h]),
-    'switch': fig.add([x1, y1, w, h]),
-    'sig':    fig.add([x_sig, y1, w_sig, h]),
-    'tune':   fig.add([x_tune, y_tune, w_tune, h_tune]),
-    'stim':   fig.add([x_stim, y_a1,   w_a1,   h_a1]),
-    'delay':  fig.add([x_delay, y_a1,   w_a1,   h_a1])
+    'psy':   fig.add([x_psy, y_psy, w_psy, h_psy]),
+    'L':     fig.add([x0, y1, w, h]),
+    'R':     fig.add([x1, y1, w, h]),
+    'sig':   fig.add([x_sig, y1, w_sig, h]),
+    'tune':  fig.add([x_tune, y_tune, w_tune, h_tune]),
+    'stim':  fig.add([x_stim, y_a1,   w_a1,   h_a1]),
+    'delay': fig.add([x_delay, y_a1,   w_a1,   h_a1])
     })
 
 #-----------------------------------------------------------------------------------------
@@ -162,18 +162,15 @@ plot = plots['delay']
 plot.xlabel('$a_1$ (mid-delay)', labelpad=3)
 plot.ylabel('$a_1$ (end delay)', labelpad=2)
 
-plot = plots['pos']
+plot = plots['L']
 plot.xlabel('Time from $f_1$ onset (sec)')
 plot.ylabel('Firing rate (a.u.)')
 
-plot = plots['pos']
-plot.text_upper_center('Positively tuned', dy=0.1, fontsize=7)
-
-#plot = plots['neg']
-#plot.text_upper_center('Negatively tuned', dy=0.1, fontsize=7)
-
-plot = plots['switch']
+plot = plots['L']
 plot.text_upper_center('Pos. tuned during $f_1$, neg. during $f_2$', dy=0.1, fontsize=7)
+
+plot = plots['R']
+plot.text_upper_center('Neg. tuned', dy=0.1, fontsize=7)
 
 plot = plots['<']
 plot.xlabel('Time from $f_1$ onset (sec)')
@@ -250,10 +247,11 @@ romo.tuning_corr(trialsfile, sortedfile,
                  t0=t0, ms=1.5)
 
 plot = plots['tune']
+plot.ylim(-0.5, 1)
 plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
 plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
 plot.xticks([0, 1, 2, 3])
-plot.yticks([-1, 0, 1])
+plot.yticks([0, 1])
 
 plot = plots['sig']
 plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
@@ -286,7 +284,7 @@ for name, unit in units.items():
     plot.highlight(1e-3*(f2_start-t0), 1e-3*(f2_end-t0))
     plot.xticks([0, 1, 2, 3, 4])
 
-    if name == 'pos':
+    if name == 'R':
         ymin, ymax = plot.get_ylim()
         plot.text(1e-3*((f1_start + f1_end)/2 - t0), 1.03*ymax, '$f_1$',
                   ha='center', va='bottom', fontsize=7)

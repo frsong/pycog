@@ -132,3 +132,18 @@ def performance_2afc(trials, z):
                for choice, trial in zip(choices, trials) if trial['info']]
 
     return 100*sum(correct)/len(correct)
+
+def performance_2afc_min_condition(trials, z):
+    ends    = [len(trial['t'])-1 for trial in trials]
+    choices = [np.argmax(z[ends[i],i]) for i, end in enumerate(ends)]
+
+    correct = {}
+    for choice, trial in zip(choices, trials):
+        if not trial['info']:
+            continue
+
+        cond = tuple(trial['info'].values())
+        correct.setdefault(cond, []).append(choice == trial['info']['choice'])
+    correct = [sum(c)/len(c) for c in correct.values()]
+
+    return 100*min(correct)

@@ -2,6 +2,7 @@
 from __future__ import division
 
 import os
+from   glob    import glob
 from   os.path import join
 
 import numpy as np
@@ -21,8 +22,9 @@ here      = get_here(__file__)
 base      = get_parent(here)
 paperpath = join(base, 'paper')
 figspath  = join(here, 'figs')
+timespath = join(paperpath, 'times')
 
-def savefile(model):
+def get_savefile(model):
     return join(base, 'examples', 'work', 'data', model, model+'.pkl')
 
 models = [('rdm_varstim', '1A: Decision-making (variable stim.)'),
@@ -32,7 +34,7 @@ models = [('rdm_varstim', '1A: Decision-making (variable stim.)'),
           ('rdm_fixed', '2C: Decision-making (Dale, fixed)'),
           ('mante', '3: Context-dependent int.'),
           ('multisensory', '4: Multisensory int.'),
-          ('romo', '5: Parametric working memory'),
+          #('romo', '5: Parametric working memory'),
           ('lee', '6: Lee')]
 labels = list('ABCDEFGHI')
 
@@ -92,22 +94,22 @@ for k in xrange(len(models)):
 
 clr_target = Figure.colors('red')
 clr_actual = '0.2'
+clr_seeds  = '0.8'
 
 for model, _ in models:
-    rnn = RNN(savefile(model), verbose=True)
+    rnn  = RNN(get_savefile(model), verbose=True)
+    xall = []
 
     ntrials     = [int(costs[0]) for costs in rnn.costs_history]
     ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
     performance = [costs[1][-1] for costs in rnn.costs_history]
 
-    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed', 'rdm_rt']:
+    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed', 'rdm_varstim', 'rdm_rt']:
         target = 85
-    elif model in ['rdm_varstim', 'multisensory']:
-        target = 85
-    elif model in ['mante']:
+    elif model in ['mante', 'multisensory']:
         target = 90
     elif model in ['romo']:
-        target = 94
+        target = 85
     elif model in ['lee']:
         target = 0.05
     else:
@@ -115,9 +117,8 @@ for model, _ in models:
 
     plot = plots[model]
 
-    plot.plot(ntrials, performance, color=clr_actual, lw=1)
-    plot.xlim(ntrials[0], ntrials[-1])
-    plot.hline(target, color=clr_target, lw=0.75)
+    plot.plot(ntrials, performance, color=clr_actual, lw=1, zorder=10)
+    xall.append(ntrials)
 
     # y-axis
     if model == 'lee':
@@ -138,6 +139,26 @@ for model, _ in models:
     # Info
     plot.text_lower_right(nunits, dy=0.13, fontsize=7, color=Figure.colors('green'))
     plot.text_lower_right(time,   dy=0.02, fontsize=7, color=Figure.colors('strongblue'))
+
+    # Other seeds
+    gstring = join(base, 'examples', 'work', 'data', model, model+'_s*.pkl')
+    savefiles = glob(gstring)
+    for savefile in savefiles:
+        if 'init' in savefile or 'copy' in savefile:
+            continue
+
+        rnnx        = RNN(savefile, verbose=True)
+        ntrials     = [int(costs[0]) for costs in rnnx.costs_history]
+        ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
+        performance = [costs[1][-1] for costs in rnnx.costs_history]
+
+        plot.plot(ntrials, performance, color=clr_seeds, lw=0.75, zorder=5)
+        xall.append(ntrials)
+
+    # x-lim
+    xall = np.concatenate(xall)
+    plot.xlim(min(xall), max(xall))
+    plot.hline(target, color=clr_target, lw=0.75)
 
 #=========================================================================================
 

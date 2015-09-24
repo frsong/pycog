@@ -4,10 +4,12 @@ Reproduce every figure in the paper from scratch.
 
 Note
 ----
-For some tasks we run many trials to get pretty psychometric curves, and this is
-all done in memory.
+We run a fair number of trials to get pretty psychometric curves, and this is done
+in one big chunk of memory.
 
 """
+from __future__ import division
+
 import argparse
 import datetime
 import os
@@ -77,6 +79,23 @@ def train(model, seed=None):
     timefile = join(timespath, model + '_time.txt')
     np.savetxt(timefile, [totalmins], fmt='%d')
 
+def train_seeds(model, start_seed=1, ntrain=5):
+    for seed in xrange(start_seed, start_seed+ntrain):
+        suffix = '_s{}'.format(seed)
+        s = ' --seed {} --suffix {}'.format(seed, suffix)
+
+        tstart = datetime.datetime.now()
+        call("{} {} clean{}"
+             .format(join(examplespath, 'do.py'), join(modelspath, model), s))
+        call("{} {} train{}"
+             .format(join(examplespath, 'do.py'), join(modelspath, model), s))
+        tend = datetime.datetime.now()
+
+        # Save training time
+        totalmins = int((tend - tstart).total_seconds()/60)
+        timefile = join(timespath, model + suffix + '_time.txt')
+        np.savetxt(timefile, [totalmins], fmt='%d')
+
 def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
         analysis = model
@@ -104,32 +123,36 @@ if 'rdm' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 2000, 'rdm')
+        trials(m, 3000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
         elif m == 'rdm_rt':
             do_action(m, 'sort_response', 'rdm')
     figure('fig_rdm')
+    for m in models:
+        train_seeds(m)
 
 if 'structure' in args:
     print("=> Structure")
-    seeds = {'rdm_nodale': 100, 'rdm_dense': 100, 'rdm_fixed': 100}
-    for m, seed in seeds.items():
-        #if m != 'rdm_fixed': continue
+    models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
+    for m in models:
         clean(m)
-        train(m, seed=seed)
+        train(m)
         trials(m, 3000, 'rdm')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
+    for m in models:
+        train_seeds(m)
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
     clean('mante')
     train('mante')
-    trials('mante', 100, args='--dt_save 10')
+    trials('mante', 500, args='--dt_save 20')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     figure('fig_mante')
+    train_seeds('mante')
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
@@ -138,15 +161,17 @@ if 'multisensory' in args:
     trials('multisensory', 500, args='--dt_save 10')
     do_action('multisensory', 'sort')
     figure('fig_multisensory')
+    train_seeds('multisensory')
 
 if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
-    train('romo', seed=100)
-    trials('romo', 200, args='--dt_save 10')
+    train('romo')
+    trials('romo', 500, args='--dt_save 20')
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')
+    train_seeds('romo')
 
 if 'lee' in args:
     print("=> Sequence generation task")
@@ -154,6 +179,7 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100)
     figure('fig_lee')
+    train_seeds('lee')
 
 if 'lee_areas' in args:
     print("=> Sequence generation task (with areas)")
@@ -161,6 +187,7 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee')
     figure('fig_lee_areas')
+    train_seeds('lee_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity")

@@ -27,6 +27,7 @@ p.add_argument('model_file', help="model specification")
 p.add_argument('action', nargs='?', default='check')
 p.add_argument('args', nargs='*')
 p.add_argument('-s', '--seed', type=int, default=100)
+p.add_argument('--suffix', type=str, default='')
 p.add_argument('-p', '--ppn', type=int, default=1)
 p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 p.add_argument('--dt', type=float, default=0.5)
@@ -41,6 +42,7 @@ if not modelfile.endswith('.py'):
 action  = a.action
 args    = a.args
 seed    = a.seed
+suffix  = a.suffix
 ppn     = a.ppn
 gpus    = a.gpus
 dt      = a.dt
@@ -80,7 +82,7 @@ for path in [datapath, figspath, scratchpath, trialspath]:
     mkdir_p(path)
 
 # File to store model in
-savefile = join(datapath, name+'.pkl')
+savefile = join(datapath, name + suffix + '.pkl')
 
 #=========================================================================================
 # Check log file

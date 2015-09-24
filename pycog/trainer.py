@@ -78,9 +78,7 @@ class Trainer(object):
         'gamma_k':           2,
         'checkfreq':         None,
         'patience':          None,
-        'init_momentum':     0,     # Not used currently
         'momentum':          False, # Not used currently
-        'mu':                0.9,   # Not used currently
         'method':            'sgd'  # Not used currently
         }
     defaults['performance'] = None
@@ -239,7 +237,7 @@ class Trainer(object):
           Not used currently
           ------------------
 
-          momentum, mu, method
+          momentum, method
 
         floatX : str, optional
                  Floating-point type.

@@ -56,10 +56,10 @@ fmin = np.min(fall)
 fmax = np.max(fall)
 
 def scale_p(f):
-    return 0.3 + 0.7*(f - fmin)/(fmax - fmin)
+    return 0.2 + 0.8*(f - fmin)/(fmax - fmin)
 
 def scale_n(f):
-    return 0.3 + 0.7*(fmax - f)/(fmax - fmin)
+    return 0.2 + 0.8*(fmax - f)/(fmax - fmin)
 
 def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ def generate_trial(rng, dt, params):
         if params['name'] == 'test':
             delay = 3000
         else:
-            delay = tasktools.uniform(rng, dt, 1500, 3500)
+            delay = tasktools.uniform(rng, dt, 2500, 3500)
         f2       = 500
         decision = 300
         T        = fixation + f1 + delay + f2 + decision
@@ -183,11 +183,11 @@ def generate_trial(rng, dt, params):
     return trial
 
 # Performance measure
-performance = tasktools.performance_2afc
+performance = tasktools.performance_2afc_min_condition
 
 # Termination criterion
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 94
+    return np.mean(performance_history[-5:]) > 85
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)
