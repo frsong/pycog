@@ -66,6 +66,7 @@ def call(s):
         rv = subprocess.call(s.split())
         if rv != 0:
             print("Something went wrong (return code {}).".format(rv))
+            sys.stdout.flush()
             sys.exit()
 
 def clean(model):
@@ -154,13 +155,14 @@ if 'structure' in args:
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
-    clean('mante')
-    train('mante')
-    trials('mante', 500, args='--dt_save 20')
-    do_action('mante', 'sort')
-    do_action('mante', 'regress')
-    figure('fig_mante')
-    train_seeds('mante')
+    #clean('mante')
+    #train('mante')
+    #trials('mante', 200, args='--dt_save 10')
+    #do_action('mante', 'sort')
+    #do_action('mante', 'regress')
+    do_action('mante', 'units')
+    #figure('fig_mante')
+    #train_seeds('mante')
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
@@ -175,7 +177,7 @@ if 'romo' in args:
     print("=> Parametric working memory task")
     clean('romo')
     train('romo')
-    trials('romo', 500, args='--dt_save 20')
+    trials('romo', 100, args='--dt_save 10')
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')

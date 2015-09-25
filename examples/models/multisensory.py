@@ -209,8 +209,9 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
+TARGET_PERFORMANCE = 90
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > 90
+    return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 
 # Validation dataset
 n_validation = 100*(nconditions_training + 1)

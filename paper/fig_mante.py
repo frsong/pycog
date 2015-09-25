@@ -14,7 +14,7 @@ from examples.analysis import mante
 import paper
 
 #=========================================================================================
-# Paths
+# Setup
 #=========================================================================================
 
 here     = get_here(__file__)
@@ -23,6 +23,8 @@ figspath = join(here, 'figs')
 trialsfile  = paper.scratchpath + '/mante/trials/mante_trials.pkl'
 sortedfile  = paper.scratchpath + '/mante/trials/mante_sorted.pkl'
 betafile    = here + '/../examples/work/data/mante/mante_beta.pkl'
+
+units = [0, 1, 2, 3]
 
 #=========================================================================================
 # Figure setup
@@ -192,8 +194,7 @@ epochs = trials[0]['info']['epochs']
 stimulus_start, stimulus_end  = epochs['stimulus']
 
 # Plot units
-units = [100, 125, 138, 385]
-yall  = []
+yall = []
 for i, unit in enumerate(units):
     mante_plots = {
         'choice':         plots[str(i)+'_choice'],

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 from __future__ import division
 
+import imp
 import os
 from   glob    import glob
 from   os.path import join
@@ -18,24 +19,25 @@ import paper
 # Setup
 #=========================================================================================
 
-here      = get_here(__file__)
-base      = get_parent(here)
-paperpath = join(base, 'paper')
-figspath  = join(here, 'figs')
-timespath = join(paperpath, 'times')
+here       = get_here(__file__)
+base       = get_parent(here)
+modelspath = join(base, 'examples', 'models')
+paperpath  = join(base, 'paper')
+figspath   = join(here, 'figs')
+timespath  = join(paperpath, 'times')
 
 def get_savefile(model):
     return join(base, 'examples', 'work', 'data', model, model+'.pkl')
 
-models = [('rdm_varstim', '1A: Decision-making (variable stim.)'),
-          ('rdm_rt', '1B: Decision-making (reaction-time)'),
-          ('rdm_nodale', '2A: Decision-making (no Dale)'),
-          ('rdm_dense', '2B: Decision-making (Dale, dense)'),
-          ('rdm_fixed', '2C: Decision-making (Dale, fixed)'),
-          ('mante', '3: Context-dependent int.'),
-          ('multisensory', '4: Multisensory int.'),
-          #('romo', '5: Parametric working memory'),
-          ('lee', '6: Lee')]
+models = [('rdm_varstim',  '2A: Decision-making (variable stim.)'),
+          ('rdm_rt',       '2B: Decision-making (reaction-time)'),
+          ('rdm_nodale',   '3A: Decision-making (no Dale)'),
+          ('rdm_dense',    '3B: Decision-making (Dale, dense)'),
+          ('rdm_fixed',    '3C: Decision-making (Dale, fixed)'),
+          ('mante',        '4: Context-dependent int.'),
+          ('multisensory', '5: Multisensory int.'),
+          ('romo',         '6: Parametric working memory'),
+          ('lee',          '7: Lee')]
 labels = list('ABCDEFGHI')
 
 #=========================================================================================
@@ -79,6 +81,9 @@ plot = plots[models[0][0]]
 plot.xlabel(r'Number of trials ($\times 10^4$)')
 plot.ylabel('Percent correct')
 
+plot = plots['romo']
+plot.ylabel('Min. percent correct')
+
 plot = plots[models[-1][0]]
 plot.ylabel('Error in eye position')
 
@@ -97,6 +102,8 @@ clr_actual = '0.2'
 clr_seeds  = '0.8'
 
 for model, _ in models:
+    plot = plots[model]
+
     rnn  = RNN(get_savefile(model), verbose=True)
     xall = []
 
@@ -104,18 +111,17 @@ for model, _ in models:
     ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
     performance = [costs[1][-1] for costs in rnn.costs_history]
 
-    if model in ['rdm_nodale', 'rdm_dense', 'rdm_fixed', 'rdm_varstim', 'rdm_rt']:
-        target = 85
-    elif model in ['mante', 'multisensory']:
-        target = 90
-    elif model in ['romo']:
-        target = 85
-    elif model in ['lee']:
-        target = 0.05
+    # Get target performance
+    modelfile = join(modelspath, model + '.py')
+    try:
+        m = imp.load_source('model', modelfile)
+    except IOError:
+        print("Couldn't load model module from {}".format(modelfile))
+        sys.exit()
+    if 'lee' in model:
+        target = m.min_error
     else:
-        raise ValueError("Unknown task {}".format(model))
-
-    plot = plots[model]
+        target = m.TARGET_PERFORMANCE
 
     plot.plot(ntrials, performance, color=clr_actual, lw=1, zorder=10)
     xall.append(ntrials)
@@ -124,7 +130,10 @@ for model, _ in models:
     if model == 'lee':
         plot.yscale('log')
     else:
-        plot.ylim(40, 100)
+        if model == 'romo':
+            plot.ylim(0, 100)
+        else:
+            plot.ylim(40, 100)
 
     # Number of units
     nunits = '{} units'.format(rnn.p['N'])
@@ -137,8 +146,10 @@ for model, _ in models:
         time = 'X mins'
 
     # Info
-    plot.text_lower_right(nunits, dy=0.13, fontsize=7, color=Figure.colors('green'))
-    plot.text_lower_right(time,   dy=0.02, fontsize=7, color=Figure.colors('strongblue'))
+    plot.text_lower_right(nunits, dy=0.13, fontsize=7, color=Figure.colors('green'),
+                          zorder=20)
+    plot.text_lower_right(time,   dy=0.02, fontsize=7, color=Figure.colors('strongblue'),
+                          zorder=20)
 
     # Other seeds
     gstring = join(base, 'examples', 'work', 'data', model, model+'_s*.pkl')

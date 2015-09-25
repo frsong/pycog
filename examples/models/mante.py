@@ -18,7 +18,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 6
-N    = 500
+N    = 300
 Nout = 2
 
 # E/I
@@ -28,7 +28,7 @@ ei, EXC, INH = tasktools.generate_ei(N)
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5)
+Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -210,8 +210,9 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
+TARGET_PERFORMANCE = 90
 def terminate(pcorrect_history):
-    return np.mean(pcorrect_history[-5:]) > 90
+    return np.mean(pcorrect_history[-5:]) > TARGET_PERFORMANCE
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)
