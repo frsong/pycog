@@ -2,10 +2,13 @@
 """
 Reproduce every figure in the paper from scratch.
 
-Note
-----
-We run a fair number of trials to get pretty psychometric curves, and this is done
-in one big chunk of memory.
+Notes
+-----
+
+- Running this script in its entirety will take some time.
+
+- We run a fair number of trials to get pretty psychometric curves, and this is done
+  in one big chunk of memory.
 
 """
 from __future__ import division
@@ -89,6 +92,7 @@ def train(model, seed=None):
     np.savetxt(timefile, [totalmins], fmt='%d')
 
 def train_seeds(model, start_seed=1, ntrain=5):
+    return
     for seed in xrange(start_seed, start_seed+ntrain):
         suffix = '_s{}'.format(seed)
         s = ' --seed {} --suffix {}'.format(seed, suffix)
@@ -132,11 +136,13 @@ if 'rdm' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 3000, 'rdm')
+        trials(m, 4000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
+            do_action(m, 'units_stim_onset', 'rdm')
         elif m == 'rdm_rt':
             do_action(m, 'sort_response', 'rdm')
+            do_action(m, 'units_response', 'rdm')
     figure('fig_rdm')
     for m in models:
         train_seeds(m)
@@ -147,7 +153,7 @@ if 'structure' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 3000, 'rdm')
+        trials(m, 4000, 'rdm')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     for m in models:
@@ -155,14 +161,14 @@ if 'structure' in args:
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
-    #clean('mante')
-    #train('mante')
-    #trials('mante', 200, args='--dt_save 10')
-    #do_action('mante', 'sort')
-    #do_action('mante', 'regress')
+    clean('mante')
+    train('mante')
+    trials('mante', 200, args='--dt_save 10')
+    do_action('mante', 'sort')
+    do_action('mante', 'regress')
     do_action('mante', 'units')
-    #figure('fig_mante')
-    #train_seeds('mante')
+    figure('fig_mante')
+    train_seeds('mante')
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")

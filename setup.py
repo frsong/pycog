@@ -22,6 +22,7 @@ except ImportError:
 else:
     use_cython = True
 
+'''
 # Installation class
 class pycog_install(install):
     """
@@ -36,6 +37,7 @@ class pycog_install(install):
             mode = raw_input("Installation mode [develop]/cancel: ").strip()
         if mode in ['', 'develop']:
             self.distribution.run_command('develop')
+'''
 
 # Build information
 if use_cython:
@@ -46,7 +48,7 @@ if use_cython:
 else:
     ext_modules = [Extension('pycog.euler', ['pycog/euler.c'])]
     cmdclass    = {}
-cmdclass['install'] = pycog_install
+#cmdclass['install'] = pycog_install
 
 # Setup
 setup(

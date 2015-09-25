@@ -222,8 +222,8 @@ plot      = plots['F']
 plot_dist = plots['Finset']
 
 rdm.chronometric_function(rt_trialsfile, plot, plot_dist, ms=5)
-plot.ylim(200, 1200)
-plot.yticks(range(200, 1200+1, 200))
+plot.ylim(200, 1100)
+plot.yticks(range(200, 1100, 200))
 plot_dist.xlim(0, 1500)
 plot_dist.xticks([0, 1500])
 plot_dist.axis_off('left')

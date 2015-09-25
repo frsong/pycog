@@ -21,10 +21,10 @@ The code uses (but doesn't require) one function from the [NetworkX](https://net
 Go to the pycog directory and type
 
 ```
-python setup.py develop
+python setup.py install
 ```
 
-If this fails for some reason, simply add the ``pycog`` path to your ``$PYTHONPATH``. To build the Cython extension, type
+If this fails for some reason, simply add the directory containing ``pycog`` path to your ``$PYTHONPATH``. To build the Cython extension, type
 
 ```
 python setup.py build_ext --inplace

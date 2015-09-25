@@ -1,5 +1,6 @@
 """
-Integration task, loosely inspired by the random dot motion discrimination task.
+Perceptual decision-making task, loosely based on the random dot motion
+discrimination task.
 
 Variable stimulus durations taken from
 

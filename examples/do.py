@@ -31,7 +31,7 @@ p.add_argument('--suffix', type=str, default='')
 p.add_argument('-p', '--ppn', type=int, default=1)
 p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 p.add_argument('--dt', type=float, default=0.5)
-p.add_argument('--dt_save', type=float, default=2)
+p.add_argument('--dt_save', type=float, default=5)
 a = p.parse_args()
 
 # Model file
