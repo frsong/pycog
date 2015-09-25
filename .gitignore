@@ -4,6 +4,7 @@
 *.so
 *.egg-info/
 build/
+dist/
 examples/work/
 paper/figs/
 paper/times/
