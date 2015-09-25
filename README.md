@@ -24,7 +24,7 @@ Go to the pycog directory and type
 python setup.py install
 ```
 
-If this fails for some reason, simply add the directory containing ``pycog`` path to your ``$PYTHONPATH``. To build the Cython extension, type
+If this fails for some reason, simply add the directory containing ``pycog`` to your ``$PYTHONPATH``. To build the Cython extension, type
 
 ```
 python setup.py build_ext --inplace
