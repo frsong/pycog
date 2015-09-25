@@ -39,6 +39,12 @@ Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
 #-----------------------------------------------------------------------------------------
+# Noise
+#-----------------------------------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------------------------------
 # Task structure
 #-----------------------------------------------------------------------------------------
 
@@ -167,7 +173,7 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 85
+TARGET_PERFORMANCE = 90
 def terminate(pcorrect_history):
     return np.mean(pcorrect_history[-5:]) > TARGET_PERFORMANCE
 

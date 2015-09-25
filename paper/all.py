@@ -5,9 +5,9 @@ Reproduce every figure in the paper from scratch.
 Notes
 -----
 
-- Running this script in its entirety will take some time.
+* Running this script in its entirety will take some time.
 
-- We run a fair number of trials to get pretty psychometric curves, and this is done
+* We run a fair number of trials to get pretty psychometric curves, and this is done
   in one big chunk of memory.
 
 """
@@ -73,7 +73,8 @@ def call(s):
             sys.exit()
 
 def clean(model):
-    call("{} {} clean".format(join(examplespath, 'do.py'), join(modelspath, model)))
+    call("python {} {} clean"
+         .format(join(examplespath, 'do.py'), join(modelspath, model)))
 
 def train(model, seed=None):
     if seed is None:
@@ -82,7 +83,7 @@ def train(model, seed=None):
         seed = ' -s {}'.format(seed)
 
     tstart = datetime.datetime.now()
-    call("{} {} train{}"
+    call("python {} {} train{}"
          .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
     tend = datetime.datetime.now()
 
@@ -98,9 +99,9 @@ def train_seeds(model, start_seed=1, ntrain=5):
         s = ' --seed {} --suffix {}'.format(seed, suffix)
 
         tstart = datetime.datetime.now()
-        call("{} {} clean{}"
+        call("python {} {} clean{}"
              .format(join(examplespath, 'do.py'), join(modelspath, model), s))
-        call("{} {} train{}"
+        call("python {} {} train{}"
              .format(join(examplespath, 'do.py'), join(modelspath, model), s))
         tend = datetime.datetime.now()
 
@@ -113,20 +114,22 @@ def trials(model, ntrials, analysis=None, args=''):
     if analysis is None:
         analysis = model
 
-    call("{} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
-                                            join(modelspath, model),
-                                            join(analysispath, analysis),
-                                            ntrials, args))
+    call("python {} {} run {} trials {} {}".format(join(examplespath, 'do.py'),
+                                                   join(modelspath, model),
+                                                   join(analysispath, analysis),
+                                                   ntrials, args))
 
 def do_action(model, action, analysis=None):
     if analysis is None:
         analysis = model
 
-    call("{} {} run {} {}".format(join(examplespath, 'do.py'), join(modelspath, model),
-                                  join(analysispath, analysis), action))
+    call("python {} {} run {} {}".format(join(examplespath, 'do.py'),
+                                         join(modelspath, model),
+                                         join(analysispath, analysis),
+                                         action))
 
 def figure(fig):
-    call(join(paperpath, fig + '.py'))
+    call('python ' + join(paperpath, fig + '.py'))
 
 #=========================================================================================
 
@@ -136,7 +139,7 @@ if 'rdm' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 4000, 'rdm')
+        trials(m, 3000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
             do_action(m, 'units_stim_onset', 'rdm')
