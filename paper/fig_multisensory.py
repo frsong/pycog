@@ -262,13 +262,6 @@ for name, unit in units.items():
     all.append(multisensory.plot_unit(unit, sortedfile, plots[name],
                                       t0=t0, tmin=tmin, tmax=tmax, lw=1.25))
 
-#plots['choice'].yticks([])
-#plots['modality'].yticks([])
-#plots['mixed'].yticks([])
-
-# Shared axes
-#fig.shared_lim([plots[p] for p in units.keys()], 'y', all, lower=0)
-
 # Legend
 prop = {'prop': {'size': 5.5},
         'handlelength': 1.7, 'handletextpad': 1.2, 'labelspacing': 0.5}
