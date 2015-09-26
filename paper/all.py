@@ -134,7 +134,7 @@ def figure(fig):
 #=========================================================================================
 
 if 'rdm' in args:
-    print("=> RDM")
+    print("=> Perceptual decision-making task")
     models = ['rdm_varstim', 'rdm_rt']
     for m in models:
         clean(m)
@@ -151,7 +151,7 @@ if 'rdm' in args:
         train_seeds(m)
 
 if 'structure' in args:
-    print("=> Structure")
+    print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
     for m in models:
         clean(m)
@@ -204,7 +204,7 @@ if 'romo' in args:
     train_seeds('romo')
 
 if 'lee' in args:
-    print("=> Sequence generation task")
+    print("=> Eye-movement sequence execution task")
     clean('lee')
     train('lee')
     trials('lee', 100)
@@ -212,7 +212,7 @@ if 'lee' in args:
     train_seeds('lee')
 
 if 'lee_areas' in args:
-    print("=> Sequence generation task (with areas)")
+    print("=> Eye-movement sequence execution task (with areas)")
     clean('lee_areas')
     train('lee_areas')
     trials('lee_areas', 100, 'lee')
@@ -220,7 +220,7 @@ if 'lee_areas' in args:
     train_seeds('lee_areas')
 
 if 'connectivity' in args:
-    print("=> Connectivity")
+    print("=> Connectivity for sequence execution task")
     figure('fig_connectivity')
 
 if 'performance' in args:
