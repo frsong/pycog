@@ -81,16 +81,16 @@ fmin = min(training_freqs)
 fmax = max(training_freqs)
 
 def scale_v_p(f):
-    return 0.5 + 0.6*(f - fmin)/(fmax - fmin)
+    return 0.4 + 0.8*(f - fmin)/(fmax - fmin)
 
 def scale_a_p(f):
-    return 0.5 + 0.6*(f - fmin)/(fmax - fmin)
+    return 0.4 + 0.8*(f - fmin)/(fmax - fmin)
 
 def scale_v_n(f):
-    return 0.5 + 0.6*(fmax - f)/(fmax - fmin)
+    return 0.4 + 0.8*(fmax - f)/(fmax - fmin)
 
 def scale_a_n(f):
-    return 0.5 + 0.6*(fmax - f)/(fmax - fmin)
+    return 0.4 + 0.8*(fmax - f)/(fmax - fmin)
 
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ def generate_trial(rng, dt, params):
             fixation = 100
         stimulus = 1000
         decision = 300
-        T       = fixation + stimulus + decision
+        T        = fixation + stimulus + decision
 
         epochs = {
             'fixation': (0, fixation),
@@ -209,7 +209,7 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 90
+TARGET_PERFORMANCE = 87
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 

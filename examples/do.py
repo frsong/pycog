@@ -65,7 +65,7 @@ prefix = os.path.basename(here)
 name = os.path.splitext(os.path.basename(modelfile))[0]
 
 # Scratch
-scratchroot = os.environ.get('SCRATCH', join(os.environ['HOME'], 'scratch'))
+scratchroot = os.environ.get('SCRATCH', join(os.path.expanduser('~'), 'scratch'))
 scratchpath = join(scratchroot, 'work', prefix, name)
 
 # Theano

@@ -431,7 +431,7 @@ class Trainer(object):
                                        Nout, N, self.p['distribution_out'])
 
         #---------------------------------------------------------------------------------
-        # Enforce Dale's Law on the initial weights
+        # Enforce Dale's law on the initial weights
         #---------------------------------------------------------------------------------
 
         settings['Nin/N/Nout'] = '{}/{}/{}'.format(Nin, N, Nout)
@@ -439,7 +439,7 @@ class Trainer(object):
         if self.p['ei'] is not None:
             Nexc = len(np.where(self.p['ei'] > 0)[0])
             Ninh = len(np.where(self.p['ei'] < 0)[0])
-            settings['Dale\'s Law'] = 'E/I = {}/{}'.format(Nexc, Ninh)
+            settings['Dale\'s law'] = 'E/I = {}/{}'.format(Nexc, Ninh)
 
             if Nin > 0:
                 Win_0 = abs(Win_0) # If Dale, assume inputs are excitatory
@@ -447,7 +447,7 @@ class Trainer(object):
             if Nout > 0:
                 Wout_0 = abs(Wout_0)
         else:
-            settings['Dale\'s Law'] = 'no'
+            settings['Dale\'s law'] = 'no'
 
         #---------------------------------------------------------------------------------
         # Fix spectral radius

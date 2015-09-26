@@ -173,12 +173,23 @@ if 'mante' in args:
     figure('fig_mante')
     train_seeds('mante')
 
+if 'mante_delay' in args:
+    print("=> Context-dependent integration task (with delay)")
+    clean('mante_delay')
+    train('mante_delay')
+    trials('mante_delay', 100, args='--dt_save 10')
+    do_action('mante_delay', 'sort')
+    do_action('mante_delay', 'regress')
+    do_action('mante_delay', 'units')
+    figure('fig_mante_delay')
+
 if 'multisensory' in args:
     print("=> Multisensory integration task")
     clean('multisensory')
     train('multisensory')
-    trials('multisensory', 500, args='--dt_save 10')
+    trials('multisensory', 500, args='--dt_save 5')
     do_action('multisensory', 'sort')
+    do_action('multisensory', 'units')
     figure('fig_multisensory')
     train_seeds('multisensory')
 

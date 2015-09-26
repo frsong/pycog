@@ -115,7 +115,8 @@ def run_trials(p, args):
     filename = get_trialsfile(p)
     with open(filename, 'wb') as f:
         pickle.dump(trials, f, pickle.HIGHEST_PROTOCOL)
-    print("[ {}.run_trials ] Trials saved to {}".format(THIS, filename))
+    size = os.path.getsize(filename)*1e-9
+    print("[ {}.run_trials ] Trials saved to {} ({:.1f} GB)".format(THIS, filename, size))
 
     # Compute the psychometric function
     psychometric_function(filename)
