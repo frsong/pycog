@@ -1,5 +1,5 @@
 """
-The sequence generation part of
+The sequence execution part of
 
   Prefrontal neural correlates of memory for sequences.
   B. B. Averbeck & D. Lee, JNS 2007.

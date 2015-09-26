@@ -156,7 +156,7 @@ if 'structure' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 4000, 'rdm')
+        trials(m, 4000, 'rdm', args='--dt_save 20')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     for m in models:

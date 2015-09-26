@@ -37,40 +37,41 @@ models = [('rdm_varstim',  '2A: Decision-making (variable stim.)'),
           ('mante',        '4: Context-dependent int.'),
           ('multisensory', '5: Multisensory int.'),
           ('romo',         '6: Parametric working memory'),
-          ('lee',          '7: Lee')]
-labels = list('ABCDEFGHI')
+          ('lee',          '7: Lee'),
+          ('lee_areas',    '8B: Lee (2 areas)')]
+labels = list('ABCDEFGHIJ')
 
 #=========================================================================================
 # Figure setup
 #=========================================================================================
 
-fig = Figure(w=6.1, h=5.4, axislabelsize=7, labelpadx=5, labelpady=5, thickness=0.6,
+fig = Figure(w=3.8, h=6.75, axislabelsize=6.5, labelpadx=4, labelpady=3, thickness=0.6,
              ticksize=3, ticklabelsize=6, ticklabelpad=2, format=paper.format)
 
-ncols = 3
-nrows = 3
+ncols = 2
+nrows = 5
 
-w    = 0.245
-dx   = w + 0.085
-x0   = 0.075
+w    = 0.36
+dx   = w + 0.12
+x0   = 0.12
 xall = x0 + dx*np.arange(ncols)
 
-h    = 0.22
-y0   = 0.72
-dy   = h + 0.09
+h    = 0.13
+y0   = 0.82
+dy   = h + 0.06
 yall = y0 - dy*np.arange(nrows)
 
 plots      = {}
 plotlabels = {}
 for k in xrange(len(models)):
-    i = k//nrows
+    i = k//ncols
     j = k%ncols
     if i == 0:
         pady = 0
     else:
         pady = 0.02
     plots[models[k][0]]   = fig.add([xall[j], yall[i]-pady, w, h])
-    plotlabels[labels[k]] = (xall[j]-0.062, yall[i]-pady+h+0.01)
+    plotlabels[labels[k]] = (xall[j]-0.08, yall[i]-pady+h+0.015)
 fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 
 #=========================================================================================
@@ -84,14 +85,14 @@ plot.ylabel('Percent correct')
 plot = plots['romo']
 plot.ylabel('Min. percent correct')
 
-plot = plots[models[-1][0]]
+plot = plots[models[-2][0]]
 plot.ylabel('Error in eye position')
 
 for k in xrange(len(models)):
     model, desc = models[k]
     if desc is None:
         desc = model
-    plots[model].text_upper_center(desc, dy=0.05, fontsize=7)
+    plots[model].text_upper_center(desc, dy=0.05, fontsize=6.5)
 
 #=========================================================================================
 # Plot performance
@@ -104,7 +105,11 @@ clr_seeds  = '0.8'
 for model, _ in models:
     plot = plots[model]
 
-    rnn  = RNN(get_savefile(model), verbose=True)
+    try:
+        rnn = RNN(get_savefile(model), verbose=True)
+    except SystemExit:
+        continue
+
     xall = []
 
     ntrials     = [int(costs[0]) for costs in rnn.costs_history]
@@ -126,15 +131,6 @@ for model, _ in models:
     plot.plot(ntrials, performance, color=clr_actual, lw=1, zorder=10)
     xall.append(ntrials)
 
-    # y-axis
-    if model == 'lee':
-        plot.yscale('log')
-    else:
-        if model == 'romo':
-            plot.ylim(0, 100)
-        else:
-            plot.ylim(40, 100)
-
     # Number of units
     nunits = '{} units'.format(rnn.p['N'])
 
@@ -146,9 +142,9 @@ for model, _ in models:
         time = 'X mins'
 
     # Info
-    plot.text_lower_right(nunits, dy=0.13, fontsize=7, color=Figure.colors('green'),
+    plot.text_lower_right(nunits, dy=0.105, fontsize=5.5, color=Figure.colors('green'),
                           zorder=20)
-    plot.text_lower_right(time,   dy=0.02, fontsize=7, color=Figure.colors('strongblue'),
+    plot.text_lower_right(time, dy=0.005, fontsize=5.5, color=Figure.colors('strongblue'),
                           zorder=20)
 
     # Other seeds
@@ -166,10 +162,19 @@ for model, _ in models:
         plot.plot(ntrials, performance, color=clr_seeds, lw=0.75, zorder=5)
         xall.append(ntrials)
 
-    # x-lim
+    # x-axis
     xall = np.concatenate(xall)
     plot.xlim(min(xall), max(xall))
     plot.hline(target, color=clr_target, lw=0.75)
+
+    # y-axis
+    if model in ['lee', 'lee_areas']:
+        plot.yscale('log')
+    else:
+        if model == 'romo':
+            plot.ylim(0, 100)
+        else:
+            plot.ylim(40, 100)
 
 #=========================================================================================
 

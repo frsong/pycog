@@ -5,6 +5,7 @@ Analyze variants of the Lee sequence generation task.
 from __future__ import division
 
 import cPickle as pickle
+import os
 import sys
 
 import numpy as np
@@ -102,11 +103,14 @@ def pca_analysis(trials, min_std=0.05):
     """
     Perform PCA analysis.
 
-    Args
-    ----
+    Parameters
+    ----------
 
     trials : dict
-             Dictionary of seq: trial pairs.
+             Dictionary of `seq: trial` pairs.
+
+    min_std : float, optional
+              Threshold for active unit.
 
     Returns
     -------

@@ -138,7 +138,7 @@ plot.text(x_S, x_M,
 plot.text(x_M, x_S,
           r"$\mathbf{E}_\mathbf{S} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{M}$",
-          ha='center', va='center', fontsize=9, color='0.5')
+          ha='center', va='center', fontsize=9, color='k')
 plot.text(x_M, x_M,
           r"$\mathbf{E}_\mathbf{M} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{M}$",

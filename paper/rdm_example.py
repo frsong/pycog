@@ -19,7 +19,7 @@ Nout = 2
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
 
-# Output connectivity
+# Output connectivity: read out from excitatory units only
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 

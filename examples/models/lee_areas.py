@@ -1,5 +1,5 @@
 """
-The sequence generation part of
+The sequence execution part of
 
   Prefrontal neural correlates of memory for sequences.
   B. B. Averbeck & D. Lee, JNS 2007.
@@ -49,7 +49,7 @@ options = {
 #-----------------------------------------------------------------------------------------
 
 Nin  = 9 + nseq
-N    = 100
+N    = 200
 Nout = 2
 
 # For addressing inputs
@@ -71,6 +71,12 @@ INH_MOTOR   = INH[Ninh//2:]
 tau = 50
 
 #-----------------------------------------------------------------------------------------
+# Noise
+#-----------------------------------------------------------------------------------------
+
+var_rec = 0.01**2
+
+#-----------------------------------------------------------------------------------------
 # Input connectivity
 #-----------------------------------------------------------------------------------------
 
@@ -81,23 +87,26 @@ Cin[EXC_SENSORY + INH_SENSORY,:] = 1
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
+rng = np.random.RandomState(1)
+
 Crec = np.zeros((N, N))
 for i in EXC_SENSORY:
     Crec[i,EXC_SENSORY] = 1
-    Crec[i,i] = 0
+    Crec[i,i]           = 0
+    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.2)
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
 for i in EXC_MOTOR:
-    Crec[i,EXC] = 1
-    Crec[i,i] = 0
+    Crec[i,EXC]       = 1
+    Crec[i,i]         = 0
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
 for i in INH_SENSORY:
-    Crec[i,EXC] = 1
+    Crec[i,EXC]         = 1
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
-    Crec[i,i] = 0
+    Crec[i,i]           = 0
 for i in INH_MOTOR:
-    Crec[i,EXC] = 1
+    Crec[i,EXC]       = 1
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
-    Crec[i,i] = 0
+    Crec[i,i]         = 0
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -105,13 +114,6 @@ for i in INH_MOTOR:
 
 Cout = np.zeros((Nout, N))
 Cout[:,EXC_MOTOR + INH_MOTOR] = 1
-
-#-----------------------------------------------------------------------------------------
-# Noise
-#-----------------------------------------------------------------------------------------
-
-var_in  = 0.01**2
-var_rec = 0.01**2
 
 #-----------------------------------------------------------------------------------------
 # Task structure
@@ -223,7 +225,7 @@ def generate_trial(rng, dt, params):
 
     return trial
 
-min_error = 0.06
+min_error = 0.05
 
 mode         = 'continuous'
 n_validation = 100*nseq
