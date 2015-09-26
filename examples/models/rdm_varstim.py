@@ -22,7 +22,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 3
-N    = 200
+N    = 100
 Nout = 2
 
 # E/I
@@ -79,7 +79,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 1000}
+        epochs = {'T': 2000}
     else:
         if params['name'] == 'test':
             fixation = 300
@@ -126,7 +126,7 @@ def generate_trial(rng, dt, params):
         X[e['stimulus'],1-choice] = scale(-coh)
 
         # Start cue
-        X[e['stimulus']+e['decision'],START] = 1
+        #X[e['stimulus']+e['decision'],START] = 1
     trial['inputs'] = X
 
     #-------------------------------------------------------------------------------------

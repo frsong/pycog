@@ -2,6 +2,7 @@
 *.DS_Store
 *.pyc
 *.so
+*.txt
 *.egg-info/
 build/
 dist/

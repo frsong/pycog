@@ -139,7 +139,7 @@ if 'rdm' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 3000, 'rdm')
+        trials(m, 2000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
             do_action(m, 'units_stim_onset', 'rdm')
@@ -156,7 +156,7 @@ if 'structure' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 4000, 'rdm', args='--dt_save 20')
+        trials(m, 2000, 'rdm', args='--dt_save 20')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     for m in models:
