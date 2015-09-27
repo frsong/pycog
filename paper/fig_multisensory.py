@@ -53,7 +53,7 @@ tmax = stimulus_end
 
 # Units to display
 units = {
-    'choice':   1,
+    'choice':   85,
     'modality': 101,
     'mixed':    16
     }
@@ -261,6 +261,14 @@ all = []
 for name, unit in units.items():
     all.append(multisensory.plot_unit(unit, sortedfile, plots[name],
                                       t0=t0, tmin=tmin, tmax=tmax, lw=1.25))
+    if name == 'choice':
+        plots[name].ylim(0, 1)
+        plots[name].yticks([0, 0.5, 1])
+    elif name == 'modality':
+        plots[name].yticks([0, 0.1, 0.2])
+    elif name == 'mixed':
+        plots[name].ylim(0, 1)
+        plots[name].yticks([0, 0.5, 1])
 
 # Legend
 prop = {'prop': {'size': 5.5},

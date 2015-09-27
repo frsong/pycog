@@ -185,7 +185,8 @@ elif action == 'restingstate':
 
     mean = np.mean(rnn.u, axis=1)
     std  = np.std(rnn.u, axis=1)
-    print(mean, std)
+    print("Mean: {:.6f}".format(mean))
+    print("Std.: {:.6f}".format(std))
 
     from pycog.figtools import Figure
 

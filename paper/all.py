@@ -93,7 +93,6 @@ def train(model, seed=None):
     np.savetxt(timefile, [totalmins], fmt='%d')
 
 def train_seeds(model, start_seed=1, ntrain=5):
-    return
     for seed in xrange(start_seed, start_seed+ntrain):
         suffix = '_s{}'.format(seed)
         s = ' --seed {} --suffix {}'.format(seed, suffix)
@@ -147,8 +146,8 @@ if 'rdm' in args:
             do_action(m, 'sort_response', 'rdm')
             do_action(m, 'units_response', 'rdm')
     figure('fig_rdm')
-    for m in models:
-        train_seeds(m)
+    #for m in models:
+    #    train_seeds(m)
 
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
@@ -159,8 +158,8 @@ if 'structure' in args:
         trials(m, 2000, 'rdm', args='--dt_save 20')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
-    for m in models:
-        train_seeds(m)
+    #for m in models:
+    #    train_seeds(m)
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
@@ -217,7 +216,7 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee')
     figure('fig_lee_areas')
-    train_seeds('lee_areas')
+    #train_seeds('lee_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")

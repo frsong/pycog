@@ -34,7 +34,7 @@ def get_choice(trial):
 
 # Define "active" units
 def is_active(r):
-    return np.std(r) > 0.1
+    return np.std(r) > 0.05
 
 # Colors
 colors = {

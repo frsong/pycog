@@ -17,7 +17,7 @@ from pycog import tasktools
 # Network structure
 #-----------------------------------------------------------------------------------------
 
-Nin  = 4
+Nin  = 5
 N    = 150
 Nout = 2
 
@@ -31,6 +31,7 @@ VISUAL_P   = 0 # Positively tuned visual input
 AUDITORY_P = 1 # Positively tuned auditory input
 VISUAL_N   = 2 # Negatively tuned visual input
 AUDITORY_N = 3 # Negatively tuned auditory input
+START      = 4 # Start cue
 
 # Units receiving visual input
 EXC_VISUAL = EXC[:Ne//3]
@@ -73,12 +74,8 @@ boundary    = 12.5
 nconditions = len(modalities)*len(freqs)
 pcatch      = 1/(nconditions + 1)
 
-# So the performance isn't perfect for the frequencies of interest
-training_freqs       = [6, 7, 8] + freqs + [17, 18, 19]
-nconditions_training = len(modalities)*len(training_freqs)
-
-fmin = min(training_freqs)
-fmax = max(training_freqs)
+fmin = min(freqs)
+fmax = max(freqs)
 
 def scale_v_p(f):
     return 0.4 + 0.8*(f - fmin)/(fmax - fmin)
@@ -103,16 +100,16 @@ def generate_trial(rng, dt, params):
             catch_trial = True
         else:
             modality = params.get('modality', rng.choice(modalities))
-            freq     = params.get('freq',     rng.choice(training_freqs))
+            freq     = params.get('freq',     rng.choice(freqs))
     elif params['name'] == 'validation':
-        b = params['minibatch_index'] % (nconditions_training + 1)
+        b = params['minibatch_index'] % (nconditions + 1)
         if b == 0:
             catch_trial = True
         else:
             k1, k2   = tasktools.unravel_index(b-1,
-                                               (len(modalities), len(training_freqs)))
+                                               (len(modalities), len(freqs)))
             modality = modalities[k1]
-            freq     = training_freqs[k2]
+            freq     = freqs[k2]
     else:
         raise ValueError("Unknown trial type.")
 
@@ -121,7 +118,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 1000}
+        epochs = {'T': 2000}
     else:
         if params['name'] == 'test':
             fixation = 500
@@ -169,6 +166,7 @@ def generate_trial(rng, dt, params):
         if 'a' in modality:
             X[e['stimulus'],AUDITORY_P] = scale_a_p(freq)
             X[e['stimulus'],AUDITORY_N] = scale_a_n(freq)
+        X[e['stimulus'] + e['decision'],START] = 1
     trial['inputs'] = X
 
     #-------------------------------------------------------------------------------------
@@ -209,9 +207,9 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 87
+TARGET_PERFORMANCE = 90
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 
 # Validation dataset
-n_validation = 100*(nconditions_training + 1)
+n_validation = 100*(nconditions + 1)
