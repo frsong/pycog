@@ -142,10 +142,13 @@ for model, _ in models:
         time = 'X mins'
 
     # Info
-    plot.text_lower_right(nunits, dy=0.105, fontsize=5.5, color=Figure.colors('green'),
-                          zorder=20)
-    plot.text_lower_right(time, dy=0.005, fontsize=5.5, color=Figure.colors('strongblue'),
-                          zorder=20)
+    dy = 0
+    if model in ['lee', 'lee_areas']:
+        dy = 0.77
+    plot.text_lower_right(nunits, dy=dy+0.105, fontsize=5.5,
+                          color=Figure.colors('green'), zorder=20)
+    plot.text_lower_right(time, dy=dy+0.005, fontsize=5.5,
+                          color=Figure.colors('strongblue'), zorder=20)
 
     # Other seeds
     gstring = join(base, 'examples', 'work', 'data', model, model+'_s*.pkl')
