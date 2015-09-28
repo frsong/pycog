@@ -205,7 +205,7 @@ rdm.psychometric_function(varstim_trialsfile, plot, ms=5)
 
 # Reaction time
 plot = plots['D']
-rdm.psychometric_function(rt_trialsfile, plot, threshold=rdm.threshold, ms=5)
+rdm.psychometric_function(rt_trialsfile, plot, threshold=True, ms=5)
 
 #-----------------------------------------------------------------------------------------
 # Proportion correct as a function of stimulus duration

@@ -47,25 +47,6 @@ def get_dprimefile(p):
 def get_selectivityfile(p):
     return join(p['datapath'], p['name'] + '_selectivity.txt')
 
-# Simple choice function
-def get_choice(trial, threshold=None):
-    if threshold is None:
-        return np.argmax(trial['z'][:,-1])
-
-    # Reaction time
-    w0, = np.where(trial['z'][0] > threshold)
-    w1, = np.where(trial['z'][1] > threshold)
-    if len(w0) == 0 and len(w1) == 0:
-        return None
-
-    if len(w1) == 0:
-        return 0, w0[0]
-    if len(w0) == 0:
-        return 1, w1[0]
-    if w0[0] < w1[0]:
-        return 0, w0[0]
-    return 1, w1[0]
-
 def safe_divide(x):
     if x == 0:
         return 0
@@ -75,7 +56,7 @@ def safe_divide(x):
 def is_active(r):
     return np.std(r) > 0.1
 
-# Nice colors to represent coherences
+# Nice colors to represent coherences, from http://colorbrewer2.org/
 colors = {
         0:  '#c6dbef',
         1:  '#9ecae1',
@@ -90,6 +71,25 @@ THRESHOLD = 0.8
 
 # Coherence scale
 SCALE = 3.2
+
+# Simple choice function
+def get_choice(trial, threshold=False):
+    if not threshold:
+        return np.argmax(trial['z'][:,-1])
+
+    # Reaction time
+    w0, = np.where(trial['z'][0] > THRESHOLD)
+    w1, = np.where(trial['z'][1] > THRESHOLD)
+    if len(w0) == 0 and len(w1) == 0:
+        return None
+
+    if len(w1) == 0:
+        return 0, w0[0]
+    if len(w0) == 0:
+        return 1, w1[0]
+    if w0[0] < w1[0]:
+        return 0, w0[0]
+    return 1, w1[0]
 
 #=========================================================================================
 
@@ -160,6 +160,9 @@ def run_trials(p, args):
                 'info': info
                 }
             trials.append(trial)
+    except MemoryError:
+        print("[ {}.run_trials ] Ran out of memory!".format(THIS))
+        sys.exit(1)
     except KeyboardInterrupt:
         pass
     print("")
@@ -176,7 +179,7 @@ def run_trials(p, args):
 
 #=========================================================================================
 
-def psychometric_function(trialsfile, plot=None, threshold=None, **kwargs):
+def psychometric_function(trialsfile, plot=None, threshold=False, **kwargs):
     """
     Compute and plot the sychometric function.
 
@@ -337,7 +340,7 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
         coh  = info['coh']
 
         # Choice and RT
-        choice = get_choice(trial, THRESHOLD)
+        choice = get_choice(trial, True)
         if choice is None:
             n_below_threshold += 1
             continue
@@ -514,7 +517,7 @@ def sort_trials_response(trialsfile, sortedfile):
         info = trial['info']
 
         # Choice & RT
-        choice = get_choice(trial, THRESHOLD)
+        choice = get_choice(trial, True)
         if choice is None:
             n_below_threshold += 1
             continue
@@ -665,9 +668,9 @@ def do(action, args, p):
     #-------------------------------------------------------------------------------------
 
     elif action == 'psychometric':
-        threshold = None
+        threshold = False
         if 'threshold' in args:
-            threshold = THRESHOLD
+            threshold = True
 
         fig  = Figure()
         plot = fig.add()

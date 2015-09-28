@@ -54,8 +54,8 @@ class Model(object):
             try:
                 self.m = imp.load_source('model', modelfile)
             except IOError:
-                print("[ {}.Model ] Could not load model file {}".format(THIS, modelfile))
-                sys.exit()
+                print("[ {}.Model ] Couldn't load model file {}".format(THIS, modelfile))
+                sys.exit(1)
         else:
             self.m = Struct(**kwargs)
 
@@ -74,7 +74,7 @@ class Model(object):
             except AttributeError:
                 print("[ {}.Model ] You need to define a function that returns trials."
                       .format(THIS))
-                sys.exit()
+                sys.exit(1)
 
         # generate_trial : usage
         if args != ['rng', 'dt', 'params']:
@@ -87,7 +87,7 @@ class Model(object):
             and self.m.var_in.ndim == 1):
             if len(self.m.var_in) != self.m.Nin:
                 print("[ {}.Model ] The length of var_in doesn't match Nin.".format(THIS))
-                sys.exit()
+                sys.exit(1)
 
     #/////////////////////////////////////////////////////////////////////////////////////
 

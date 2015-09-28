@@ -135,14 +135,14 @@ def generate_trial(rng, dt, params):
 
     return trial
 
-# Performance measure
+# Performance measure: two-alternative forced choice
 performance = tasktools.performance_2afc
 
-# Termination criterion
+# Terminate training when psychometric performance exceeds 85%
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > 85
 
-# Validation dataset
+# Validation dataset size
 n_validation = 100*(nconditions + 1)
 
 #-------------------------------------------------------------------------------

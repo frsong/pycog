@@ -139,7 +139,7 @@ class RNN(object):
             # Check that file exists
             if not os.path.isfile(savefile):
                 print("[ {}.RNN ] File {} doesn't exist.".format(THIS, savefile))
-                sys.exit()
+                sys.exit(1)
 
             # Ensure we have a readable file
             base, ext = os.path.splitext(savefile)
@@ -530,7 +530,7 @@ class RNN(object):
             from .figtools import Figure, mpl
         except ImportError:
             print("[ {}.RNN.plot_costs ] Couldn't import pycog.figtools.".format(THIS))
-            sys.exit()
+            sys.exit(1)
 
         #---------------------------------------------------------------------------------
         # Sort the units in a particular way?

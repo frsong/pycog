@@ -638,31 +638,32 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
 
     # Coefficient matrix
     r = np.zeros((nunits, ntime, ntrials))
-    F = np.zeros((nunits, ntime, nreg, ntrials))
+    F = np.zeros((nunits, nreg, ntrials))
     for i, trial in enumerate(trials):
         info = trial['info']
 
         # First-order terms
         r[:,:,i]         = trial['r']
-        F[:,:,CHOICE,i]  = preferred_targets*trial['target']
-        F[:,:,MOTION,i]  = preferred_targets*info['left_right_m']*info['coh_m']/maxcoh_m
-        F[:,:,COLOUR,i]  = preferred_targets*info['left_right_c']*info['coh_c']/maxcoh_c
-        F[:,:,CONTEXT,i] = +1 if info['context'] == 'm' else -1
+        F[:,CHOICE,i]  = preferred_targets*trial['target']
+        F[:,MOTION,i]  = preferred_targets*info['left_right_m']*info['coh_m']/maxcoh_m
+        F[:,COLOUR,i]  = preferred_targets*info['left_right_c']*info['coh_c']/maxcoh_c
+        F[:,CONTEXT,i] = +1 if info['context'] == 'm' else -1
 
         # Interaction terms
-        F[:,:,CHOICE_MOTION, i] = F[:,:,CHOICE,i]*F[:,:,MOTION,i]
-        F[:,:,CHOICE_COLOUR, i] = F[:,:,CHOICE,i]*F[:,:,COLOUR,i]
-        F[:,:,CHOICE_CONTEXT,i] = F[:,:,CHOICE,i]*F[:,:,CONTEXT,i]
-        F[:,:,MOTION_COLOUR, i] = F[:,:,MOTION,i]*F[:,:,COLOUR,i]
-        F[:,:,MOTION_CONTEXT,i] = F[:,:,MOTION,i]*F[:,:,CONTEXT,i]
-        F[:,:,COLOUR_CONTEXT,i] = F[:,:,COLOUR,i]*F[:,:,CONTEXT,i]
-    F[:,:,CONSTANT,:] = 1
+        F[:,CHOICE_MOTION, i] = F[:,CHOICE,i]*F[:,:,MOTION,i]
+        F[:,CHOICE_COLOUR, i] = F[:,CHOICE,i]*F[:,:,COLOUR,i]
+        F[:,CHOICE_CONTEXT,i] = F[:,CHOICE,i]*F[:,:,CONTEXT,i]
+        F[:,MOTION_COLOUR, i] = F[:,MOTION,i]*F[:,:,COLOUR,i]
+        F[:,MOTION_CONTEXT,i] = F[:,MOTION,i]*F[:,:,CONTEXT,i]
+        F[:,COLOUR_CONTEXT,i] = F[:,COLOUR,i]*F[:,:,CONTEXT,i]
+    F[:,CONSTANT,:] = 1
 
     # Regression coefficients
     beta = np.zeros((nunits, ntime, nreg))
     for i in xrange(nunits):
+        A = np.linalg.inv(F[i].dot(F[i].T)).dot(F[i])
         for k in xrange(ntime):
-            beta[i,k] = np.linalg.inv(F[i,k].dot(F[i,k].T)).dot(F[i,k]).dot(r[i,k])
+            beta[i,k] = A.dot(r[i,k])
             if np.any(np.isnan(beta[i,k])):
                 raise RuntimeError("[ {}.regress ] Regression failed.".format(THIS))
 
