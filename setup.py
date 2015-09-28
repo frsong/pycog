@@ -22,23 +22,6 @@ except ImportError:
 else:
     use_cython = True
 
-'''
-# Installation class
-class pycog_install(install):
-    """
-    Customized install class to allow 'develop' install only.
-
-    """
-    def run(self):
-        mode = None
-        while mode not in ['', 'develop', 'cancel']:
-            if mode != 'develop':
-                print("This script is for 'develop' install only.")
-            mode = raw_input("Installation mode [develop]/cancel: ").strip()
-        if mode in ['', 'develop']:
-            self.distribution.run_command('develop')
-'''
-
 # Build information
 if use_cython:
     ext_modules = [Extension('pycog.euler', ['pycog/euler.pyx'],
@@ -48,7 +31,6 @@ if use_cython:
 else:
     ext_modules = [Extension('pycog.euler', ['pycog/euler.c'])]
     cmdclass    = {}
-#cmdclass['install'] = pycog_install
 
 # Setup
 setup(

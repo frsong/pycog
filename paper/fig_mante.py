@@ -153,11 +153,11 @@ mante.psychometric_function(trialsfile, mante_plots, ms=4.5)
 
 plot = plots['psy_m']
 plot.xlabel('Motion coherence (\%)')
-plot.ylabel('Percent choice 1 (\%)')
+plot.ylabel('Percent choice 1')
 
 plot = plots['psy_c']
 plot.xlabel('Color coherence (\%)')
-plot.ylabel('Percent choice 1 (\%)')
+plot.ylabel('Percent choice 1')
 
 prop = {'prop': {'size': 5}, 'handlelength': 1.1,
         'handletextpad': 0.8, 'labelspacing': 0.5}
@@ -191,7 +191,7 @@ plot.xlabel('Time from stimulus onset (ms)')
 with open(trialsfile) as f:
     trials = pickle.load(f)
 epochs = trials[0]['info']['epochs']
-stimulus_start, stimulus_end  = epochs['stimulus']
+stimulus_start, stimulus_end = epochs['stimulus']
 
 # Plot units
 yall = []

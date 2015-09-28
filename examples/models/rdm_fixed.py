@@ -53,13 +53,16 @@ Cin[EXC_OUT + INH_OUT, T_OUT] = 1
 Crec = np.zeros((N, N))
 for i in EXC_IN:
     Crec[i,EXC_IN] = 1
+    Crec[i,i]      = 0
     Crec[i,INH]    = len(EXC_IN)/len(INH)
 for i in EXC_OUT:
     Crec[i,EXC_OUT] = 1
+    Crec[i,i]       = 0
     Crec[i,INH]     = len(EXC_OUT)/len(INH)
 for i in INH:
     Crec[i,EXC] = 1
-    Crec[i,INH] = len(EXC)/len(INH)
+    Crec[i,INH] = len(EXC)/(len(INH) - 1)
+    Crec[i,i]   = 0
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -76,7 +79,7 @@ Cout[T_OUT,EXC_OUT] = 1
 cohs        = [1, 2, 4, 8, 16]
 in_outs     = [1, -1]
 nconditions = len(cohs)*len(in_outs)
-pcatch      = 1/(nconditions + 1)
+pcatch      = 5/(nconditions + 1)
 
 SCALE = 3.2
 def scale(coh):
@@ -152,7 +155,6 @@ def generate_trial(rng, dt, params):
 
     X = np.zeros((len(t), Nin))
     if not catch_trial:
-        # Stimulus
         X[e['stimulus'],choice]   = scale(+coh)
         X[e['stimulus'],1-choice] = scale(-coh)
     trial['inputs'] = X

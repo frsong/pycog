@@ -135,6 +135,7 @@ def figure(fig):
 if 'rdm' in args:
     print("=> Perceptual decision-making task")
     models = ['rdm_varstim', 'rdm_rt']
+    models = ['rdm_varstim']
     for m in models:
         clean(m)
         train(m)
@@ -163,14 +164,14 @@ if 'structure' in args:
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
-    clean('mante')
-    train('mante')
-    trials('mante', 200, args='--dt_save 10')
+    #clean('mante')
+    #train('mante')
+    #trials('mante', 200, args='--dt_save 10')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
-    do_action('mante', 'units')
+    #do_action('mante', 'units')
     figure('fig_mante')
-    train_seeds('mante')
+    #train_seeds('mante')
 
 if 'mante_delay' in args:
     print("=> Context-dependent integration task (with delay)")

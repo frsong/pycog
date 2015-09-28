@@ -30,7 +30,7 @@ Nout = 2
 cohs        = [1, 2, 4, 8, 16]
 in_outs     = [1, -1]
 nconditions = len(cohs)*len(in_outs)
-pcatch      = 1/(nconditions + 1)
+pcatch      = 5/(nconditions + 1)
 
 SCALE = 3.2
 def scale(coh):
@@ -106,7 +106,6 @@ def generate_trial(rng, dt, params):
 
     X = np.zeros((len(t), Nin))
     if not catch_trial:
-        # Stimulus
         X[e['stimulus'],choice]   = scale(+coh)
         X[e['stimulus'],1-choice] = scale(-coh)
     trial['inputs'] = X

@@ -48,8 +48,23 @@ def get_selectivityfile(p):
     return join(p['datapath'], p['name'] + '_selectivity.txt')
 
 # Simple choice function
-def get_choice(trial):
-    return np.argmax(trial['z'][:,-1])
+def get_choice(trial, threshold=None):
+    if threshold is None:
+        return np.argmax(trial['z'][:,-1])
+
+    # Reaction time
+    w0, = np.where(trial['z'][0] > threshold)
+    w1, = np.where(trial['z'][1] > threshold)
+    if len(w0) == 0 and len(w1) == 0:
+        return None
+
+    if len(w1) == 0:
+        return 0, w0[0]
+    if len(w0) == 0:
+        return 1, w1[0]
+    if w0[0] < w1[0]:
+        return 0, w0[0]
+    return 1, w1[0]
 
 def safe_divide(x):
     if x == 0:
@@ -70,8 +85,11 @@ colors = {
         16: '#084594'
         }
 
-# Integration threshold
-threshold = 0.8
+# Decision threshold
+THRESHOLD = 0.8
+
+# Coherence scale
+SCALE = 3.2
 
 #=========================================================================================
 
@@ -158,7 +176,7 @@ def run_trials(p, args):
 
 #=========================================================================================
 
-def psychometric_function(trialsfile, plot=None, **kwargs):
+def psychometric_function(trialsfile, plot=None, threshold=None, **kwargs):
     """
     Compute and plot the sychometric function.
 
@@ -171,6 +189,7 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
     #-------------------------------------------------------------------------------------
 
     choice_by_coh = {}
+    ntot     = 0
     ncorrect = 0
     for trial in trials:
         info = trial['info']
@@ -179,7 +198,12 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
         coh = info['in_out']*info['coh']
 
         # Choice
-        choice = get_choice(trial)
+        choice = get_choice(trial, threshold)
+        if choice is None:
+            continue
+        ntot += 1
+        if isinstance(choice, tuple):
+            choice, _ = choice
         choice_by_coh.setdefault(coh, []).append(choice)
 
         # Correct
@@ -187,15 +211,16 @@ def psychometric_function(trialsfile, plot=None, **kwargs):
             ncorrect += 1
 
     # Report overall performance
-    pcorrect = 100*ncorrect/ntrials
-    print("[ {}.psychometric_function ] {:.2f}% correct.".format(THIS, pcorrect))
+    pcorrect = 100*ncorrect/ntot
+    print("[ {}.psychometric_function ] {}/{} = {:.2f}% correct."
+          .format(THIS, ncorrect, ntot, pcorrect))
 
     cohs = np.sort(np.array(choice_by_coh.keys()))
     p0   = np.zeros(len(cohs))
     for i, coh in enumerate(cohs):
         choices = np.array(choice_by_coh[coh])
         p0[i]   = 1 - np.sum(choices)/len(choices)
-    scaled_cohs = 3.2*cohs
+    scaled_cohs = SCALE*cohs
 
     #-------------------------------------------------------------------------------------
     # Plot
@@ -281,7 +306,7 @@ def plot_stimulus_duration(trialsfile, plot, **kwargs):
     for coh in cohs:
         stim, correct = correct_by_coh[coh]
 
-        plot.plot(stim, correct, color=colors[coh], label='{}\%'.format(3.2*coh),
+        plot.plot(stim, correct, color=colors[coh], label='{}\%'.format(SCALE*coh),
                   **lineprop)
         plot.plot(stim, correct, 'o', mfc=colors[coh], **dataprop)
         xall.append(stim)
@@ -308,16 +333,16 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
     n_below_threshold = 0
     ntot = 0
     for trial in trials:
-        info   = trial['info']
-        choice = get_choice(trial)
-        coh    = info['coh']
+        info = trial['info']
+        coh  = info['coh']
 
-        # Reaction time
-        w, = np.where(trial['z'][choice] > threshold)
-        if len(w) == 0:
+        # Choice and RT
+        choice = get_choice(trial, THRESHOLD)
+        if choice is None:
             n_below_threshold += 1
             continue
-        rt = trial['t'][w[0]] - info['epochs']['stimulus'][0]
+        choice, t_choice = choice
+        rt = trial['t'][t_choice] - info['epochs']['stimulus'][0]
 
         if choice == info['choice']:
             correct_rt_by_coh.setdefault(coh, []).append(rt)
@@ -333,7 +358,7 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
     for i, coh in enumerate(cohs):
         if len(correct_rt_by_coh[coh]) > 0:
             correct_rt[i] = np.mean(correct_rt_by_coh[coh])
-    scaled_cohs = 3.2*cohs
+    scaled_cohs = SCALE*cohs
 
     # Error trials
     cohs = np.sort(np.array(error_rt_by_coh.keys()))
@@ -342,7 +367,7 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
     for i, coh in enumerate(cohs):
         if len(error_rt_by_coh[coh]) > 0:
             error_rt[i] = np.mean(error_rt_by_coh[coh])
-    error_scaled_cohs = 3.2*cohs
+    error_scaled_cohs = SCALE*cohs
 
     #-------------------------------------------------------------------------------------
     # Plot RTs
@@ -486,21 +511,21 @@ def sort_trials_response(trialsfile, sortedfile):
     valid_rt_idx      = []
     n_below_threshold = 0
     for i, trial in enumerate(trials):
-        info   = trial['info']
-        choice = get_choice(trial)
+        info = trial['info']
 
-        # Reaction time
-        w, = np.where(trial['z'][choice] > threshold)
-        if len(w) == 0:
+        # Choice & RT
+        choice = get_choice(trial, THRESHOLD)
+        if choice is None:
             n_below_threshold += 1
             continue
+        choice, w0 = choice
 
         # Include only correct trials
         if choice != info['choice']:
             continue
 
         valid_trial_idx.append(i)
-        valid_rt_idx.append(w[0]+1)
+        valid_rt_idx.append(w0+1)
     print("[ {}.sort_trials_response ] {}/{} trials did not reach threshold."
           .format(THIS, n_below_threshold, ntrials))
 
@@ -562,7 +587,7 @@ def plot_unit(unit, sortedfile, plot, t0=0, tmin=-np.inf, tmax=np.inf, **kwargs)
                 'lw':    kwargs.get('lw', 1.5)}
 
         if in_out == +1:
-            prop['label'] = '{:.1f}\%'.format(3.2*coh)
+            prop['label'] = '{:.1f}\%'.format(SCALE*coh)
         else:
             prop['linestyle'] = '--'
             prop['dashes'] = kwargs.get('dashes', [3.5, 2.5])
@@ -640,6 +665,10 @@ def do(action, args, p):
     #-------------------------------------------------------------------------------------
 
     elif action == 'psychometric':
+        threshold = None
+        if 'threshold' in args:
+            threshold = THRESHOLD
+
         fig  = Figure()
         plot = fig.add()
 
@@ -648,7 +677,7 @@ def do(action, args, p):
         #---------------------------------------------------------------------------------
 
         trialsfile = get_trialsfile(p)
-        psychometric_function(trialsfile, plot)
+        psychometric_function(trialsfile, plot, threshold=threshold)
 
         plot.xlabel(r'\% coherence toward $T_\text{in}$')
         plot.ylabel(r'Percent $T_\text{in}$')

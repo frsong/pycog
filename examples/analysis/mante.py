@@ -44,6 +44,9 @@ def get_choice(trial):
 def is_active(r):
     return np.std(r) > 0.1
 
+# Coherence scale
+SCALE = 5
+
 #=========================================================================================
 # Trials
 #=========================================================================================
@@ -168,7 +171,7 @@ def psychometric_function(trialsfile, plots=None, **kwargs):
         for i, coh in enumerate(cohs):
             choices = np.array(choice_by_coh[coh])
             p0[i]   = 1 - np.sum(choices)/len(choices)
-        scaled_cohs = 5*cohs
+        scaled_cohs = SCALE*cohs
 
         results[cond] = (scaled_cohs, p0)
 
@@ -624,7 +627,7 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
     mean = np.tile(mean, (r.shape[1], 1)).T
     std  = np.tile(std,  (r.shape[1], 1)).T
     for trial in trials:
-        trial['r'] = (trial['r'] - r)/std
+        trial['r'] = (trial['r'] - mean)/std
 
     #-------------------------------------------------------------------------------------
     # Regress
@@ -840,6 +843,8 @@ def plot_statespace(trialsfile, sortedfile, betafile, plots):
 
     # Epoch to plot
     start, end = trials[0]['info']['epochs']['stimulus']
+    start += 100
+    end   += 100
     w, = np.where((start <= t) & (t <= end))
 
     # Down-sample

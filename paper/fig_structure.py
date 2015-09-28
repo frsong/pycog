@@ -257,6 +257,7 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
 plot = plots['Ain']
 plot.xaxis.set_tick_params(pad=-3)
 plot.xticks(np.arange(2)+0.06)
+plot.xaxis.set_tick_params(pad=-2)
 plot.xticklabels(['Choice 1', 'Choice 2'], rotation='vertical', fontsize=5.5)
 
 plot = plots['Arec']

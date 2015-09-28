@@ -33,7 +33,7 @@ def sigmoid(x):
     return 1/(1 + np.exp(-x))
 
 def rtanh(x):
-    return rectify(np.tanh(x))
+    return np.tanh(rectify(x))
 
 def softmax(x):
     """
@@ -109,7 +109,7 @@ class RNN(object):
     @staticmethod
     def clip_weights(name, W, threshold):
         """
-        TODO: Add reporting.
+        Set small weights to zero.
 
         """
         W[np.where(abs(W) < threshold)] = 0

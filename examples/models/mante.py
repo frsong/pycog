@@ -45,7 +45,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 1/(nconditions + 1)
+pcatch      = 10/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):
@@ -174,11 +174,8 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if params.get('target_output', False):
-        # Output matrix
-        Y = np.zeros((len(t), Nout))
-
-        # Mask matrix
-        M = np.zeros_like(Y)
+        Y = np.zeros((len(t), Nout)) # Output matrix
+        M = np.zeros_like(Y)         # Mask matrix
 
         # Hold values
         hi = 1

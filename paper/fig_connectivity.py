@@ -97,8 +97,11 @@ fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 #=========================================================================================
 
 plot = plots['Arec']
-plot.text_upper_center('Sequence generation task, unstructured connectivity',
-                       dy=0.03, fontsize=7)
+plot.text_upper_center('Sequence execution task, unstructured connectivity',
+                       dy=0.06, fontsize=7)
+plot.xaxis.set_label_position('top')
+plot.xlabel('From', labelpad=4)
+plot.ylabel('To', labelpad=4)
 
 plot = plots['Brec']
 
