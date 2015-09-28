@@ -167,7 +167,7 @@ if 'mante' in args:
     #clean('mante')
     #train('mante')
     #trials('mante', 200, args='--dt_save 10')
-    do_action('mante', 'sort')
+    #do_action('mante', 'sort')
     do_action('mante', 'regress')
     #do_action('mante', 'units')
     figure('fig_mante')

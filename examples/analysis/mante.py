@@ -643,7 +643,7 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
         info = trial['info']
 
         # First-order terms
-        r[:,:,i]         = trial['r']
+        r[:,:,i]       = trial['r']
         F[:,CHOICE,i]  = preferred_targets*trial['target']
         F[:,MOTION,i]  = preferred_targets*info['left_right_m']*info['coh_m']/maxcoh_m
         F[:,COLOUR,i]  = preferred_targets*info['left_right_c']*info['coh_c']/maxcoh_c
