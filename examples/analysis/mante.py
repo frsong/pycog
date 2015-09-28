@@ -634,7 +634,6 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
     #-------------------------------------------------------------------------------------
 
     nunits, ntime = trials[0]['r'].shape
-    preferred_targets = np.tile(preferred_targets, (ntime, 1)).T
 
     # Coefficient matrix
     r = np.zeros((nunits, ntime, ntrials))
@@ -650,12 +649,12 @@ def regress(trialsfile, sortedfile, betafile, dt_reg=50):
         F[:,CONTEXT,i] = +1 if info['context'] == 'm' else -1
 
         # Interaction terms
-        F[:,CHOICE_MOTION, i] = F[:,CHOICE,i]*F[:,:,MOTION,i]
-        F[:,CHOICE_COLOUR, i] = F[:,CHOICE,i]*F[:,:,COLOUR,i]
-        F[:,CHOICE_CONTEXT,i] = F[:,CHOICE,i]*F[:,:,CONTEXT,i]
-        F[:,MOTION_COLOUR, i] = F[:,MOTION,i]*F[:,:,COLOUR,i]
-        F[:,MOTION_CONTEXT,i] = F[:,MOTION,i]*F[:,:,CONTEXT,i]
-        F[:,COLOUR_CONTEXT,i] = F[:,COLOUR,i]*F[:,:,CONTEXT,i]
+        F[:,CHOICE_MOTION, i] = F[:,CHOICE,i]*F[:,MOTION,i]
+        F[:,CHOICE_COLOUR, i] = F[:,CHOICE,i]*F[:,COLOUR,i]
+        F[:,CHOICE_CONTEXT,i] = F[:,CHOICE,i]*F[:,CONTEXT,i]
+        F[:,MOTION_COLOUR, i] = F[:,MOTION,i]*F[:,COLOUR,i]
+        F[:,MOTION_CONTEXT,i] = F[:,MOTION,i]*F[:,CONTEXT,i]
+        F[:,COLOUR_CONTEXT,i] = F[:,COLOUR,i]*F[:,CONTEXT,i]
     F[:,CONSTANT,:] = 1
 
     # Regression coefficients

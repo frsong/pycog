@@ -45,7 +45,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 10/(nconditions + 1)
+pcatch      = 2/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):
