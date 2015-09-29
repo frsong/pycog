@@ -21,7 +21,7 @@ from pycog import tasktools
 # Network structure
 #-----------------------------------------------------------------------------------------
 
-Nin  = 3
+Nin  = 2
 N    = 100
 Nout = 2
 
@@ -126,7 +126,7 @@ def generate_trial(rng, dt, params):
         X[e['stimulus'],1-choice] = scale(-coh)
 
         # Start cue
-        X[e['stimulus'],START] = 1
+        #X[e['stimulus'],START] = 1
     trial['inputs'] = X
 
     #-------------------------------------------------------------------------------------
