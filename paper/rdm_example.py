@@ -80,7 +80,7 @@ def generate_trial(rng, dt, params):
     # Trial info
     #---------------------------------------------------------------------------
 
-    t, e  = tasktools.get_epochs_idx(dt, epochs) # In discrete time
+    t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs
     trial = {'t': t, 'epochs': epochs}           # Trial
 
     if catch_trial:

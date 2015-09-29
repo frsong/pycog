@@ -40,7 +40,7 @@ Cout[:,EXC] = 1
 cohs        = [1, 2, 4, 8, 16]
 in_outs     = [1, -1]
 nconditions = len(cohs)*len(in_outs)
-pcatch      = 5/(nconditions + 1)
+pcatch      = 2/(nconditions + 1)
 
 SCALE = 3.2
 def scale(coh):
@@ -74,7 +74,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 3000}
+        epochs = {'T': 2000}
     else:
         if params['name'] == 'test':
             fixation = 300

@@ -182,7 +182,7 @@ elif action == 'restingstate':
     from pycog.figtools import Figure
 
     rnn = RNN(savefile, {'dt': dt}, verbose=True)
-    rnn.run(10e3, seed=seed)
+    rnn.run(2e3, seed=seed)
 
     mean = np.mean(rnn.z)
     std  = np.std(rnn.z)
@@ -195,6 +195,8 @@ elif action == 'restingstate':
     colors = [Figure.colors('blue'), Figure.colors('orange')]
     for i in xrange(rnn.z.shape[0]):
         plot.plot(1e-3*rnn.t, rnn.z[i], color=colors[i%len(colors)])
+        mean = np.mean(rnn.z[i])*np.ones_like(rnn.t)
+        plot.plot(1e-3*rnn.t, mean, color=colors[i%len(colors)])
     plot.xlim(1e-3*rnn.t[0], 1e-3*rnn.t[-1])
     plot.ylim(0, 1)
 

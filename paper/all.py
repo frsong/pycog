@@ -135,7 +135,6 @@ def figure(fig):
 if 'rdm' in args:
     print("=> Perceptual decision-making task")
     models = ['rdm_varstim', 'rdm_rt']
-    models = ['rdm_varstim']
     for m in models:
         clean(m)
         train(m)

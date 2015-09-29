@@ -246,13 +246,16 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
                   ha='left', va='center', fontsize=6)
 
         # Inhibitory units
-        n = transitions[1]
-        plot.text(n-0.5, -1.53, '|', ha='center', va='center',
-                  color=Figure.colors('red'), fontsize=8)
-        plot.text(n-0.5-0.5, -1.63, r'$\leftarrow$', color=Figure.colors('red'),
-                  ha='right', va='center', fontsize=6)
-        plot.text(n-0.5+0.5, -1.63, r'$\rightarrow$', color=Figure.colors('red'),
-                  ha='left', va='center', fontsize=6)
+        try:
+            n = transitions[1]
+            plot.text(n-0.5, -1.53, '|', ha='center', va='center',
+                      color=Figure.colors('red'), fontsize=8)
+            plot.text(n-0.5-0.5, -1.63, r'$\leftarrow$', color=Figure.colors('red'),
+                      ha='right', va='center', fontsize=6)
+            plot.text(n-0.5+0.5, -1.63, r'$\rightarrow$', color=Figure.colors('red'),
+                      ha='left', va='center', fontsize=6)
+        except:
+            pass
 
 plot = plots['Ain']
 plot.xaxis.set_tick_params(pad=-3)
