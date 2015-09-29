@@ -114,7 +114,8 @@ class Model(object):
             os.environ['THEANO_FLAGS'] += ',device=gpu,nvcc.fastmath=True'
 
         # Only involve Theano for training
-        from .trainer import Trainer
+        from .defaults import defaults
+        from .trainer  import Trainer
 
         # The task
         try:
@@ -130,7 +131,7 @@ class Model(object):
             params['seed'] = seed
 
         # Optional parameters
-        for k in Trainer.defaults:
+        for k in defaults:
             if hasattr(self.m, k):
                 params[k] = getattr(self.m, k)
 

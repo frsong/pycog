@@ -45,7 +45,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 2/(nconditions + 1)
+pcatch      = 5/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):
@@ -92,7 +92,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 1000}
+        epochs = {'T': 3000}
     else:
         if params['name'] == 'test':
             fixation = 300

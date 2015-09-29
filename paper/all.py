@@ -68,9 +68,9 @@ def call(s):
     else:
         rv = subprocess.call(s.split())
         if rv != 0:
-            print("Something went wrong (return code {}).".format(rv))
             sys.stdout.flush()
-            sys.exit()
+            print("Something went wrong (return code {}).".format(rv))
+            sys.exit(1)
 
 def clean(model):
     call("python {} {} clean"
@@ -156,7 +156,7 @@ if 'structure' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 1000, 'rdm', args='--dt_save 20')
+        trials(m, 2000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     #for m in models:

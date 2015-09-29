@@ -178,22 +178,28 @@ elif action == 'train':
 elif action == 'restingstate':
     import numpy as np
 
-    from pycog import RNN
+    from pycog          import RNN
+    from pycog.figtools import Figure
 
     rnn = RNN(savefile, {'dt': dt}, verbose=True)
-    rnn.run(1000)
+    rnn.run(10e3, seed=seed)
 
-    mean = np.mean(rnn.u, axis=1)
-    std  = np.std(rnn.u, axis=1)
-    print("Mean: {:.6f}".format(mean))
-    print("Std.: {:.6f}".format(std))
-
-    from pycog.figtools import Figure
+    mean = np.mean(rnn.z)
+    std  = np.std(rnn.z)
+    print("Mean output: {:.6f}".format(mean))
+    print("Std. output: {:.6f}".format(std))
 
     fig  = Figure()
     plot = fig.add()
 
-    plot.plot(rnn.t, rnn.u[0], color=Figure.colors('blue'))
+    colors = [Figure.colors('blue'), Figure.colors('orange')]
+    for i in xrange(rnn.z.shape[0]):
+        plot.plot(1e-3*rnn.t, rnn.z[i], color=colors[i%len(colors)])
+    plot.xlim(1e-3*rnn.t[0], 1e-3*rnn.t[-1])
+    plot.ylim(0, 1)
+
+    plot.xlabel('Time (sec)')
+    plot.ylabel('Outputs')
 
     fig.save(path=figspath, name=name+'_'+action)
     fig.close()

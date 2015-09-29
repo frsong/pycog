@@ -64,7 +64,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 1000}
+        epochs = {'T': 3000}
     else:
         if params['name'] == 'test':
             fixation = 300

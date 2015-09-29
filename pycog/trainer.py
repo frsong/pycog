@@ -17,6 +17,7 @@ import theano.tensor as T
 from .             import theanotools
 from .connectivity import Connectivity
 from .dataset      import Dataset
+from .defaults     import defaults
 from .rnn          import RNN
 from .sgd          import SGD
 from .utils        import print_settings
@@ -28,64 +29,6 @@ class Trainer(object):
     Train an RNN.
 
     """
-    defaults = {
-        'extra_info':        {},
-        'Nin':               0,
-        'N':                 100,
-        'Nout':              0,
-        'rectify_inputs':    True,
-        'train_brec':        False,
-        'brec':              0,
-        'train_bout':        False,
-        'bout':              0,
-        'train_x0':          True,
-        'x0':                0.1,
-        'mode':              'batch',
-        'tau':               100,
-        'Cin':               None,
-        'Crec':              None,
-        'Cout':              None,
-        'ei':                None,
-        'ei_positive_func':  'rectify',
-        'hidden_activation': 'rectify',
-        'output_activation': 'linear',
-        'n_gradient':        20,
-        'n_validation':      1000,
-        'batch_size':        1000,
-        'lambda_Omega':      2,
-        'lambda1_in':        0,
-        'lambda1_rec':       0,
-        'lambda1_out':       0,
-        'lambda2_in':        0,
-        'lambda2_rec':       0,
-        'lambda2_out':       0,
-        'lambda2_r':         0,
-        'min_error':         0,
-        'learning_rate':     1e-2,
-        'max_gradient_norm': 1,
-        'bound':             1e-20,
-        'baseline_in':       0.2,
-        'var_in':            0.01**2,
-        'var_rec':           0.2**2,
-        'seed':              1234,
-        'structure':         {},
-        'rho0':              1.5,
-        'max_iter':          int(1e7),
-        'dt':                None,
-        'distribution_in':   None,
-        'distribution_rec':  None,
-        'distribution_out':  None,
-        'gamma_k':           2,
-        'checkfreq':         None,
-        'patience':          None,
-        'momentum':          False, # Not used currently
-        'method':            'sgd'  # Not used currently
-        }
-    defaults['performance'] = None
-    defaults['terminate']   = lambda performance_history: False
-
-    #/////////////////////////////////////////////////////////////////////////////////////
-
     def __init__(self, params, floatX=theano.config.floatX):
         """
         Initialize.
@@ -94,7 +37,7 @@ class Trainer(object):
         ----------
 
         params : dict
-                 All parameters have default values, see RNN.defaults.
+                 All parameters have default values, see `pycog.defaults`.
 
           Entries
           -------
@@ -197,8 +140,8 @@ class Trainer(object):
                     independent noise. If 2D `numpy.ndarray`, then noise is drawn
                     from a multivariable normal distribution.
 
-          seed : int, optional
-                 Seed for random number generator.
+          seed, gradient_seed, validation_seed : int, optional
+                                                 Seeds for the random number generators.
 
           structure : dict, optional
                       Convey structure information, such as what each input represents.
@@ -251,8 +194,8 @@ class Trainer(object):
         #---------------------------------------------------------------------------------
 
         # Default parameters
-        for k in Trainer.defaults:
-            self.p.setdefault(k, Trainer.defaults[k])
+        for k in defaults:
+            self.p.setdefault(k, defaults[k])
 
         # Time step
         if self.p['dt'] is None:
@@ -816,9 +759,11 @@ class Trainer(object):
 
         B = self.p['batch_size']
         gradient_data   = Dataset(self.p['n_gradient'], task, self.floatX, self.p,
-                                  batch_size=B, seed=11, name='gradient')
+                                  batch_size=B, seed=self.p['gradient_seed'],
+                                  name='gradient')
         validation_data = Dataset(self.p['n_validation'], task, self.floatX, self.p,
-                                  batch_size=B, seed=22, name='validation')
+                                  batch_size=B, seed=self.p['validation_seed'],
+                                  name='validation')
 
         # Input noise
         if np.isscalar(self.p['var_in']):

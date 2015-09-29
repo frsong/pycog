@@ -160,9 +160,6 @@ def run_trials(p, args):
                 'info': info
                 }
             trials.append(trial)
-    except MemoryError:
-        print("[ {}.run_trials ] Ran out of memory!".format(THIS))
-        sys.exit(1)
     except KeyboardInterrupt:
         pass
     print("")
