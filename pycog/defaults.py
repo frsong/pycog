@@ -40,7 +40,7 @@ defaults = {
     'bound':                 1e-20,
     'baseline_in':           0.2,
     'var_in':                0.01**2,
-    'var_rec':               0.2**2,
+    'var_rec':               0.15**2,
     'seed':                  1234,
     'gradient_seed':         11,
     'validation_seed':       22,

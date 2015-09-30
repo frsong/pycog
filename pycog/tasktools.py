@@ -125,7 +125,7 @@ def generate_Crec(ei, p_exc=1, p_inh=1, rng=None, seed=1, allow_self=False):
 # Callbacks
 #-----------------------------------------------------------------------------------------
 
-def correct_2afc_bias(trials, z, rmin=0.4, rmax=0.6):
+def correct_2afc_bias(trials, z, rmin=0.45, rmax=0.55):
     """
     Use to correct bias in the psychometric curve.
 

@@ -136,9 +136,10 @@ if 'rdm' in args:
     print("=> Perceptual decision-making task")
     models = ['rdm_varstim', 'rdm_rt']
     for m in models:
+        if m != 'rdm_rt': continue
         clean(m)
         train(m)
-        trials(m, 2000, 'rdm')
+        trials(m, 3000, 'rdm')
         if m == 'rdm_varstim':
             do_action(m, 'sort_stim_onset', 'rdm')
             do_action(m, 'units_stim_onset', 'rdm')
@@ -152,9 +153,15 @@ if 'rdm' in args:
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
-    for m in models:
+
+    # Note: Different seeds generate psychometric functions with *slightly*
+    #       different biases. We just picked some less biased ones for the paper.
+    seeds = [100, 100, 99]
+
+    for m, seed in zip(models, seeds):
+        if m not in ['rdm_fixed']: continue
         clean(m)
-        train(m)
+        train(m, seed=seed)
         trials(m, 1000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
