@@ -155,11 +155,12 @@ if 'structure' in args:
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
 
     # Note: Different seeds generate psychometric functions with *slightly*
-    #       different biases. We just picked some less biased ones for the paper.
+    #       different biases (see for yourself). We just picked some less
+    #       biased ones for the paper.
     seeds = [100, 100, 99]
 
     for m, seed in zip(models, seeds):
-        if m not in ['rdm_fixed']: continue
+        if m not in ['rdm_nodale']: continue
         clean(m)
         train(m, seed=seed)
         trials(m, 1000, 'rdm', args='--dt_save 100')

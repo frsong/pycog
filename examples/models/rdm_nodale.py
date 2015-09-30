@@ -72,7 +72,7 @@ def generate_trial(rng, dt, params):
             fixation = 300
         else:
             fixation = 100
-        stimulus = 1000
+        stimulus = 800
         decision = 300
         T        = fixation + stimulus + decision
 
