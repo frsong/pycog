@@ -64,6 +64,14 @@ for i in INH:
     Crec[i,INH] = len(EXC)/(len(INH) - 1)
     Crec[i,i]   = 0
 
+print(np.mean(Crec*ei, axis=1), np.std(Crec, axis=1))
+
+Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
+
+print(np.mean(Crec*ei, axis=1), np.std(Crec, axis=1))
+
+
+
 #-----------------------------------------------------------------------------------------
 # Output connectivity
 #-----------------------------------------------------------------------------------------
