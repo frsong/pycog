@@ -250,7 +250,7 @@ class SGD(object):
         """
         checkfreq = self.p['checkfreq']
         if checkfreq is None:
-            checkfreq = int(5e3)//gradient_data.minibatch_size
+            checkfreq = int(1e4)//gradient_data.minibatch_size
 
         patience = self.p['patience']
         if patience is None:
@@ -261,7 +261,7 @@ class SGD(object):
         lr           = self.p['learning_rate']
         maxnorm      = self.p['max_gradient_norm']
         bound        = self.p['bound']
-        save_exclude = ['performance', 'terminate']
+        save_exclude = ['callback', 'performance', 'terminate']
 
         #---------------------------------------------------------------------------------
         # Continue previous run if we can
@@ -433,7 +433,9 @@ class SGD(object):
                 #-------------------------------------------------------------------------
 
                 tr_cost, tr_gnorm, tr_Omega, tr_nelems, tr_x = self.train_step(
-                    *(gradient_data(best['other_costs'])
+                    *(gradient_data(best['other_costs'],
+                                    validation_data.get_trials(),
+                                    SGD.get_value(z))
                       + [alpha, lambda_Omega, lr, maxnorm, bound])
                      )
 

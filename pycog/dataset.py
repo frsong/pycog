@@ -46,7 +46,7 @@ class Dataset(object):
         self.floatX         = floatX
         self.name           = name
         self.network_shape  = (p['Nin'], p['N'], p['Nout'])
-        for k in ['dt', 'rectify_inputs', 'baseline_in']:
+        for k in ['dt', 'rectify_inputs', 'baseline_in', 'callback']:
             setattr(self, k, p[k])
 
         # Rescale noise
@@ -57,7 +57,7 @@ class Dataset(object):
         self.rng = np.random.RandomState(seed)
 
         # Batch size
-        if batch_size is None:
+        if batch_size is None or batch_size < size:
             batch_size = size
         self.batch_size = batch_size
 
@@ -77,8 +77,9 @@ class Dataset(object):
         """
         # Generate a trial
         params = {
-            'target_output': True,
-            'name':          self.name
+            'callback_results': None,
+            'target_output':    True,
+            'name':             self.name
             }
         trial = self.task.generate_trial(self.rng, self.dt, params)
 
@@ -86,19 +87,30 @@ class Dataset(object):
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
-    def __call__(self, best_costs, update=True):
+    def __call__(self, best_costs, trials=None, z=None, update=True):
         """
         Return a batch of trials.
 
         best_costs : list
                      The best costs, not including the loss.
 
+        trials : list, optional
+                 List of trial infos.
+
+        z : np.ndarray, optional
+            Trial outputs.
+
         update : bool
                  If `True`, return a new set of trials.
 
         """
+        if trials is None or z is None or self.callback is None:
+            callback_results = None
+        else:
+            callback_results = self.callback(trials, z)
+
         if update:
-            self.update(best_costs)
+            self.update(best_costs, callback_results)
             self.ntrials += self.minibatch_size
 
         return [self.inputs [:,self.trial_idx:self.trial_idx+self.minibatch_size,:],
@@ -111,7 +123,7 @@ class Dataset(object):
         """
         return self.trials[self.trial_idx:self.trial_idx+self.minibatch_size]
 
-    def update(self, best_costs):
+    def update(self, best_costs, callback_results):
         """
         Generate a new minibatch of trials and store them in `self.inputs` and
         `self.outputs`. For speed (but at the cost of memory), we store `batch_size`
@@ -132,6 +144,9 @@ class Dataset(object):
                      Performance measures, in case you want to modify the trials
                      (e.g., noise) depending on the error.
 
+        callback_results : dict or None
+                           Results the trial function can use to modify training.
+
         """
         self.trial_idx += self.minibatch_size
         if self.trial_idx + self.minibatch_size > self.batch_size:
@@ -140,10 +155,11 @@ class Dataset(object):
             self.trials = []
             for b in xrange(self.batch_size):
                 params = {
-                    'target_output':   True,
-                    'minibatch_index': b,
-                    'best_costs':      best_costs,
-                    'name':            self.name
+                    'callback_results': callback_results,
+                    'target_output':    True,
+                    'minibatch_index':  b,
+                    'best_costs':       best_costs,
+                    'name':             self.name
                     }
                 self.trials.append(self.task.generate_trial(self.rng, self.dt, params))
 

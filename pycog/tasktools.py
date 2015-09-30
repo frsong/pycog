@@ -122,6 +122,22 @@ def generate_Crec(ei, p_exc=1, p_inh=1, rng=None, seed=1, allow_self=False):
     return C
 
 #-----------------------------------------------------------------------------------------
+# Callbacks
+#-----------------------------------------------------------------------------------------
+
+def correct_2afc_bias(trials, z, rmin=0.4, rmax=0.6):
+    """
+    Use to correct bias in the psychometric curve.
+
+    """
+    ends    = [len(trial['t'])-1 for trial in trials]
+    choices = [np.argmax(z[ends[i],i]) for i, end in enumerate(ends)]
+
+    r = choices.count(0)/choices.count(1)
+    r = max(min(1/(1 + r), rmax), rmin)
+    return [r, 1-r]
+
+#-----------------------------------------------------------------------------------------
 # Performance measure
 #-----------------------------------------------------------------------------------------
 

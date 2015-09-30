@@ -155,7 +155,7 @@ if 'structure' in args:
     for m in models:
         clean(m)
         train(m)
-        trials(m, 2000, 'rdm', args='--dt_save 100')
+        trials(m, 1000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     #for m in models:
@@ -206,15 +206,15 @@ if 'lee' in args:
     print("=> Eye-movement sequence execution task")
     clean('lee')
     train('lee')
-    trials('lee', 100)
+    trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
-    train_seeds('lee')
+    #train_seeds('lee')
 
 if 'lee_areas' in args:
     print("=> Eye-movement sequence execution task (with areas)")
     clean('lee_areas')
     train('lee_areas')
-    trials('lee_areas', 100, 'lee')
+    trials('lee_areas', 100, 'lee', args='--dt_save 2')
     figure('fig_lee_areas')
     #train_seeds('lee_areas')
 

@@ -62,7 +62,7 @@ def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 1000}
+        epochs = {'T': 2000}
     else:
         fixation = 100
         stimulus = 800

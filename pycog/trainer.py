@@ -102,8 +102,11 @@ class Trainer(object):
           n_validation : int, optional
                          Minibatch size for validation dataset.
 
-          batch_size : int, optional
-                       Number of trials to precompute and store in each dataset.
+          gradient_batch_size, validation_batch_size : int, optional
+                                                       Number of trials to precompute
+                                                       and store in each dataset. Make
+                                                       sure the batch sizes are larger
+                                                       than the minibatch sizes.
 
           lambda_Omega : float, optinonal
                          Multiplier for the vanishing gradient regularizer.
@@ -116,6 +119,15 @@ class Trainer(object):
 
           lambda2_r : float, optional
                       Multiplier for L2 firing rate regularization.
+
+          callback : function, optional
+                     Evaluate validation dataset.
+
+          performance : function, optional
+                        Performance measure.
+
+          terminate : function, optional
+                      Custom termination criterion.
 
           min_error : float, optional
                       Target error. Terminate if error is less than or equal.
@@ -410,7 +422,7 @@ class Trainer(object):
         if self.p['ei'] is not None:
             R = self.p['rho0']/rho
         else:
-            R = 0.95/rho
+            R = 1.1/rho
         Wrec_0 *= R
         if C is not None:
             C.mask_fixed *= R
@@ -757,12 +769,13 @@ class Trainer(object):
         # Datasets
         #---------------------------------------------------------------------------------
 
-        B = self.p['batch_size']
         gradient_data   = Dataset(self.p['n_gradient'], task, self.floatX, self.p,
-                                  batch_size=B, seed=self.p['gradient_seed'],
+                                  batch_size=self.p['gradient_batch_size'],
+                                  seed=self.p['gradient_seed'],
                                   name='gradient')
         validation_data = Dataset(self.p['n_validation'], task, self.floatX, self.p,
-                                  batch_size=B, seed=self.p['validation_seed'],
+                                  batch_size=self.p['validation_batch_size'],
+                                  seed=self.p['validation_seed'],
                                   name='validation')
 
         # Input noise
