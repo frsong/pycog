@@ -47,7 +47,7 @@ def scale(coh):
     return (1 + SCALE*coh/100)/2
 
 # Correct bias
-#callback = tasktools.correct_2afc_bias
+callback = tasktools.correct_2afc_bias
 
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
@@ -59,8 +59,10 @@ def generate_trial(rng, dt, params):
         if params.get('catch', rng.rand() < pcatch):
             catch_trial = True
         else:
-            coh    = params.get('coh',    rng.choice(cohs))
-            in_out = params.get('in_out', rng.choice(in_outs))
+            coh = params.get('coh', rng.choice(cohs))
+
+            p      = params.get('callback_results')
+            in_out = params.get('in_out', rng.choice(in_outs, p=p))
     elif params['name'] == 'validation':
         b = params['minibatch_index'] % (nconditions + 1)
         if b == 0:

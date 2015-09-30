@@ -37,7 +37,7 @@ def scale(coh):
     return (1 + SCALE*coh/100)/2
 
 # Correct bias
-#callback = tasktools.correct_2afc_bias
+callback = tasktools.correct_2afc_bias
 
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
@@ -159,4 +159,4 @@ def terminate(performance_history):
 
 # Validation
 #checkfreq    = 100
-n_validation = 100*(nconditions + 1)
+n_validation = 1000*(nconditions + 1)

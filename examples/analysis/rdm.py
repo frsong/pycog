@@ -679,7 +679,7 @@ def do(action, args, p):
         trialsfile = get_trialsfile(p)
         psychometric_function(trialsfile, plot, threshold=threshold)
 
-        plot.xlabel(r'\% coherence toward $T_\text{in}$')
+        plot.xlabel(r'Percent coherence toward $T_\text{in}$')
         plot.ylabel(r'Percent $T_\text{in}$')
 
         #---------------------------------------------------------------------------------
