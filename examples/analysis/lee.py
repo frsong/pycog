@@ -99,7 +99,7 @@ def run_trials(p, args):
 
 #=========================================================================================
 
-def pca_analysis(trials, min_std=0.05):
+def pca_analysis(trials, min_std=0.1):
     """
     Perform PCA analysis.
 

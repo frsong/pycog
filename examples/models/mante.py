@@ -178,7 +178,7 @@ def generate_trial(rng, dt, params):
         M = np.zeros_like(Y)         # Mask matrix
 
         # Hold values
-        hi = 1
+        hi = 1.2
         lo = 0.2
 
         if catch_trial:

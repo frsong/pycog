@@ -85,6 +85,9 @@ SCALE = 3.2
 def scale(coh):
     return (1 + SCALE*coh/100)/2
 
+# Correct bias
+#callback = tasktools.correct_2afc_bias
+
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
     # Select task condition
@@ -168,7 +171,7 @@ def generate_trial(rng, dt, params):
         M = np.zeros_like(Y)         # Mask
 
         # Hold values
-        hi = 1.2
+        hi = 1
         lo = 0.2
 
         if catch_trial:
@@ -201,5 +204,6 @@ TARGET_PERFORMANCE = 85
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 
-# Validation dataset
+# Validation
+#checkfreq    = 100
 n_validation = 100*(nconditions + 1)
