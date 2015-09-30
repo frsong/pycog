@@ -36,9 +36,6 @@ SCALE = 3.2
 def scale(coh):
     return (1 + SCALE*coh/100)/2
 
-# Correct bias
-callback = tasktools.correct_2afc_bias
-
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
     # Select task condition
@@ -75,7 +72,7 @@ def generate_trial(rng, dt, params):
             fixation = 300
         else:
             fixation = 100
-        stimulus = 800
+        stimulus = 1000
         decision = 300
         T        = fixation + stimulus + decision
 
@@ -158,5 +155,4 @@ def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 
 # Validation
-#checkfreq    = 100
-n_validation = 1000*(nconditions + 1)
+n_validation = 100*(nconditions + 1)

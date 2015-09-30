@@ -67,7 +67,7 @@ colors = {
         }
 
 # Decision threshold
-THRESHOLD = 0.8
+THRESHOLD = 1
 
 # Coherence scale
 SCALE = 3.2

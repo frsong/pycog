@@ -182,7 +182,7 @@ elif action == 'restingstate':
     from pycog.figtools import Figure
 
     rnn = RNN(savefile, {'dt': dt}, verbose=True)
-    rnn.run(2e3, seed=seed)
+    rnn.run(3e3, seed=seed)
 
     mean = np.mean(rnn.z)
     std  = np.std(rnn.z)
