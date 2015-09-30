@@ -54,23 +54,16 @@ Crec = np.zeros((N, N))
 for i in EXC_IN:
     Crec[i,EXC_IN] = 1
     Crec[i,i]      = 0
-    Crec[i,INH]    = len(EXC_IN)/len(INH)
+    Crec[i,INH]    = (len(EXC_IN)-1)/len(INH)
 for i in EXC_OUT:
     Crec[i,EXC_OUT] = 1
     Crec[i,i]       = 0
-    Crec[i,INH]     = len(EXC_OUT)/len(INH)
+    Crec[i,INH]     = (len(EXC_OUT)-1)/len(INH)
 for i in INH:
     Crec[i,EXC] = 1
-    Crec[i,INH] = len(EXC)/(len(INH) - 1)
+    Crec[i,INH] = len(EXC)/(len(INH)-1)
     Crec[i,i]   = 0
-
-print(np.mean(Crec*ei, axis=1), np.std(Crec, axis=1))
-
 Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
-
-print(np.mean(Crec*ei, axis=1), np.std(Crec, axis=1))
-
-
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity

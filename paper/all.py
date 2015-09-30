@@ -150,17 +150,15 @@ if 'rdm' in args:
     #for m in models:
     #    train_seeds(m)
 
+# Note: Different seeds generate psychometric functions with different biases
+#       in the psychometric function and connectivity. We just picked some less
+#       biased ones for the paper.
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
-
-    # Note: Different seeds generate psychometric functions with *slightly*
-    #       different biases (see for yourself). We just picked some less
-    #       biased ones for the paper.
-    seeds = [100, 100, 99]
-
+    seeds = [None, None, None]
     for m, seed in zip(models, seeds):
-        if m not in ['rdm_nodale']: continue
+        if m not in ['rdm_fixed']: continue
         clean(m)
         train(m, seed=seed)
         trials(m, 1000, 'rdm', args='--dt_save 100')

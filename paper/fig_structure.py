@@ -30,10 +30,6 @@ dense_trialsfile  = join(paper.scratchpath,
 fixed_trialsfile  = join(paper.scratchpath,
                          'rdm_fixed', 'trials', 'rdm_fixed_trials.pkl')
 
-# Load model
-modelfile   = join(base, 'examples', 'models', 'rdm_fixed.py')
-m_rdm_fixed = imp.load_source('model', modelfile)
-
 #-----------------------------------------------------------------------------------------
 # Load RNNs to compare
 #-----------------------------------------------------------------------------------------
@@ -238,6 +234,8 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
     else:
         # Excitatory units
         n = transitions[0]
+        plot.text(n-0.5, -3.3, 'Excitatory units', ha='center', va='center',
+                  color=Figure.colors('blue'), fontsize=6)
         plot.text(n-0.5, -1.53, '|', ha='center', va='center',
                   color=Figure.colors('blue'), fontsize=8)
         plot.text(n-0.5-0.5, -1.63, r'$\leftarrow$', color=Figure.colors('blue'),
@@ -248,6 +246,8 @@ for rnn, sortbyfile, s, dprimefile in zip([rnn_nodale, rnn_dense, rnn_fixed],
         # Inhibitory units
         try:
             n = transitions[1]
+            plot.text(n-0.5, -3.3, 'Inhibitory units', ha='center', va='center',
+                      color=Figure.colors('red'), fontsize=6)
             plot.text(n-0.5, -1.53, '|', ha='center', va='center',
                       color=Figure.colors('red'), fontsize=8)
             plot.text(n-0.5-0.5, -1.63, r'$\leftarrow$', color=Figure.colors('red'),
