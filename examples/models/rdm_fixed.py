@@ -33,18 +33,17 @@ T_IN  = 0
 T_OUT = 1
 
 # Populations
-EXC_IN  = EXC[:Nexc//2]
-INH_IN  = INH[:Ninh//2]
-EXC_OUT = EXC[Nexc//2:]
-INH_OUT = INH[Nexc//2:]
+EXC_IN  = EXC[:Nexc//4]
+EXC_OUT = EXC[Nexc//4:Nexc//2]
+EXC_NS  = EXC[Nexc//2:]
 
 #-----------------------------------------------------------------------------------------
 # Input connectivity
 #-----------------------------------------------------------------------------------------
 
 Cin = np.zeros((N, Nin))
-Cin[EXC_IN  + INH_IN,  T_IN]  = 1
-Cin[EXC_OUT + INH_OUT, T_OUT] = 1
+Cin[EXC_IN,  T_IN]  = 1
+Cin[EXC_OUT, T_OUT] = 1
 
 #-----------------------------------------------------------------------------------------
 # Recurrent connectivity
@@ -54,14 +53,20 @@ Crec = np.zeros((N, N))
 for i in EXC_IN:
     Crec[i,EXC_IN] = 1
     Crec[i,i]      = 0
-    Crec[i,INH]    = (len(EXC_IN)-1)/len(INH)
+    Crec[i,EXC_NS] = 1
+    Crec[i,INH]    = np.sum(Crec[i,EXC])/len(INH)
 for i in EXC_OUT:
     Crec[i,EXC_OUT] = 1
     Crec[i,i]       = 0
-    Crec[i,INH]     = (len(EXC_OUT)-1)/len(INH)
+    Crec[i,EXC_NS]  = 1
+    Crec[i,INH]     = np.sum(Crec[i,EXC])/len(INH)
+for i in EXC_NS:
+    Crec[i,EXC] = 1
+    Crec[i,i]   = 0
+    Crec[i,INH] = np.sum(Crec[i,EXC])/len(INH)
 for i in INH:
     Crec[i,EXC] = 1
-    Crec[i,INH] = len(EXC)/(len(INH)-1)
+    Crec[i,INH] = np.sum(Crec[i,EXC])/(len(INH)-1)
     Crec[i,i]   = 0
 Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
 
@@ -70,8 +75,8 @@ Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
 #-----------------------------------------------------------------------------------------
 
 Cout = np.zeros((Nout, N))
-Cout[T_IN,EXC_IN]   = 1
-Cout[T_OUT,EXC_OUT] = 1
+Cout[T_IN,  EXC_IN]   = 1
+Cout[T_OUT, EXC_OUT] = 1
 
 #-----------------------------------------------------------------------------------------
 # Task structure

@@ -263,6 +263,10 @@ class Trainer(object):
 
                 self.p['Crec'] = C
 
+        if self.p['ei'] is not None:
+            print(np.mean(self.p['Crec']*self.p['ei'], axis=1))
+            print(np.linalg.norm(self.p['Crec']*self.p['ei'], axis=1))
+
         # Convert to connectivity matrices
         for k in ['Cin', 'Crec', 'Cout']:
             if self.p[k] is not None and not isinstance(self.p[k], Connectivity):
