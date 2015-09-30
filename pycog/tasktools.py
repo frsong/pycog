@@ -134,8 +134,10 @@ def correct_2afc_bias(trials, z, rmin=0.4, rmax=0.6):
     choices = [np.argmax(z[ends[i],i]) for i, end in enumerate(ends)]
 
     r = choices.count(0)/choices.count(1)
-    r = max(min(1/(1 + r), rmax), rmin)
-    return [r, 1-r]
+    x = max(min(1/(1 + r), rmax), rmin)
+    print(r, [x, 1-x])
+    #return None
+    return [x, 1-x]
 
 #-----------------------------------------------------------------------------------------
 # Performance measure

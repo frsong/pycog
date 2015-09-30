@@ -46,7 +46,7 @@ class Dataset(object):
         self.floatX         = floatX
         self.name           = name
         self.network_shape  = (p['Nin'], p['N'], p['Nout'])
-        for k in ['dt', 'rectify_inputs', 'baseline_in', 'callback']:
+        for k in ['dt', 'rectify_inputs', 'baseline_in']:
             setattr(self, k, p[k])
 
         # Rescale noise
@@ -87,28 +87,20 @@ class Dataset(object):
 
     #/////////////////////////////////////////////////////////////////////////////////////
 
-    def __call__(self, best_costs, trials=None, z=None, update=True):
+    def __call__(self, best_costs, callback_results=None, update=True):
         """
         Return a batch of trials.
 
         best_costs : list
                      The best costs, not including the loss.
 
-        trials : list, optional
-                 List of trial infos.
+        callback_results : any, optional
+                           Information used to adapt training.
 
-        z : np.ndarray, optional
-            Trial outputs.
-
-        update : bool
+        update : bool, optional
                  If `True`, return a new set of trials.
 
         """
-        if trials is None or z is None or self.callback is None:
-            callback_results = None
-        else:
-            callback_results = self.callback(trials, z)
-
         if update:
             self.update(best_costs, callback_results)
             self.ntrials += self.minibatch_size
@@ -144,7 +136,7 @@ class Dataset(object):
                      Performance measures, in case you want to modify the trials
                      (e.g., noise) depending on the error.
 
-        callback_results : dict or None
+        callback_results : any
                            Results the trial function can use to modify training.
 
         """

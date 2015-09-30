@@ -361,6 +361,14 @@ class SGD(object):
                         s     += sp
                         nfill -= len(sp)
 
+                    # Callback
+                    if self.p['callback'] is not None:
+                        callback_results = self.p['callback'](
+                            validation_data.get_trials(), SGD.get_value(z)
+                            )
+                    else:
+                        callback_results = None
+
                     # Keep track of costs
                     costs_history.append((gradient_data.ntrials, costs))
 
@@ -433,9 +441,7 @@ class SGD(object):
                 #-------------------------------------------------------------------------
 
                 tr_cost, tr_gnorm, tr_Omega, tr_nelems, tr_x = self.train_step(
-                    *(gradient_data(best['other_costs'],
-                                    validation_data.get_trials(),
-                                    SGD.get_value(z))
+                    *(gradient_data(best['other_costs'], callback_results)
                       + [alpha, lambda_Omega, lr, maxnorm, bound])
                      )
 
