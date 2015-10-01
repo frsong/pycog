@@ -153,16 +153,16 @@ if 'rdm' in args:
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
-    seeds  = [None, 101, 99] # Pick out the prettiest
+    seeds  = [None, 101, 1001] # Pick out the prettiest
     for m, seed in zip(models, seeds):
         if m not in ['rdm_fixed']: continue
         clean(m)
         train(m, seed=seed)
-        trials(m, 1000, 'rdm', args='--dt_save 100')
+        trials(m, 2000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
-    #for m in models:
-    #    train_seeds(m)
+    for m in models:
+        train_seeds(m)
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
@@ -174,16 +174,6 @@ if 'mante' in args:
     do_action('mante', 'units')
     figure('fig_mante')
     #train_seeds('mante')
-
-if 'mante_delay' in args:
-    print("=> Context-dependent integration task (with delay)")
-    clean('mante_delay')
-    train('mante_delay')
-    trials('mante_delay', 100, args='--dt_save 10')
-    do_action('mante_delay', 'sort')
-    do_action('mante_delay', 'regress')
-    do_action('mante_delay', 'units')
-    figure('fig_mante_delay')
 
 if 'multisensory' in args:
     print("=> Multisensory integration task")
