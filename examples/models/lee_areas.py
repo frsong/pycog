@@ -87,26 +87,27 @@ Cin[EXC_SENSORY + INH_SENSORY,:] = 1
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-rng = np.random.RandomState(1)
+rng = np.random.RandomState(1000)
 
 Crec = np.zeros((N, N))
 for i in EXC_SENSORY:
-    Crec[i,EXC_SENSORY] = 1*(rng.uniform(size=len(EXC_SENSORY)) < 0.8)
+    Crec[i,EXC_SENSORY] = 1
     Crec[i,i]           = 0
     Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.2)
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
 for i in EXC_MOTOR:
-    Crec[i,EXC]       = 1*(rng.uniform(size=len(EXC)) < 0.8)
+    Crec[i,EXC]       = 1
     Crec[i,i]         = 0
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
 for i in INH_SENSORY:
-    Crec[i,EXC]         = 1*(rng.uniform(size=len(EXC)) < 0.8)
+    Crec[i,EXC_SENSORY] = 1
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/(len(INH_SENSORY) - 1)
     Crec[i,i]           = 0
 for i in INH_MOTOR:
-    Crec[i,EXC]       = 1*(rng.uniform(size=len(EXC)) < 0.8)
+    Crec[i,EXC]       = 1
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/(len(INH_MOTOR) - 1)
     Crec[i,i]         = 0
+Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity

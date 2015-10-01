@@ -153,7 +153,7 @@ if 'rdm' in args:
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
-    seeds  = [None, 101, 101]
+    seeds  = [None, 101, 99] # Pick out the prettiest
     for m, seed in zip(models, seeds):
         if m not in ['rdm_fixed']: continue
         clean(m)
