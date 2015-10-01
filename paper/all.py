@@ -153,12 +153,12 @@ if 'rdm' in args:
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
-    seeds  = [None, 10, 1]
+    seeds  = [None, 101, 101]
     for m, seed in zip(models, seeds):
-        if m not in ['rdm_dense']: continue
+        if m not in ['rdm_fixed']: continue
         clean(m)
         train(m, seed=seed)
-        trials(m, 500, 'rdm', args='--dt_save 100')
+        trials(m, 1000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
     #for m in models:
