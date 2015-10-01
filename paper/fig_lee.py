@@ -282,7 +282,7 @@ for seq in xrange(1, 1+m.nseq):
     # Trial
     trial_func = m.generate_trial
     trial_args = {'name': 'test', 'seq':  seq}
-    info = rnn.run(inputs=(trial_func, trial_args))
+    info = rnn.run(inputs=(trial_func, trial_args), seed=10)
 
     # Save at lower temporal resolution
     dt    = rnn.t[1] - rnn.t[0]
@@ -381,6 +381,7 @@ print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
+trials = trials[5*m.nseq:]
 
 for i in xrange(m.nseq):
     trial  = trials[i]

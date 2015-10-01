@@ -2,12 +2,14 @@
 from __future__ import division
 
 import cPickle as pickle
-import os
+import imp
+from os.path import join
 
 import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import gradient, mpl, Figure
+from pycog.utils       import get_here, get_parent
 from examples.analysis import rdm
 
 import paper
@@ -16,30 +18,38 @@ import paper
 # Paths
 #=========================================================================================
 
-here     = os.path.dirname(os.path.realpath(__file__))
-figspath = here + '/figs'
+here     = get_here(__file__)
+base     = get_parent(here)
+figspath = join(here, 'figs')
 
-trialsfile  = paper.scratchpath + '/rdm_dense/trials/rdm_dense_trials.pkl'
+modelfile = join(base, 'examples', 'models', 'rdm_dense.py')
+savefile  = join(base, 'examples', 'work', 'data', 'rdm_dense', 'rdm_dense.pkl')
 
 #=========================================================================================
 
-# Load trial
-with open(trialsfile) as f:
-    trials = pickle.load(f)
+m = imp.load_source('model', modelfile)
 
-for trial in trials:
-    if trial['info']['coh'] == 16:
-        break
-t = trial['t']
+rnn = RNN(savefile, {'dt': 0.5}, verbose=False)
+
+trial_func = m.generate_trial
+trial_args = {
+    'name':   'test',
+    'catch':  False,
+    'coh':    16,
+    'in_out': 1
+    }
+info = rnn.run(inputs=(trial_func, trial_args), seed=10)
 
 colors = ['orange', 'purple']
+
+DT = 15
 
 # Inputs
 for i, clr in enumerate(colors):
     fig  = Figure(w=2, h=1)
     plot = fig.add(None, 'none')
 
-    plot.plot(t, trial['u'][i], color=Figure.colors(clr), lw=1)
+    plot.plot(rnn.t[::DT], rnn.u[i][::DT], color=Figure.colors(clr), lw=1)
     plot.ylim(0, 1.5)
 
     fig.save(path=figspath, name='fig1a_input{}'.format(i+1))
@@ -50,7 +60,7 @@ for i, clr in enumerate(colors):
     fig  = Figure(w=2, h=1)
     plot = fig.add(None, 'none')
 
-    plot.plot(t, trial['z'][i], color=Figure.colors(clr), lw=1)
+    plot.plot(rnn.t[::DT], rnn.z[i][::DT], color=Figure.colors(clr), lw=1)
     plot.ylim(0, 1.5)
 
     fig.save(path=figspath, name='fig1a_output{}'.format(i+1))

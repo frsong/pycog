@@ -173,10 +173,14 @@ class Subplot(object):
             self.xticks()
             self.yticks()
 
-    def axis_off(self, axis=None):
+    def axis_off(self, axis='left'):
         self.spines[axis].set_visible(False)
-        self.yticks()
-        self.yticklabels()
+        if axis == 'bottom':
+            self.xticks()
+            self.xticklabels()
+        elif axis == 'left':
+            self.yticks()
+            self.yticklabels()
 
     #/////////////////////////////////////////////////////////////////////////////////////
 

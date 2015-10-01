@@ -27,8 +27,8 @@ varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
 rt_trialsfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_trials.pkl')
 rt_sortedfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_sorted_response.pkl')
 
-varstim_unit = 11
-rt_unit      = 19
+varstim_unit = 3
+rt_unit      = 68
 
 #=========================================================================================
 # Figure setup
@@ -43,8 +43,8 @@ x0 = 0.12
 x1 = x0 + dx
 
 h  = 0.17
-dy = 0.22
-y0 = 0.78
+dy = 0.215
+y0 = 0.775
 y1 = y0 - dy
 y2 = y1 - dy - 0.03
 y3 = y2 - dy - 0.03
@@ -53,8 +53,10 @@ w_inset = 0.12
 h_inset = 0.07
 
 plots = {
-    'A': fig.add([x0, y0, w, h]),
-    'B': fig.add([x1, y0, w, h]),
+    'Ain': fig.add([x0, y0+0.83*h, w, 0.25*h]),
+    'Bin': fig.add([x1, y0+0.83*h, w, 0.25*h]),
+    'A': fig.add([x0, y0, w, 0.8*h]),
+    'B': fig.add([x1, y0, w, 0.8*h]),
     'C': fig.add([x0, y1, w, h]),
     'D': fig.add([x1, y1, w, h]),
     'E': fig.add([x0, y2, w, h]),
@@ -91,13 +93,15 @@ shift  = 0.008
 # Training protocol for outputs
 #=========================================================================================
 
+plot = plots['Ain']
+plot.text_upper_center('Direction discrimination', dy=0.17, fontsize=8)
+
 plot = plots['A']
-plot.text_upper_center('Direction discrimination', dy=0.1, fontsize=8)
 plot.xlabel('Time', labelpad=6.5)
 plot.ylabel('Target output', labelpad=7)
 
-plot = plots['B']
-plot.text_upper_center('Reaction time version', dy=0.1, fontsize=8)
+plot = plots['Bin']
+plot.text_upper_center('Reaction time version', dy=0.17, fontsize=8)
 
 plot = plots['C']
 plot.xlabel(r'\% coherence toward choice 1')
@@ -151,13 +155,43 @@ plot.vline(t_fixation[-1], color='0.2', linestyle='--', lw=1, dashes=dashes)
 plot.vline(t_decision[0],  color='0.2', linestyle='--', lw=1, dashes=dashes)
 
 # Epochs
-dtext = 0.1
+dtext = 0.15
 plot.text(np.mean(t_fixation), 0.6+dtext, 'fix.',
           ha='center', va='center', fontsize=7)
 plot.text(np.mean(t_stimulus), 0.6-dtext, 'variable stimulus',
-          ha='center', va='center', fontsize=7)
+          ha='center', va='center', fontsize=7, color=Figure.colors('darkgreen'))
 plot.text(np.mean(t_decision), 0.6+dtext, 'dec.',
           ha='center', va='center', fontsize=7)
+
+#t_fixation = np.array([0,   200])
+#t_stimulus = np.array([200, 800])
+#t_decision = np.array([800, 1000])
+
+#-----------------------------------------------------------------------------------------
+# Inputs
+#-----------------------------------------------------------------------------------------
+
+plot = plots['Ain']
+plot.axis_off('bottom')
+plot.axis_off('left')
+
+rng      = np.random.RandomState(111)
+baseline = 0.2
+coh      = 8
+
+t  = np.linspace(0, t_decision[1], 201)
+u0 = baseline + 0.1*rng.normal(size=len(t))
+u1 = baseline + 0.1*rng.normal(size=len(t))
+for i in xrange(len(t)):
+    if t_stimulus[0] < t[i] <= t_stimulus[1]:
+        u0[i] += (1 + 3.2*coh/100)/2
+        u1[i] += (1 - 3.2*coh/100)/2
+
+plot.plot(t, u0, color=Figure.colors('blue'), lw=0.5)
+plot.plot(t, u1, color=Figure.colors('red'),  lw=0.5)
+
+plot.xticks()
+plot.yticks()
 
 #-----------------------------------------------------------------------------------------
 # Reaction time version
@@ -166,7 +200,8 @@ plot.text(np.mean(t_decision), 0.6+dtext, 'dec.',
 plot = plots['B']
 
 eps = 1e-6
-t   = np.array([0, 200, 500, 1000])
+FIX = 200
+t   = np.array([0, FIX, 500, 1000])
 
 hi = 1
 lo = 0.1
@@ -187,13 +222,44 @@ plot.vline(t[1], color='0.2', linestyle='--', lw=1, dashes=dashes)
 plot.text(np.mean(t[[0,1]]), 0.6+dtext, 'fix.',
           ha='center', va='center', fontsize=7)
 plot.text(t[1] + 50, 0.6-dtext, r'ongoing stimulus',
-          ha='left', va='center', fontsize=7)
+          ha='left', va='center', fontsize=7, color=Figure.colors('darkgreen'))
 plot.text(np.mean(t[[2,3]]), 0.6+dtext, 'decision',
           ha='center', va='center', fontsize=7)
 
 # Stimulus arrow
 plot.arrow(780, 0.6-dtext, 210, 0, width=0.002, head_width=0.04, head_length=25,
-           length_includes_head=True, fc='k', ec='k')
+           length_includes_head=True,
+           fc=Figure.colors('darkgreen'), ec=Figure.colors('darkgreen'))
+
+plot = plots['Bin']
+plot.xticks()
+plot.yticks()
+
+#-----------------------------------------------------------------------------------------
+# Inputs
+#-----------------------------------------------------------------------------------------
+
+plot = plots['Bin']
+plot.axis_off('bottom')
+plot.axis_off('left')
+
+rng      = np.random.RandomState(222)
+baseline = 0.2
+coh      = 8
+
+t  = np.linspace(0, t_decision[1], 201)
+u0 = baseline + 0.1*rng.normal(size=len(t))
+u1 = baseline + 0.1*rng.normal(size=len(t))
+for i in xrange(len(t)):
+    if t[i] > FIX:
+        u0[i] += (1 + 3.2*coh/100)/2
+        u1[i] += (1 - 3.2*coh/100)/2
+
+plot.plot(t, u0, color=Figure.colors('blue'), lw=0.5)
+plot.plot(t, u1, color=Figure.colors('red'),  lw=0.5)
+
+plot.xticks()
+plot.yticks()
 
 #-----------------------------------------------------------------------------------------
 # Psychometric curves
@@ -222,8 +288,8 @@ plot      = plots['F']
 plot_dist = plots['Finset']
 
 rdm.chronometric_function(rt_trialsfile, plot, plot_dist, ms=5)
-plot.ylim(200, 1100)
-plot.yticks(range(200, 1100, 200))
+plot.ylim(100, 1100)
+plot.yticks(range(200, 1100+100, 200))
 plot_dist.xlim(0, 1500)
 plot_dist.xticks([0, 1500])
 plot_dist.axis_off('left')

@@ -387,14 +387,14 @@ def chronometric_function(trialsfile, plot, plot_dist=None, **kwargs):
     # Error
     prop = {'color': kwargs.get('color', '0.2'),
             'lw':    kwargs.get('lw', 1)}
-    plot.plot(error_scaled_cohs, error_rt, **prop)
+    #plot.plot(error_scaled_cohs, error_rt, **prop)
     prop = {'marker':    'o',
             'linestyle': 'none',
             'ms':        kwargs.get('ms',  6) - 1,
             'mfc':       'w',
             'mec':       '0.2',
             'mew':       kwargs.get('mew', 1)}
-    plot.plot(error_scaled_cohs, error_rt, **prop)
+    #plot.plot(error_scaled_cohs, error_rt, **prop)
 
     plot.xscale('log')
     plot.xticks([1, 10, 100])

@@ -69,7 +69,8 @@ def call(s):
         rv = subprocess.call(s.split())
         if rv != 0:
             sys.stdout.flush()
-            print("Something went wrong (return code {}).".format(rv))
+            print("Something went wrong (return code {})".format(rv)
+                  + " We're probably out of memory.")
             sys.exit(1)
 
 def clean(model):
@@ -134,19 +135,21 @@ def figure(fig):
 
 if 'rdm' in args:
     print("=> Perceptual decision-making task")
-    models = ['rdm_varstim', 'rdm_rt']
-    for m in models:
-        if m != 'rdm_rt': continue
-        clean(m)
-        train(m)
-        trials(m, 3000, 'rdm')
-        if m == 'rdm_varstim':
-            do_action(m, 'sort_stim_onset', 'rdm')
-            do_action(m, 'units_stim_onset', 'rdm')
-        elif m == 'rdm_rt':
-            do_action(m, 'sort_response', 'rdm')
-            do_action(m, 'units_response', 'rdm')
+
+    m = 'rdm_varstim'
+    train(m)
+    trials(m, 3000, 'rdm', args='--dt_save 20')
+    do_action(m, 'sort_stim_onset', 'rdm')
+    do_action(m, 'units_stim_onset', 'rdm')
+
+    m = 'rdm_rt'
+    #train(m)
+    #trials(m, 1500, 'rdm', args='--dt_save 10')
+    #do_action(m, 'sort_response', 'rdm')
+    #do_action(m, 'units_response', 'rdm')
+
     figure('fig_rdm')
+
     #for m in models:
     #    train_seeds(m)
 
@@ -155,7 +158,6 @@ if 'structure' in args:
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
     seeds  = [None, 101, 1001] # Pick out the prettiest
     for m, seed in zip(models, seeds):
-        if m not in ['rdm_fixed']: continue
         clean(m)
         train(m, seed=seed)
         trials(m, 2000, 'rdm', args='--dt_save 100')
@@ -201,7 +203,7 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
-    #train_seeds('lee')
+    train_seeds('lee')
 
 if 'lee_areas' in args:
     print("=> Eye-movement sequence execution task (with areas)")
@@ -209,7 +211,7 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee', args='--dt_save 2')
     figure('fig_lee_areas')
-    #train_seeds('lee_areas')
+    train_seeds('lee_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")
