@@ -181,9 +181,17 @@ elif action == 'restingstate':
     from pycog          import RNN
     from pycog.figtools import Figure
 
-    rnn = RNN(savefile, {'dt': dt}, verbose=True)
+    # Create RNN
+    if 'init' in args:
+        print("* Initial network.")
+        base, ext = os.path.splitext(savefile)
+        savefile_init = base + '_init' + ext
+        rnn = RNN(savefile_init, {'dt': dt}, verbose=True)
+    else:
+        rnn = RNN(savefile, {'dt': dt}, verbose=True)
     rnn.run(3e3, seed=seed)
 
+    # Summary
     mean = np.mean(rnn.z)
     std  = np.std(rnn.z)
     print("Mean output: {:.6f}".format(mean))

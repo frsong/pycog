@@ -118,6 +118,7 @@ def generate_Crec(ei, p_exc=1, p_inh=1, rng=None, seed=1, allow_self=False):
         if not allow_self:
             C[i,i] = 0
         C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
+    C /= np.linalg.norm(C, axis=1)[:,np.newaxis]
 
     return C
 

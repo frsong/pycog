@@ -190,7 +190,7 @@ if 'multisensory' in args:
     do_action('multisensory', 'sort')
     do_action('multisensory', 'units')
     figure('fig_multisensory')
-    train_seeds('multisensory')
+    #train_seeds('multisensory')
 
 if 'romo' in args:
     print("=> Parametric working memory task")
@@ -200,7 +200,7 @@ if 'romo' in args:
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')
-    train_seeds('romo')
+    #train_seeds('romo')
 
 if 'lee' in args:
     print("=> Eye-movement sequence execution task")
