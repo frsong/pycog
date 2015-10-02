@@ -142,21 +142,21 @@ if 'rdm' in args:
     m = 'rdm_varstim'
     clean(m)
     train(m, seed=1001)
-    trials(m, 2000, 'rdm', args='--dt_save 20')
+    trials(m, 4000, 'rdm', args='--dt_save 20')
     do_action(m, 'sort_stim_onset', 'rdm')
     do_action(m, 'units_stim_onset', 'rdm')
 
     m = 'rdm_rt'
-    #clean(m)
-    #train(m)
-    #trials(m, 1500, 'rdm', args='--dt_save 10')
-    #do_action(m, 'sort_response', 'rdm')
-    #do_action(m, 'units_response', 'rdm')
+    clean(m)
+    train(m)
+    trials(m, 1500, 'rdm', args='--dt_save 10')
+    do_action(m, 'sort_response', 'rdm')
+    do_action(m, 'units_response', 'rdm')
 
     figure('fig_rdm')
 
-    #for m in models:
-    #    train_seeds(m)
+    for m in models:
+        train_seeds(m)
 
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")

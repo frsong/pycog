@@ -27,7 +27,7 @@ varstim_sortedfile = join(paper.scratchpath, 'rdm_varstim', 'trials',
 rt_trialsfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_trials.pkl')
 rt_sortedfile = join(paper.scratchpath, 'rdm_rt', 'trials', 'rdm_rt_sorted_response.pkl')
 
-varstim_unit = 3
+varstim_unit = 10
 rt_unit      = 68
 
 #=========================================================================================
@@ -292,7 +292,7 @@ plot_dist.axis_off('left')
 # Variable stimulus
 plot = plots['G']
 rdm.plot_unit(varstim_unit, varstim_sortedfile, plot, tmin=-200, tmax=600, lw=1.5)
-plot.yticks([0, 1])
+plot.yticks(range(5))
 
 # Legend
 prop = {'prop': {'size': 5},
