@@ -201,13 +201,14 @@ def psychometric_function(trialsfile, plot=None, threshold=False, **kwargs):
         choice = get_choice(trial, threshold)
         if choice is None:
             continue
-        ntot += 1
+        if coh != 0:
+            ntot += 1
         if isinstance(choice, tuple):
             choice, _ = choice
         choice_by_coh.setdefault(coh, []).append(choice)
 
         # Correct
-        if choice == info['choice']:
+        if coh != 0 and choice == info['choice']:
             ncorrect += 1
 
     # Report overall performance

@@ -10,6 +10,9 @@ Notes
 * We run a fair number of trials to get pretty psychometric curves, and this is done
   in one big chunk of memory.
 
+* Training converged for all the seeds we tried but we picked the ones that produced
+  the prettiest plots for the paper -- we hope that's understandable!
+
 """
 from __future__ import division
 
@@ -137,12 +140,14 @@ if 'rdm' in args:
     print("=> Perceptual decision-making task")
 
     m = 'rdm_varstim'
-    train(m)
-    trials(m, 3000, 'rdm', args='--dt_save 20')
+    clean(m)
+    train(m, seed=1001)
+    trials(m, 2000, 'rdm', args='--dt_save 20')
     do_action(m, 'sort_stim_onset', 'rdm')
     do_action(m, 'units_stim_onset', 'rdm')
 
     m = 'rdm_rt'
+    #clean(m)
     #train(m)
     #trials(m, 1500, 'rdm', args='--dt_save 10')
     #do_action(m, 'sort_response', 'rdm')

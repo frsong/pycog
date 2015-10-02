@@ -79,10 +79,10 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 3000}
+        epochs = {'T': 2000}
     else:
         if params['name'] == 'test':
-            fixation = 300
+            fixation = 500
         else:
             fixation = 100
         stimulus = tasktools.truncated_exponential(rng, dt, 330, xmin=80, xmax=1500)
@@ -95,7 +95,6 @@ def generate_trial(rng, dt, params):
             'decision': (fixation + stimulus, T)
             }
         epochs['T'] = T
-
     #-------------------------------------------------------------------------------------
     # Trial info
     #-------------------------------------------------------------------------------------
@@ -138,7 +137,7 @@ def generate_trial(rng, dt, params):
         M = np.zeros_like(Y)         # Mask matrix
 
         # Hold values
-        hi = 1.2
+        hi = 1
         lo = 0.2
 
         if catch_trial:

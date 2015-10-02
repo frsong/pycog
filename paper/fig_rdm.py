@@ -53,10 +53,10 @@ w_inset = 0.12
 h_inset = 0.07
 
 plots = {
-    'Ain': fig.add([x0, y0+0.83*h, w, 0.25*h]),
-    'Bin': fig.add([x1, y0+0.83*h, w, 0.25*h]),
-    'A': fig.add([x0, y0, w, 0.8*h]),
-    'B': fig.add([x1, y0, w, 0.8*h]),
+    'Ain': fig.add([x0, y0+0.72*h, w, 0.3*h]),
+    'Bin': fig.add([x1, y0+0.72*h, w, 0.3*h]),
+    'A': fig.add([x0, y0, w, 0.65*h]),
+    'B': fig.add([x1, y0, w, 0.65*h]),
     'C': fig.add([x0, y1, w, h]),
     'D': fig.add([x1, y1, w, h]),
     'E': fig.add([x0, y2, w, h]),
@@ -66,8 +66,8 @@ plots = {
     }
 plots['Finset'] = fig.add([x1 + 0.23, y2 + 0.15, w_inset, h_inset])
 
-x0 = 0.02
-x1 = x0 + dx
+x0 = 0.025
+x1 = x0 + dx + 0.005
 
 y0 = 0.96
 y1 = y0 - dy
@@ -94,14 +94,15 @@ shift  = 0.008
 #=========================================================================================
 
 plot = plots['Ain']
-plot.text_upper_center('Direction discrimination', dy=0.17, fontsize=8)
+plot.text_upper_center('Direction discrimination', dy=0.21, fontsize=7.5)
+plot.ylabel('Input', labelpad=7, fontsize=6.5)
 
 plot = plots['A']
 plot.xlabel('Time', labelpad=6.5)
-plot.ylabel('Target output', labelpad=7)
+plot.ylabel('Target output', labelpad=7, fontsize=6.5)
 
 plot = plots['Bin']
-plot.text_upper_center('Reaction time version', dy=0.17, fontsize=8)
+plot.text_upper_center('Reaction time version', dy=0.21, fontsize=7.5)
 
 plot = plots['C']
 plot.xlabel(r'\% coherence toward choice 1')
@@ -155,17 +156,10 @@ plot.vline(t_fixation[-1], color='0.2', linestyle='--', lw=1, dashes=dashes)
 plot.vline(t_decision[0],  color='0.2', linestyle='--', lw=1, dashes=dashes)
 
 # Epochs
-dtext = 0.15
-plot.text(np.mean(t_fixation), 0.6+dtext, 'fix.',
+plot.text(np.mean(t_fixation), 0.6, 'fix.',
           ha='center', va='center', fontsize=7)
-plot.text(np.mean(t_stimulus), 0.6-dtext, 'variable stimulus',
-          ha='center', va='center', fontsize=7, color=Figure.colors('darkgreen'))
-plot.text(np.mean(t_decision), 0.6+dtext, 'dec.',
+plot.text(np.mean(t_decision), 0.6, 'dec.',
           ha='center', va='center', fontsize=7)
-
-#t_fixation = np.array([0,   200])
-#t_stimulus = np.array([200, 800])
-#t_decision = np.array([800, 1000])
 
 #-----------------------------------------------------------------------------------------
 # Inputs
@@ -193,6 +187,9 @@ plot.plot(t, u1, color=Figure.colors('red'),  lw=0.5)
 plot.xticks()
 plot.yticks()
 
+plot.text(np.mean(t_stimulus), 0.05, 'variable stimulus',
+          ha='center', va='center', fontsize=6.5, color='k')
+
 #-----------------------------------------------------------------------------------------
 # Reaction time version
 #-----------------------------------------------------------------------------------------
@@ -219,21 +216,10 @@ plot.yticks()
 plot.vline(t[1], color='0.2', linestyle='--', lw=1, dashes=dashes)
 
 # Epochs
-plot.text(np.mean(t[[0,1]]), 0.6+dtext, 'fix.',
+plot.text(np.mean(t[[0,1]]), 0.6, 'fix.',
           ha='center', va='center', fontsize=7)
-plot.text(t[1] + 50, 0.6-dtext, r'ongoing stimulus',
-          ha='left', va='center', fontsize=7, color=Figure.colors('darkgreen'))
-plot.text(np.mean(t[[2,3]]), 0.6+dtext, 'decision',
+plot.text(np.mean(t[[2,3]]), 0.6, 'decision',
           ha='center', va='center', fontsize=7)
-
-# Stimulus arrow
-plot.arrow(780, 0.6-dtext, 210, 0, width=0.002, head_width=0.04, head_length=25,
-           length_includes_head=True,
-           fc=Figure.colors('darkgreen'), ec=Figure.colors('darkgreen'))
-
-plot = plots['Bin']
-plot.xticks()
-plot.yticks()
 
 #-----------------------------------------------------------------------------------------
 # Inputs
@@ -260,6 +246,11 @@ plot.plot(t, u1, color=Figure.colors('red'),  lw=0.5)
 
 plot.xticks()
 plot.yticks()
+
+plot.text(FIX + 50, 0.05, r'ongoing stimulus',
+          ha='left', va='center', fontsize=6.5, color='k')
+plot.arrow(780, 0.05, 210, 0, width=0.003, head_width=0.07, head_length=25,
+           length_includes_head=True, fc='k', ec='k')
 
 #-----------------------------------------------------------------------------------------
 # Psychometric curves
@@ -288,8 +279,8 @@ plot      = plots['F']
 plot_dist = plots['Finset']
 
 rdm.chronometric_function(rt_trialsfile, plot, plot_dist, ms=5)
-plot.ylim(100, 1100)
-plot.yticks(range(200, 1100+100, 200))
+plot.ylim(100, 1000)
+plot.yticks(range(200, 1000+100, 200))
 plot_dist.xlim(0, 1500)
 plot_dist.xticks([0, 1500])
 plot_dist.axis_off('left')

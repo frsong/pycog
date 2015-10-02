@@ -175,7 +175,7 @@ smap_exc_out, smap_inh_out = generate_cmap([rnn.Wout for rnn in rnns])
 textprop = dict(dy=0.14, fontsize=7)
 
 plot = plots['Apsy']
-plot.xlabel(r'Percent coherence toward choice 1')
+plot.xlabel(r'\% coherence toward choice 1')
 plot.ylabel(r'Percent choice 1', labelpad=4)
 plot.text_upper_center('No Dale\'s principle', **textprop)
 
