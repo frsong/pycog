@@ -4,5 +4,6 @@ __all__ = ['tasktools', 'Model', 'rnn']
 
 from . import tasktools
 
-from .model import Model
-from .rnn   import RNN
+from .defaults import defaults
+from .model    import Model
+from .rnn      import RNN

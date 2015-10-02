@@ -155,7 +155,7 @@ if 'rdm' in args:
 
     figure('fig_rdm')
 
-    for m in models:
+    for m in ['rdm_varstim', 'rdm_rt']:
         train_seeds(m)
 
 if 'structure' in args:

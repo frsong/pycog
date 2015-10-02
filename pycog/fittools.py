@@ -49,7 +49,7 @@ def fit_psychometric(xdata, ydata, func=None, p0=None):
         func = fit_functions[func]
 
     popt_list, pcov_list = curve_fit(func, xdata, ydata, p0=p0)
-    
+
     # Return parameters with names
     args = inspect.getargspec(func).args
     popt = OrderedDict()

@@ -42,7 +42,7 @@ def get_choice(trial):
 
 # Define "active" units
 def is_active(r):
-    return np.std(r) > 0.2
+    return np.std(r) > 0.1
 
 # Coherence scale
 SCALE = 5
@@ -843,8 +843,8 @@ def plot_statespace(trialsfile, sortedfile, betafile, plots):
 
     # Epoch to plot
     start, end = trials[0]['info']['epochs']['stimulus']
-    start += 100
-    end   += 100
+    start += 0
+    end   += 0
     w, = np.where((start <= t) & (t <= end))
 
     # Down-sample
