@@ -9,6 +9,7 @@ from   os.path import join
 
 import numpy as np
 
+from pycog             import RNN
 from pycog.figtools    import Figure
 from pycog.utils       import get_here, get_parent
 from examples.analysis import multisensory
@@ -33,6 +34,7 @@ here     = get_here(__file__)
 base     = get_parent(here)
 figspath = join(here, 'figs')
 
+savefile   = join(base, 'examples', 'work', 'data', 'multisensory', 'multisensory.pkl')
 trialsfile = join(paper.scratchpath, 'multisensory', 'trials', 'multisensory_trials.pkl')
 sortedfile = join(paper.scratchpath, 'multisensory', 'trials', 'multisensory_sorted.pkl')
 
@@ -40,22 +42,11 @@ sortedfile = join(paper.scratchpath, 'multisensory', 'trials', 'multisensory_sor
 modelfile = join(base, 'examples', 'models', 'multisensory.py')
 m = imp.load_source('model', modelfile)
 
-# Load trials
-with open(trialsfile) as f:
-    trials = pickle.load(f)
-
-# Display time
-epochs = trials[0]['info']['epochs']
-stimulus_start, stimulus_end = epochs['stimulus']
-t0   = stimulus_start
-tmin = 200
-tmax = stimulus_end
-
 # Units to display
 units = {
-    'choice':   85,
-    'modality': 101,
-    'mixed':    16
+    'choice':   87,
+    'modality': 123,
+    'mixed':    121
     }
 
 #=========================================================================================
@@ -167,6 +158,37 @@ freq0      = int(np.ceil(m.boundary))
 boundary_v = m.baseline_in + m.scale_v_p(m.boundary)
 boundary_a = m.baseline_in + m.scale_a_p(m.boundary)
 
+rng = np.random.RandomState(1215)
+rnn = RNN(savefile, {'dt': 0.5}, verbose=False)
+trials = []
+for i in xrange(3):
+    trial_func = m.generate_trial
+    trial_args = {
+        'name':     'test',
+        'catch':    False,
+        'modality': ['v', 'a', 'va'][i],
+        'freq':     freq0,
+        }
+    info = rnn.run(inputs=(trial_func, trial_args), rng=rng)
+
+    dt    = rnn.t[1] - rnn.t[0]
+    step  = int(5/dt)
+    trial = {
+        't':    rnn.t[::step],
+        'u':    rnn.u[:,::step],
+        'r':    rnn.r[:,::step],
+        'z':    rnn.z[:,::step],
+        'info': info
+        }
+    trials.append(trial)
+
+# Display time
+epochs = trials[0]['info']['epochs']
+stimulus_start, stimulus_end = epochs['stimulus']
+t0   = stimulus_start
+tmin = 200
+tmax = stimulus_end
+
 # Time
 t = trials[0]['t']
 w = np.where((tmin <= t) & (t <= tmax))
@@ -257,18 +279,26 @@ plot.text_upper_center('boundary', dy=0.06, fontsize=6)
 # Single units
 #=========================================================================================
 
+# Load trials
+with open(trialsfile) as f:
+    trials = pickle.load(f)
+
 all = []
 for name, unit in units.items():
     all.append(multisensory.plot_unit(unit, sortedfile, plots[name],
                                       t0=t0, tmin=tmin, tmax=tmax, lw=1.25))
     if name == 'choice':
+        pass
         plots[name].ylim(0, 1)
-        plots[name].yticks([0, 0.5, 1])
+        plots[name].yticks([0, 1])
     elif name == 'modality':
-        plots[name].yticks([0, 0.1, 0.2])
+        pass
+        plots[name].ylim(0, 0.75)
+        plots[name].yticks([0, 0.5])
     elif name == 'mixed':
-        plots[name].ylim(0, 1)
-        plots[name].yticks([0, 0.5, 1])
+        pass
+        plots[name].ylim(0, 2.5)
+        plots[name].yticks([0, 1, 2])
 
 # Legend
 prop = {'prop': {'size': 5.5},

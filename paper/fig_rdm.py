@@ -64,7 +64,7 @@ plots = {
     'G': fig.add([x0, y3, w, h]),
     'H': fig.add([x1, y3, w, h])
     }
-plots['Finset'] = fig.add([x1 + 0.23, y2 + 0.15, w_inset, h_inset])
+plots['Finset'] = fig.add([x1 + 0.23, y2 + 0.14, w_inset, h_inset])
 
 x0 = 0.025
 x1 = x0 + dx + 0.005
