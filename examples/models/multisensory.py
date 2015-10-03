@@ -207,7 +207,7 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 85
+TARGET_PERFORMANCE = 90
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 
