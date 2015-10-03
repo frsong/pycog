@@ -11,6 +11,8 @@ import sys
 
 import numpy as np
 
+from .defaults import defaults, generate_trial
+
 THIS = 'pycog.model'
 
 class Struct():
@@ -39,7 +41,7 @@ class Model(object):
 
         kwargs : dict
 
-          Must contain
+          Should contain
 
           generate_trial : function
                            Return a dictionary containing trial information.
@@ -74,6 +76,9 @@ class Model(object):
             except AttributeError:
                 print("[ {}.Model ] You need to define a function that returns trials."
                       .format(THIS))
+
+                # TODO: Sine wave
+
                 sys.exit(1)
 
         # generate_trial : usage
@@ -114,8 +119,7 @@ class Model(object):
             os.environ['THEANO_FLAGS'] += ',device=gpu,nvcc.fastmath=True'
 
         # Only involve Theano for training
-        from .defaults import defaults
-        from .trainer  import Trainer
+        from .trainer import Trainer
 
         # The task
         try:

@@ -57,3 +57,6 @@ defaults = {
     'momentum':              False, # Not used currently
     'method':                'sgd'  # Not used currently
     }
+
+def generate_trial(rng, dt, params):
+    pass

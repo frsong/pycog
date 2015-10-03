@@ -190,7 +190,7 @@ if 'multisensory' in args:
     do_action('multisensory', 'sort')
     do_action('multisensory', 'units')
     figure('fig_multisensory')
-    #train_seeds('multisensory')
+    train_seeds('multisensory')
 
 if 'romo' in args:
     print("=> Parametric working memory task")
@@ -216,7 +216,7 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee', args='--dt_save 2')
     figure('fig_lee_areas')
-    train_seeds('lee_areas')
+    #train_seeds('lee_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")

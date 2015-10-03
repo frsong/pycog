@@ -49,7 +49,7 @@ options = {
 #-----------------------------------------------------------------------------------------
 
 Nin  = 9 + nseq
-N    = 100
+N    = 200
 Nout = 2
 
 # For addressing inputs
@@ -108,6 +108,12 @@ for i in INH_MOTOR:
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/(len(INH_MOTOR) - 1)
     Crec[i,i]         = 0
 Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
+
+#-----------------------------------------------------------------------------------------
+# Initial spectral radius of the recurrent connection matrix
+#-----------------------------------------------------------------------------------------
+
+rho0 = 0.95
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity

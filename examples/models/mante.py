@@ -28,7 +28,7 @@ ei, EXC, INH = tasktools.generate_ei(N)
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5)
+Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5, seed=1066)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity

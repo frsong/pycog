@@ -206,7 +206,7 @@ elif action == 'restingstate':
         mean = np.mean(rnn.z[i])*np.ones_like(rnn.t)
         plot.plot(1e-3*rnn.t, mean, color=colors[i%len(colors)])
     plot.xlim(1e-3*rnn.t[0], 1e-3*rnn.t[-1])
-    plot.ylim(0, 1)
+    plot.lim('y', np.ravel(rnn.z), lower=0)
 
     plot.xlabel('Time (sec)')
     plot.ylabel('Outputs')
