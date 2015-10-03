@@ -72,7 +72,7 @@ modalities  = ['v', 'a', 'va']
 freqs       = range(9, 16+1)
 boundary    = 12.5
 nconditions = len(modalities)*len(freqs)
-pcatch      = 1/(nconditions + 1)
+pcatch      = 5/(nconditions + 1)
 
 fmin = min(freqs)
 fmax = max(freqs)
@@ -118,7 +118,7 @@ def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 2000}
+        epochs = {'T': 2500}
     else:
         if params['name'] == 'test':
             fixation = 500
@@ -207,7 +207,7 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 90
+TARGET_PERFORMANCE = 85
 def terminate(performance_history):
     return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
 

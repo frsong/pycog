@@ -45,7 +45,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 2/(nconditions + 1)
+pcatch      = 5/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):
@@ -210,9 +210,9 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 85
+TARGET_PERFORMANCE = 90
 def terminate(pcorrect_history):
     return np.mean(pcorrect_history[-5:]) > TARGET_PERFORMANCE
 
 # Validation dataset
-n_validation = 100*(nconditions + 1)
+n_validation = 50*(nconditions + 1)
