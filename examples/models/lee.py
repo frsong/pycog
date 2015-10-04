@@ -197,4 +197,4 @@ def generate_trial(rng, dt, params):
 min_error = 0.05
 
 mode         = 'continuous'
-n_validation = 50*nseq
+n_validation = 10*nseq

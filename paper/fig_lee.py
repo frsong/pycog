@@ -381,7 +381,7 @@ print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
-trials = trials[5*m.nseq:]
+#trials = trials[m.nseq:]
 
 for i in xrange(m.nseq):
     trial  = trials[i]

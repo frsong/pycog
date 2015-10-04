@@ -62,11 +62,11 @@ def run_trials(p, args):
                 seqs = rng.permutation(m.nseq)
 
             # Sequence number
-            seq = b+1
+            seq = seqs[b]+1
 
             # Trial
             trial_func = m.generate_trial
-            trial_args = {'name': 'test', 'seq':  seq}
+            trial_args = {'name': 'test', 'seq': seq}
             info = rnn.run(inputs=(trial_func, trial_args), rng=rng)
 
             # Display trial type

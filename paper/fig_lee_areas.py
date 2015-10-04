@@ -282,7 +282,7 @@ for seq in xrange(1, 1+m.nseq):
     # Trial
     trial_func = m.generate_trial
     trial_args = {'name': 'test', 'seq':  seq}
-    info = rnn.run(inputs=(trial_func, trial_args))
+    info = rnn.run(inputs=(trial_func, trial_args), seed=10)
 
     # Save at lower temporal resolution
     dt    = rnn.t[1] - rnn.t[0]
@@ -322,38 +322,38 @@ for seq in xrange(1, 1+m.nseq):
     M2_start  = M2[0]
     M3_start  = M3[0]
 
-    # Color
-    #color = colors[seq]
-
     # Trajectory
     x = Xpca[:,0]; xall.append(x)
     y = Xpca[:,1]; yall.append(y)
-
-    # Starting point
-    #plot.plot(x[fix_start], y[fix_start], '^', mfc=colors[4], mec=colors[4], ms=4, mew=1)
 
     # Dots
     dot0, dot1, dot2, dot3 = m.sequences[seq]
 
     # Starting point
-    plot.plot(x[M1[0]], y[M1[0]], '^', mfc=colors[dot0], mec=colors[dot0], ms=3, mew=1)
+    plot.plot(x[M1[0]], y[M1[0]], 'o', mfc=colors[dot0], mec=colors[dot0], ms=3, mew=1,
+              zorder=20)
 
     # Ending point
     plot.plot(x[M3[-1]], y[M3[-1]], 'o', mfc=colors[dot3], mec=colors[dot3], ms=3, mew=1)
 
     # Epochs
-    #plot.plot(x[fix], y[fix], color=colors[dot0], lw=0.75)
     plot.plot(x[M1], y[M1], color=colors[dot1], lw=0.75)
     plot.plot(x[M2], y[M2], color=colors[dot2], lw=0.75)
     plot.plot(x[M3], y[M3], color=colors[dot3], lw=0.75)
 
-    #plot.plot(x, y, color=color, alpha=0.6, lw=0.75, label='Sequence \#{}'.format(seq))
+    # Offsets
+    offsets = {
+        1: ( 0.0, +0.8),
+        4: (-0.8, -0.8),
+        5: (-1.0, +0.3),
+        8: (-0.6, +1.0)
+        }
 
     # Endpoint
-    delta_x = -0.3; ha = 'right'
-    delta_y = -0.3; va = 'top'
+    delta_x, delta_y = offsets.get(seq, (-1.2, 0))
     plot.text(x[M3[-1]]+delta_x, y[M3[-1]]+delta_y, r'\#{{{}}}'.format(seq), zorder=15,
-              color='0.2', ha=ha, va=va, fontsize=7, transform=plot.ax.transData)
+              color='0.2', ha='center', va='center', fontsize=7,
+              transform=plot.ax.transData)
 
 for dot, color in colors.items():
     plot.plot(100, 100, 'o', mfc=colors[dot], mec=colors[dot], ms=3, mew=1,
@@ -370,6 +370,10 @@ props = {'prop': {'size': 5.5}, 'handlelength': 1,
          'handletextpad': 1, 'labelspacing': 0.5}
 plot.legend(bbox_to_anchor=(1, 1), **props)
 
+# Variance explained
+pct_var = 100*np.sum(pca.fracs[:2])
+print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
+
 #=========================================================================================
 # x-coordinate, y-coordinate, screen
 #=========================================================================================
@@ -377,6 +381,7 @@ plot.legend(bbox_to_anchor=(1, 1), **props)
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
+trials = trials[5*m.nseq:]
 
 for i in xrange(m.nseq):
     trial  = trials[i]
@@ -481,7 +486,7 @@ for i in xrange(m.nseq):
     plot.equal()
 
     # Target dots
-    for k in xrange(9):
+    for k in m.DOTS:
         plot.circle(m.target_position(k), r_target,
                     ec='none', fc=Figure.colors('blue'), alpha=0.6)
 
@@ -489,6 +494,13 @@ for i in xrange(m.nseq):
     if i > 0:
         plot.plot(z[0,iti], z[1,iti],     color=color_iti,     lw=1.25)
     plot.plot(z[0,not_iti], z[1,not_iti], color=color_not_iti, lw=1.25)
+
+    # Dot labels
+    if i == 0:
+        for k in m.DOTS:
+            p = m.target_position(k)
+            plot.text(p[0], p[1]+0.14, str(k+1), ha='center', va='bottom',
+                      color='k', fontsize=5)
 
     plot.xlim(-r_screen, r_screen)
     plot.ylim(-r_screen, r_screen)
@@ -532,7 +544,6 @@ cbar.outline.set_linewidth(w)
 plot.yaxis.set_tick_params(width=w, size=2, labelsize=6, pad=-2)
 
 cbar.set_ticks([0, vmax])
-#cbar.set_ticklabels([0, vmax])
 cbar.solids.set_edgecolor("face") # Correct stripes
 
 #-----------------------------------------------------------------------------------------
