@@ -62,7 +62,7 @@ def run_trials(p, args):
                 seqs = rng.permutation(m.nseq)
 
             # Sequence number
-            seq = seqs[b]+1
+            seq = seqs[b] + 1
 
             # Trial
             trial_func = m.generate_trial

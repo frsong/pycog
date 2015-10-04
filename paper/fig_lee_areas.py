@@ -381,7 +381,7 @@ print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
-trials = trials[5*m.nseq:]
+#trials = trials[0*m.nseq:]
 
 for i in xrange(m.nseq):
     trial  = trials[i]
@@ -519,9 +519,11 @@ for i in xrange(1, m.nseq):
 # Inputs
 #=========================================================================================
 
-trial = trials[0]
-t     = 1e-3*trial['t']
-u     = trial['u']
+for trial in trials:
+    if trial['info']['seq'] == 1:
+        break
+t = 1e-3*trial['t']
+u = trial['u']
 
 #-----------------------------------------------------------------------------------------
 # Color map
