@@ -249,9 +249,9 @@ class Trainer(object):
                     C[i,inh]  = 1
                     C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
                 for i in inh:
-                    C[i,exc] = 1
-                    C[i,inh] = 1
-                    C[i,i]   = 0
+                    C[i,exc]  = 1
+                    C[i,inh]  = 1
+                    C[i,i]    = 0
                     C[i,inh] *= np.sum(C[i,exc])/np.sum(C[i,inh])
                 C /= np.linalg.norm(C, axis=1)[:,np.newaxis]
 
