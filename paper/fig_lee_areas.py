@@ -343,10 +343,6 @@ for seq in xrange(1, 1+m.nseq):
 
     # Offsets
     offsets = {
-        1: ( 0.0, +0.8),
-        4: (-0.8, -0.8),
-        5: (-1.0, +0.3),
-        8: (-0.6, +1.0)
         }
 
     # Endpoint

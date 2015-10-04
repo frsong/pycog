@@ -208,7 +208,7 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
-    #train_seeds('lee')
+    train_seeds('lee')
 
 if 'lee_areas' in args:
     print("=> Eye-movement sequence execution task (with areas)")
@@ -216,7 +216,7 @@ if 'lee_areas' in args:
     train('lee_areas')
     trials('lee_areas', 100, 'lee', args='--dt_save 2')
     figure('fig_lee_areas')
-    #train_seeds('lee_areas')
+    train_seeds('lee_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")

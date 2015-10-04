@@ -49,7 +49,7 @@ options = {
 #-----------------------------------------------------------------------------------------
 
 Nin  = 9 + nseq
-N    = 100
+N    = 200
 Nout = 2
 
 # For addressing inputs
@@ -178,7 +178,7 @@ def generate_trial(rng, dt, params):
 
     return trial
 
-min_error = 0.045
+min_error = 0.05
 
 mode         = 'continuous'
 n_validation = 100*nseq
