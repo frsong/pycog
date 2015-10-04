@@ -454,14 +454,14 @@ class Trainer(object):
             Win = theanotools.shared(Win_0, name='Win')
         else:
             Win = None
-        Wrec = theanotools.shared(Wrec_0,   name='Wrec')
+        Wrec = theanotools.shared(Wrec_0, name='Wrec')
         if Nout > 0:
             Wout = theanotools.shared(Wout_0, name='Wout')
         else:
             Wout = None
-        brec = theanotools.shared(brec_0,   name='brec')
-        bout = theanotools.shared(bout_0,   name='bout')
-        x0   = theanotools.shared(x0_0,     name='x0')
+        brec = theanotools.shared(brec_0, name='brec')
+        bout = theanotools.shared(bout_0, name='bout')
+        x0   = theanotools.shared(x0_0,   name='x0')
 
         #---------------------------------------------------------------------------------
         # Parameters to train
