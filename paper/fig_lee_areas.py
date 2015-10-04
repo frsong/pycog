@@ -138,7 +138,7 @@ colors = {
     5: Figure.colors('purple'),
     6: Figure.colors('magenta'),
     7: Figure.colors('darkblue'),
-    8: Figure.colors('salmon')
+    8: Figure.colors('aquamarine')
 }
 
 #=========================================================================================
@@ -381,7 +381,7 @@ print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
 # Load trials
 with open(trialsfile) as f:
     trials = pickle.load(f)
-#trials = trials[0*m.nseq:]
+#trials = trials[m.nseq:]
 
 for i in xrange(m.nseq):
     trial  = trials[i]

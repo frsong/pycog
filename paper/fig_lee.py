@@ -138,7 +138,7 @@ colors = {
     5: Figure.colors('purple'),
     6: Figure.colors('magenta'),
     7: Figure.colors('darkblue'),
-    8: Figure.colors('salmon')
+    8: Figure.colors('aquamarine')
 }
 
 #=========================================================================================

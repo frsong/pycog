@@ -38,9 +38,9 @@ nseq = len(sequences)
 #
 options = {
     1: [0, 2],
-    3: [0, 6],
+    3: [1, 7],
     4: [3, 5],
-    5: [2, 8],
+    5: [1, 7],
     7: [6, 8]
 }
 
@@ -69,28 +69,12 @@ tau = 50
 var_rec = 0.01**2
 
 #-----------------------------------------------------------------------------------------
-# Initial spectral radius of the recurrent connection matrix
-#-----------------------------------------------------------------------------------------
-
-rho0 = 0.99
-
-#-----------------------------------------------------------------------------------------
-# Output connectivity
-#-----------------------------------------------------------------------------------------
-
-#Cout = np.zeros((Nout, N))
-#Cout[:,EXC] = 1
-
-#-----------------------------------------------------------------------------------------
 # Task structure
 #-----------------------------------------------------------------------------------------
 
 # Screen coordinates
 x0, y0 = -0.5, -0.5
 dx, dy = +0.5, +0.5
-
-#x0, y0 = 0.5, 0.5
-#dx, dy = 1, 1
 
 # Convert dots to screen coordinates
 def target_position(k):
@@ -152,7 +136,7 @@ def generate_trial(rng, dt, params):
     X = np.zeros((len(t), Nin))
 
     # Which sequence?
-    X[:,SEQUENCE[seq-1]] = 1
+    X[e['fixation']+e['M1']+e['M2']+e['M3'], SEQUENCE[seq-1]] = 1
 
     # Sequence
     sequence = sequences[seq]
@@ -194,7 +178,7 @@ def generate_trial(rng, dt, params):
 
     return trial
 
-min_error = 0.05
+min_error = 0.045
 
 mode         = 'continuous'
-n_validation = 10*nseq
+n_validation = 100*nseq

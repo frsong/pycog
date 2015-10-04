@@ -116,6 +116,11 @@ for model, _ in models:
     ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
     performance = [costs[1][-1] for costs in rnn.costs_history]
 
+    # Because the network is run continuously, the first validation run is meaningless.
+    if 'lee' in model:
+        ntrials     = ntrials[1:]
+        performance = ntrials[1:]
+
     # Get target performance
     modelfile = join(modelspath, model + '.py')
     try:
@@ -162,6 +167,9 @@ for model, _ in models:
         ntrials     = np.asarray(ntrials, dtype=int)/int(1e4)
         performance = [costs[1][-1] for costs in rnnx.costs_history]
 
+        if 'lee' in model:
+            ntrials     = ntrials[1:]
+            performance = ntrials[1:]
         plot.plot(ntrials, performance, color=clr_seeds, lw=0.75, zorder=5)
         xall.append(ntrials)
 
@@ -171,7 +179,7 @@ for model, _ in models:
     plot.hline(target, color=clr_target, lw=0.75)
 
     # y-axis
-    if model in ['lee', 'lee_areas']:
+    if 'lee' in model:
         plot.yscale('log')
     else:
         if model == 'romo':

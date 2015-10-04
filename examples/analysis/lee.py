@@ -59,7 +59,10 @@ def run_trials(p, args):
         for i in xrange(ntrials):
             b = i % m.nseq
             if b == 0:
-                seqs = rng.permutation(m.nseq)
+                if not trials:
+                    seqs = range(m.nseq)
+                else:
+                    seqs = rng.permutation(m.nseq)
 
             # Sequence number
             seq = seqs[b] + 1
@@ -99,7 +102,7 @@ def run_trials(p, args):
 
 #=========================================================================================
 
-def pca_analysis(trials, min_std=0.05):
+def pca_analysis(trials, min_std=0.1):
     """
     Perform PCA analysis.
 

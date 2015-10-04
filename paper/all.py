@@ -208,7 +208,7 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
-    train_seeds('lee')
+    #train_seeds('lee')
 
 if 'lee_areas' in args:
     print("=> Eye-movement sequence execution task (with areas)")
