@@ -93,7 +93,7 @@ Crec = np.zeros((N, N))
 for i in EXC_SENSORY:
     Crec[i,EXC_SENSORY] = 1
     Crec[i,i]           = 0
-    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.2)
+    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.5)
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
 for i in EXC_MOTOR:
     Crec[i,EXC]       = 1
@@ -101,6 +101,7 @@ for i in EXC_MOTOR:
     Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
 for i in INH_SENSORY:
     Crec[i,EXC_SENSORY] = 1
+    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.5)
     Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/(len(INH_SENSORY) - 1)
     Crec[i,i]           = 0
 for i in INH_MOTOR:
@@ -190,7 +191,7 @@ def generate_trial(rng, dt, params):
     X = np.zeros((len(t), Nin))
 
     # Which sequence?
-    X[e['fixation']+e['M1']+e['M2']+e['M3'], SEQUENCE[seq-1]] = 1
+    X[:,SEQUENCE[seq-1]] = 1
 
     # Sequence
     sequence = sequences[seq]

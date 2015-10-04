@@ -136,7 +136,7 @@ def generate_trial(rng, dt, params):
     X = np.zeros((len(t), Nin))
 
     # Which sequence?
-    X[e['fixation']+e['M1']+e['M2']+e['M3'], SEQUENCE[seq-1]] = 1
+    X[:,SEQUENCE[seq-1]] = 1
 
     # Sequence
     sequence = sequences[seq]

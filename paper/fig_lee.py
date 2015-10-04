@@ -95,7 +95,7 @@ plots['dots'] = fig.add([x0,     y_dots, w_dots, h_dots])
 plots['seq']  = fig.add([x0,     y_seq,  w_seq,  h_seq])
 plots['cbar'] = fig.add([x_cbar, y_cbar, w_cbar, h_cbar])
 for i, x in enumerate(xall):
-    plots[str(i)+'_screen'] = fig.add([x-0.005, y1-0.01, w, h], style='none')
+    plots[str(i)+'_screen'] = fig.add([x-0.001, y1-0.01, w, h], style='none')
     plots[str(i)+'_x']      = fig.add([x,       y2,      w, h])
     plots[str(i)+'_y']      = fig.add([x,       y3+0.02, w, h])
 
@@ -258,7 +258,6 @@ plot.ylim(-r_screen, r_screen)
 #=========================================================================================
 
 plot = plots['pca']
-plot.equal()
 
 #-----------------------------------------------------------------------------------------
 # PCA analysis
@@ -330,7 +329,7 @@ for seq in xrange(1, 1+m.nseq):
     dot0, dot1, dot2, dot3 = m.sequences[seq]
 
     # Starting point
-    plot.plot(x[M1[0]], y[M1[0]], 'o', mfc=colors[dot0], mec=colors[dot0], ms=3, mew=1,
+    plot.plot(x[M1[0]], y[M1[0]], 'o', mfc='none', mec=colors[dot0], ms=4, mew=1,
               zorder=20)
 
     # Ending point
@@ -343,10 +342,10 @@ for seq in xrange(1, 1+m.nseq):
 
     # Offsets
     offsets = {
-        #1: ( 0.0, +0.8),
-        #4: (-0.8, -0.8),
-        #5: (-1.0, +0.3),
-        #8: (-0.6, +1.0)
+        1: (+0.7, -0.5),
+        5: (+0.9, +0.5),
+        7: (-0.7, +0.5),
+        8: (-0.8, +0.5)
         }
 
     # Endpoint
@@ -356,8 +355,12 @@ for seq in xrange(1, 1+m.nseq):
               transform=plot.ax.transData)
 
 for dot, color in colors.items():
-    plot.plot(100, 100, 'o', mfc=colors[dot], mec=colors[dot], ms=3, mew=1,
-              label='Dot {}'.format(dot+1))
+    if dot == 4:
+        plot.plot(100, 100, 'o', mfc='none', mec=colors[dot], ms=4, mew=1,
+                  label='Dot {}'.format(dot+1))
+    else:
+        plot.plot(100, 100, 'o', mfc=colors[dot], mec=colors[dot], ms=3, mew=1,
+                  label='Dot {}'.format(dot+1))
 
 plot.lim('x', xall)
 plot.lim('y', yall)
@@ -368,7 +371,7 @@ plot.ylabel('PC 2')
 # Legend
 props = {'prop': {'size': 5.5}, 'handlelength': 1,
          'handletextpad': 1, 'labelspacing': 0.5}
-plot.legend(bbox_to_anchor=(1, 1), **props)
+plot.legend(bbox_to_anchor=(0.7, 1), **props)
 
 # Variance explained
 pct_var = 100*np.sum(pca.fracs[:2])

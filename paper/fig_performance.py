@@ -119,7 +119,7 @@ for model, _ in models:
     # Because the network is run continuously, the first validation run is meaningless.
     if 'lee' in model:
         ntrials     = ntrials[1:]
-        performance = ntrials[1:]
+        performance = performance[1:]
 
     # Get target performance
     modelfile = join(modelspath, model + '.py')
@@ -169,7 +169,7 @@ for model, _ in models:
 
         if 'lee' in model:
             ntrials     = ntrials[1:]
-            performance = ntrials[1:]
+            performance = performance[1:]
         plot.plot(ntrials, performance, color=clr_seeds, lw=0.75, zorder=5)
         xall.append(ntrials)
 
@@ -179,13 +179,15 @@ for model, _ in models:
     plot.hline(target, color=clr_target, lw=0.75)
 
     # y-axis
-    if 'lee' in model:
-        plot.yscale('log')
+    if model == 'lee':
+        plot.ylim(0.04, 0.08)
+        plot.yticks(np.arange(0.04, 0.09, 0.01))
+    elif model == 'lee_areas':
+        pass
+    elif model == 'romo':
+        plot.ylim(0, 100)
     else:
-        if model == 'romo':
-            plot.ylim(0, 100)
-        else:
-            plot.ylim(40, 100)
+        plot.ylim(40, 100)
 
 #=========================================================================================
 
