@@ -55,12 +55,19 @@ def run_trials(p, args):
     # Model
     m = p['model']
 
+    #cohs = [1, 4, 16]
+    #nconditions = len(m.contexts)*(len(cohs)*len(m.left_rights))**2
+
+    # In case we want to customize
+    cohs = m.cohs
+    nconditions = m.nconditions
+
     # Number of trials
     try:
         ntrials = int(args[0])
     except:
         ntrials = 100
-    ntrials *= m.nconditions
+    ntrials *= nconditions
 
     # RNN
     rng = np.random.RandomState(p['seed'])
@@ -72,13 +79,13 @@ def run_trials(p, args):
     try:
         for i in xrange(ntrials):
             # Condition
-            k = tasktools.unravel_index(i % m.nconditions,
-                                        (len(m.cohs), len(m.left_rights),
-                                         len(m.cohs), len(m.left_rights),
+            k = tasktools.unravel_index(i % nconditions,
+                                        (len(cohs), len(m.left_rights),
+                                         len(cohs), len(m.left_rights),
                                          len(m.contexts)))
-            coh_m        = m.cohs[k[0]]
+            coh_m        = cohs[k[0]]
             left_right_m = m.left_rights[k[1]]
-            coh_c        = m.cohs[k[2]]
+            coh_c        = cohs[k[2]]
             left_right_c = m.left_rights[k[3]]
             context      = m.contexts[k[4]]
 

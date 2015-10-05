@@ -8,8 +8,9 @@ Notes
 * Running this script in its entirety will take some time.
 
 * We run a fair number of trials to get pretty psychometric curves, and this is done
-  in one big chunk of memory.
-
+  in one big chunk of memory. You may need to change this to run more trials, depending
+  on your setup.
+  
 * Training converged for all the seeds we tried but we picked the ones that produced
   the prettiest plots for the paper -- we hope that's understandable!
 
@@ -175,7 +176,7 @@ if 'mante' in args:
     print("=> Context-dependent integration task")
     clean('mante')
     train('mante')
-    trials('mante', 200, args='--dt_save 20')
+    trials('mante', 100, args='--dt_save 20')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     do_action('mante', 'units')

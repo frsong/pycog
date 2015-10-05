@@ -18,7 +18,7 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 6
-N    = 300
+N    = 500
 Nout = 2
 
 # E/I
@@ -28,7 +28,7 @@ ei, EXC, INH = tasktools.generate_ei(N)
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-Crec = tasktools.generate_Crec(ei, p_exc=0.2, p_inh=0.5, seed=1066)
+Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5, seed=1066)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -43,11 +43,13 @@ Cout[:,EXC] = 1
 
 contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
+#cohs        = [1, 2, 4, 8, 16]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
 pcatch      = 5/(nconditions + 1)
 
 SCALE = 5
+#SCALE = 3.2
 def scale(coh):
     return (1 + SCALE*coh/100)/2
 
@@ -98,10 +100,7 @@ def generate_trial(rng, dt, params):
             fixation = 400
         else:
             fixation = 100
-        if params['name'] == 'test':
-            stimulus = 750
-        else:
-            stimulus = 700
+        stimulus = 800
         decision = 300
         T        = fixation + stimulus + decision
 
@@ -181,7 +180,7 @@ def generate_trial(rng, dt, params):
         M = np.zeros_like(Y)         # Mask matrix
 
         # Hold values
-        hi = 1.2
+        hi = 1
         lo = 0.2
 
         if catch_trial:
