@@ -183,7 +183,8 @@ for model, _ in models:
         plot.ylim(0.04, 0.08)
         plot.yticks(np.arange(0.04, 0.09, 0.01))
     elif model == 'lee_areas':
-        pass
+        plot.ylim(0.04, 0.2)
+        plot.yticks(np.arange(0.05, 0.21, 0.05))
     elif model == 'romo':
         plot.ylim(0, 100)
     else:

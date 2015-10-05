@@ -200,7 +200,7 @@ if 'romo' in args:
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')
-    #train_seeds('romo')
+    train_seeds('romo')
 
 if 'lee' in args:
     print("=> Eye-movement sequence execution task")
@@ -212,10 +212,10 @@ if 'lee' in args:
 
 if 'lee_areas' in args:
     print("=> Eye-movement sequence execution task (with areas)")
-    clean('lee_areas')
-    train('lee_areas')
-    trials('lee_areas', 100, 'lee', args='--dt_save 2')
-    figure('fig_lee_areas')
+    #clean('lee_areas')
+    #train('lee_areas')
+    #trials('lee_areas', 100, 'lee', args='--dt_save 2')
+    #figure('fig_lee_areas')
     train_seeds('lee_areas')
 
 if 'connectivity' in args:

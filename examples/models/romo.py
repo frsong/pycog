@@ -33,7 +33,7 @@ NEG = 1
 # Recurrent connectivity
 #-----------------------------------------------------------------------------------------
 
-Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5)
+Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5, seed=1066)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -56,10 +56,10 @@ fmin = np.min(fall)
 fmax = np.max(fall)
 
 def scale_p(f):
-    return 0.2 + 0.8*(f - fmin)/(fmax - fmin)
+    return 0.4 + 0.8*(f - fmin)/(fmax - fmin)
 
 def scale_n(f):
-    return 0.2 + 0.8*(fmax - f)/(fmax - fmin)
+    return 0.4 + 0.8*(fmax - f)/(fmax - fmin)
 
 def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ def generate_trial(rng, dt, params):
     #---------------------------------------------------------------------------------
 
     if catch_trial:
-        epochs = {'T': 2000}
+        epochs = {'T': 2500}
     else:
         if params['name'] == 'test':
             fixation = 500
@@ -188,7 +188,7 @@ performance = tasktools.performance_2afc_min_condition
 # Termination criterion
 TARGET_PERFORMANCE = 85
 def terminate(performance_history):
-    return np.mean(performance_history[-5:]) > TARGET_PERFORMANCE
+    return np.mean(performance_history[-1:]) >= TARGET_PERFORMANCE
 
 # Validation dataset
 n_validation = 100*(nconditions + 1)

@@ -9,6 +9,7 @@ from   os.path import join
 
 import numpy as np
 
+from pycog             import RNN
 from pycog.figtools    import Figure, mpl
 from pycog.utils       import get_here
 from examples.analysis import romo
@@ -24,6 +25,7 @@ base     = os.path.abspath(join(here, os.pardir))
 figspath = join(here, 'figs')
 
 modelfile  = join(base, 'examples', 'models', 'romo.py')
+savefile   = join(base, 'examples', 'work', 'data', 'romo', 'romo.pkl')
 trialsfile = join(paper.scratchpath, 'romo', 'trials', 'romo_trials.pkl')
 sortedfile = join(paper.scratchpath, 'romo', 'trials', 'romo_sorted.pkl')
 
@@ -34,21 +36,9 @@ sortedfile = join(paper.scratchpath, 'romo', 'trials', 'romo_sorted.pkl')
 # Load model
 m = imp.load_source('model', modelfile)
 
-# Load trials
-with open(trialsfile) as f:
-    trials = pickle.load(f)
-
-# Stimulus durations
-epochs = trials[0]['info']['epochs']
-f1_start, f1_end = epochs['f1']
-f2_start, f2_end = epochs['f2']
-t0   = f1_start
-tmin = 0
-tmax = f2_end
-
 units = {
-    'L': 85,
-    'R': 363,
+    'L': 18,
+    'R': 80,
     }
 
 # Color map
@@ -167,10 +157,10 @@ plot.xlabel('Time from $f_1$ onset (sec)')
 plot.ylabel('Firing rate (a.u.)')
 
 plot = plots['L']
-plot.text_upper_center('Pos. tuned during $f_1$, neg. during $f_2$', dy=0.1, fontsize=7)
+plot.text_upper_center('Positively tuned', dy=0.1, fontsize=7)
 
 plot = plots['R']
-plot.text_upper_center('Neg. tuned', dy=0.1, fontsize=7)
+plot.text_upper_center('Pos. tuned during $f_1$, neg. during $f_2$', dy=0.1, fontsize=7)
 
 plot = plots['<']
 plot.xlabel('Time from $f_1$ onset (sec)')
@@ -183,28 +173,48 @@ plot.ylabel('Prop. sig. tuned units')
 # Sample inputs
 #=========================================================================================
 
-t     = 1e-3*(trials[0]['t']-t0)
+rng = np.random.RandomState(1066)
+rnn = RNN(savefile, {'dt': 2}, verbose=False)
+
+trial_func = m.generate_trial
+trial_args = {
+    'name':  'test',
+    'catch': False,
+    'fpair': (34, 26),
+    'gt_lt': '>'
+    }
+info = rnn.run(inputs=(trial_func, trial_args), rng=rng)
+
+# Stimulus durations
+epochs = info['epochs']
+f1_start, f1_end = epochs['f1']
+f2_start, f2_end = epochs['f2']
+t0   = f1_start
+tmin = 0
+tmax = f2_end
+
+t     = 1e-3*(rnn.t-t0)
 delay = [1e-3*(f1_end-t0), 1e-3*(f2_start-t0)]
 yall  = []
 
 # f1 > f2
 plot = plots['>']
-for trial in trials:
-    info = trial['info']
-    if info['f1'] == 34 and info['f2'] == 26:
-        break
-plot.plot(t, trial['u'][0], color=Figure.colors('orange'), lw=0.5)
-yall.append(trial['u'][0])
+plot.plot(t, rnn.u[0], color=Figure.colors('orange'), lw=0.5)
+yall.append(rnn.u[0])
 plot.xticklabels()
+
+trial_args = {
+    'name':  'test',
+    'catch': False,
+    'fpair': (34, 26),
+    'gt_lt': '<'
+    }
+info = rnn.run(inputs=(trial_func, trial_args), rng=rng)
 
 # f1 < f2
 plot = plots['<']
-for trial in trials:
-    info = trial['info']
-    if info['f2'] == 34 and info['f1'] == 26:
-        break
-plot.plot(t, trial['u'][0], color=Figure.colors('purple'), lw=0.5)
-yall.append(trial['u'][0])
+plot.plot(t, rnn.u[0], color=Figure.colors('purple'), lw=0.5)
+yall.append(rnn.u[0])
 
 # Shared axes
 input_plots = [plots['>'], plots['<']]
@@ -261,15 +271,13 @@ plot.highlight(1e-3*(f2_start-t0), 1e-3*(f2_end-t0))
 plot.xticks([0, 1, 2, 3, 4])
 plot.yticks([0, 0.5, 1])
 
-R = 0.4
 plot = plots['stim']
-plot.xlim(-R, R); plot.xticks([-R, 0, R])
-plot.ylim(-R, R); plot.yticks([-R, 0, R])
+plot.xlim(-0.3, 0.3); plot.xticks([-0.3, 0, 0.3])
+plot.ylim(-0.3, 0.3); plot.yticks([-0.3, 0, 0.3])
 
-R = 0.6
 plot = plots['delay']
-plot.xlim(-R, R); plot.xticks([-R, 0, R])
-plot.ylim(-R, R); plot.yticks([-R, 0, R])
+plot.xlim(-0.4, 0.4); plot.xticks([-0.4, 0, 0.4])
+plot.ylim(-0.4, 0.4); plot.yticks([-0.4, 0, 0.4])
 
 #=========================================================================================
 # Single units
@@ -280,16 +288,24 @@ for name, unit in units.items():
     plot = plots[name]
     yall.append(romo.plot_unit(unit, sortedfile, plot, smap,
                                t0=t0, tmin=tmin, tmax=tmax, lw=1.25))
-    plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
-    plot.highlight(1e-3*(f2_start-t0), 1e-3*(f2_end-t0))
     plot.xticks([0, 1, 2, 3, 4])
 
-    if name == 'R':
+    if name == 'L':
+        plot.ylim(0, 1)
+        plot.yticks([0, 0.5, 1])
+
         ymin, ymax = plot.get_ylim()
         plot.text(1e-3*((f1_start + f1_end)/2 - t0), 1.03*ymax, '$f_1$',
                   ha='center', va='bottom', fontsize=7)
         plot.text(1e-3*((f2_start + f2_end)/2 - t0), 1.03*ymax, '$f_2$',
                   ha='center', va='bottom', fontsize=7)
+    elif name == 'R':
+        plot.ylim(0, 1)
+        plot.yticks([0, 0.5, 1])
+
+    # Highlight stimulus periods
+    plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
+    plot.highlight(1e-3*(f2_start-t0), 1e-3*(f2_end-t0))
 
 #=========================================================================================
 
