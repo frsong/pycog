@@ -10,7 +10,7 @@ Notes
 * We run a fair number of trials to get pretty psychometric curves, and this is done
   in one big chunk of memory. You may need to change this to run more trials, depending
   on your setup.
-  
+
 * Training converged for all the seeds we tried but we picked the ones that produced
   the prettiest plots for the paper -- we hope that's understandable!
 
@@ -217,7 +217,7 @@ if 'lee_areas' in args:
     #train('lee_areas')
     #trials('lee_areas', 100, 'lee', args='--dt_save 2')
     #figure('fig_lee_areas')
-    train_seeds('lee_areas')
+    train_seeds('lee_areas', start_seed=1, ntrain=5)
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")

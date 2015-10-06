@@ -76,7 +76,7 @@ class RNN(object):
         'baseline_in':       0,
         'rectify_inputs':    False,
         'var_in':            0.01,
-        'var_rec':           0.2,
+        'var_rec':           0.15,
         'dt':                0.5,
         'tau':               100,
         'mode':              'batch'

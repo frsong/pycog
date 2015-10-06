@@ -18,17 +18,11 @@ from pycog import tasktools
 #-----------------------------------------------------------------------------------------
 
 Nin  = 6
-N    = 500
+N    = 150
 Nout = 2
 
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
-
-#-----------------------------------------------------------------------------------------
-# Recurrent connectivity
-#-----------------------------------------------------------------------------------------
-
-Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5, seed=1066)
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -37,19 +31,19 @@ Crec = tasktools.generate_Crec(ei, p_exc=0.1, p_inh=0.5, seed=1066)
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
+var_rec = 0.05**2
+tau = 50
 #-----------------------------------------------------------------------------------------
 # Task structure
 #-----------------------------------------------------------------------------------------
 
 contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
-#cohs        = [1, 2, 4, 8, 16]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 5/(nconditions + 1)
+pcatch      = 1/(nconditions + 1)
 
 SCALE = 5
-#SCALE = 3.2
 def scale(coh):
     return (1 + SCALE*coh/100)/2
 
@@ -100,7 +94,7 @@ def generate_trial(rng, dt, params):
             fixation = 400
         else:
             fixation = 100
-        stimulus = 800
+        stimulus = 750
         decision = 300
         T        = fixation + stimulus + decision
 
@@ -209,7 +203,7 @@ def generate_trial(rng, dt, params):
 performance = tasktools.performance_2afc
 
 # Termination criterion
-TARGET_PERFORMANCE = 90
+TARGET_PERFORMANCE = 85
 def terminate(pcorrect_history):
     return np.mean(pcorrect_history[-5:]) > TARGET_PERFORMANCE
 

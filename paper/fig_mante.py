@@ -24,7 +24,7 @@ trialsfile  = paper.scratchpath + '/mante/trials/mante_trials.pkl'
 sortedfile  = paper.scratchpath + '/mante/trials/mante_sorted.pkl'
 betafile    = here + '/../examples/work/data/mante/mante_beta.pkl'
 
-units = [11, 121, 138, 146]
+units = [1, 2, 3, 4]
 
 #=========================================================================================
 # Figure setup
