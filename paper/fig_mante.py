@@ -8,7 +8,7 @@ from   os.path import join
 import numpy as np
 
 from pycog.figtools    import Figure
-from pycog.utils       import get_here
+from pycog.utils       import get_here, get_parent
 from examples.analysis import mante
 
 import paper
@@ -18,11 +18,12 @@ import paper
 #=========================================================================================
 
 here     = get_here(__file__)
+base     = get_parent(here)
 figspath = join(here, 'figs')
 
-trialsfile  = paper.scratchpath + '/mante/trials/mante_trials.pkl'
-sortedfile  = paper.scratchpath + '/mante/trials/mante_sorted.pkl'
-betafile    = here + '/../examples/work/data/mante/mante_beta.pkl'
+trialsfile  = join(paper.scratchpath, 'mante', 'trials', 'mante_trials.pkl')
+sortedfile  = join(paper.scratchpath, 'mante', 'trials', 'mante_sorted.pkl')
+betafile    = join(base, 'examples', 'work', 'data', 'mante', 'mante_beta.pkl')
 
 units = [1, 2, 3, 4]
 

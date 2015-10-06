@@ -176,7 +176,7 @@ if 'mante' in args:
     print("=> Context-dependent integration task")
     clean('mante')
     train('mante')
-    trials('mante', 100, args='--dt_save 20')
+    trials('mante', 200, args='--dt_save 20')
     do_action('mante', 'sort')
     do_action('mante', 'regress')
     do_action('mante', 'units')

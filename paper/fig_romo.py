@@ -11,7 +11,7 @@ import numpy as np
 
 from pycog             import RNN
 from pycog.figtools    import Figure, mpl
-from pycog.utils       import get_here
+from pycog.utils       import get_here, get_parent
 from examples.analysis import romo
 
 import paper
@@ -21,7 +21,7 @@ import paper
 #=========================================================================================
 
 here     = get_here(__file__)
-base     = os.path.abspath(join(here, os.pardir))
+base     = get_parent(here)
 figspath = join(here, 'figs')
 
 modelfile  = join(base, 'examples', 'models', 'romo.py')
