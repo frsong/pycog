@@ -236,7 +236,7 @@ class RNN(object):
             Duration for which to run the network. If `None`, `inputs` must not be
             `None` so that the network can be run for the trial duration.
 
-        inputs : (generate_trial, trial_args), optional
+        inputs : (generate_trial, params), optional
 
         rng : numpy.random.RandomState
               Random number generator. If `None`, one will be created using seed.
@@ -293,9 +293,9 @@ class RNN(object):
                 u = np.zeros((len(self.t), Nin), dtype=dtype)
             info = None
         else:
-            generate_trial, trial_args = inputs
+            generate_trial, params = inputs
 
-            trial  = generate_trial(rng, dt, trial_args)
+            trial  = generate_trial(rng, dt, params)
             info   = trial['info']
             self.t = np.concatenate(([0], trial['t']))
 
