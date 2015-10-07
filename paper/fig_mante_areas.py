@@ -26,7 +26,7 @@ sortedfile  = join(paper.scratchpath, 'mante_areas', 'trials', 'mante_areas_sort
 betafile    = join(base, 'examples', 'work', 'data', 'mante_areas',
                    'mante_areas_beta.pkl')
 
-units = [1, 2, 3, 4]
+units = [10, 23, 25, 28]
 
 #=========================================================================================
 # Figure setup
