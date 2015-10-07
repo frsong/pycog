@@ -30,11 +30,9 @@ If this fails for some reason (likely because of permissions), simply add the di
 python setup.py build_ext --inplace
 ```
 
-## Example
+## Examples
 
-The networks used to generate the figures in the paper were trained using the specifications contained in /examples/models. For an even simpler example, consider the following:
-
-* TODO
+The networks used to generate the figures in the paper were trained using the specifications contained in /examples/models.
 
 ## Note
 

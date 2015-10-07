@@ -133,19 +133,19 @@ plot = plots['Brec']
 plot.text(x_S, x_S,
           r"$\mathbf{E}_\mathbf{S} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{S}$",
-          ha='center', va='center', fontsize=9, color='k')
+          ha='center', va='center', fontsize=10, color='k')
 plot.text(x_S, x_M,
           r"$\mathbf{E}_\mathbf{M} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{S}$",
-          ha='center', va='center', fontsize=9, color='k')
+          ha='center', va='center', fontsize=10, color='k')
 plot.text(x_M, x_S,
           r"$\mathbf{E}_\mathbf{S} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{M}$",
-          ha='center', va='center', fontsize=9, color='k')
+          ha='center', va='center', fontsize=10, color='k')
 plot.text(x_M, x_M,
           r"$\mathbf{E}_\mathbf{M} \boldsymbol{\leftarrow}"
           + r" \mathbf{E}_\mathbf{M}$",
-          ha='center', va='center', fontsize=9, color='k')
+          ha='center', va='center', fontsize=10, color='k')
 
 #=========================================================================================
 # Create color maps for weights

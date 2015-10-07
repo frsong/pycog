@@ -523,7 +523,7 @@ for i in xrange(1, m.nseq):
 #=========================================================================================
 
 for trial in trials:
-    if trial['info']['seq'] == 1:
+    if trial['info']['seq'] == 5:
         break
 t = 1e-3*trial['t']
 u = trial['u']
