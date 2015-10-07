@@ -39,7 +39,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 5/(nconditions + 1)
+pcatch      = 1/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):
@@ -197,6 +197,7 @@ def generate_trial(rng, dt, params):
 
     return trial
 
+# Gradient dataset
 n_gradient = 50
 
 # Performance measure

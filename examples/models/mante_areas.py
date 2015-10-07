@@ -239,6 +239,7 @@ def generate_trial(rng, dt, params):
 
     return trial
 
+# Gradient dataset
 n_gradient = 50
 
 # Performance measure

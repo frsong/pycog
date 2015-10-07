@@ -181,7 +181,7 @@ if 'mante' in args:
     do_action('mante', 'regress')
     do_action('mante', 'units')
     figure('fig_mante')
-    #train_seeds('mante')
+    train_seeds('mante')
 
 if 'mante_areas' in args:
     print("=> Context-dependent integration task (areas)")
