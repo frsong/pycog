@@ -21,11 +21,12 @@ here     = get_here(__file__)
 base     = get_parent(here)
 figspath = join(here, 'figs')
 
-trialsfile  = join(paper.scratchpath, 'mante', 'trials', 'mante_trials.pkl')
-sortedfile  = join(paper.scratchpath, 'mante', 'trials', 'mante_sorted.pkl')
-betafile    = join(base, 'examples', 'work', 'data', 'mante', 'mante_beta.pkl')
+trialsfile  = join(paper.scratchpath, 'mante_areas', 'trials', 'mante_areas_trials.pkl')
+sortedfile  = join(paper.scratchpath, 'mante_areas', 'trials', 'mante_areas_sorted.pkl')
+betafile    = join(base, 'examples', 'work', 'data', 'mante_areas',
+                   'mante_areas_beta.pkl')
 
-units = [74, 101, 105, 119]
+units = [1, 2, 3, 4]
 
 #=========================================================================================
 # Figure setup

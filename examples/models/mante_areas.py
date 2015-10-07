@@ -23,6 +23,48 @@ Nout = 2
 
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
+Nexc = len(EXC)
+Ninh = len(INH)
+
+# Inputs
+EXC_SENSORY = EXC[:Nexc//2]
+INH_SENSORY = INH[:Ninh//2]
+EXC_MOTOR   = EXC[Nexc//2:]
+INH_MOTOR   = INH[Ninh//2:]
+
+#-----------------------------------------------------------------------------------------
+# Input connectivity
+#-----------------------------------------------------------------------------------------
+
+Cin = np.zeros((N, Nin))
+Cin[EXC_SENSORY + INH_SENSORY,:] = 1
+
+#-----------------------------------------------------------------------------------------
+# Recurrent connectivity
+#-----------------------------------------------------------------------------------------
+
+rng = np.random.RandomState(1000)
+
+Crec = np.zeros((N, N))
+for i in EXC_SENSORY:
+    Crec[i,EXC_SENSORY] = 1
+    Crec[i,i]           = 0
+    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.2)
+    Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/len(INH_SENSORY)
+for i in EXC_MOTOR:
+    Crec[i,EXC]       = 1
+    Crec[i,i]         = 0
+    Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/len(INH_MOTOR)
+for i in INH_SENSORY:
+    Crec[i,EXC_SENSORY] = 1
+    Crec[i,EXC_MOTOR]   = 1*(rng.uniform(size=len(EXC_MOTOR)) < 0.2)
+    Crec[i,INH_SENSORY] = np.sum(Crec[i,EXC])/(len(INH_SENSORY) - 1)
+    Crec[i,i]           = 0
+for i in INH_MOTOR:
+    Crec[i,EXC]       = 1
+    Crec[i,INH_MOTOR] = np.sum(Crec[i,EXC])/(len(INH_MOTOR) - 1)
+    Crec[i,i]         = 0
+Crec /= np.linalg.norm(Crec, axis=1)[:,np.newaxis]
 
 #-----------------------------------------------------------------------------------------
 # Output connectivity
@@ -39,7 +81,7 @@ contexts    = ['m', 'c']
 cohs        = [1, 3, 10]
 left_rights = [1, -1]
 nconditions = len(contexts)*(len(cohs)*len(left_rights))**2
-pcatch      = 5/(nconditions + 1)
+pcatch      = 1/(nconditions + 1)
 
 SCALE = 5
 def scale(coh):

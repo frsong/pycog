@@ -750,7 +750,7 @@ def plot_regress(betafile, plots):
         y = beta[:,regaxes[Y]]
         plot.plot(x, y, 'o', mfc='0.2', mec='w', ms=2.5, mew=0.3, zorder=10)
 
-        M = 0.3
+        M = 0.4
         #assert np.all(abs(x) <= M)
         #assert np.all(abs(y) <= M)
 
@@ -1089,7 +1089,7 @@ def do(action, args, p):
 
             #-----------------------------------------------------------------------------
 
-            fig.save(path=p['figspath'], name='{}_unit{}'.format(p['name'], unit))
+            fig.save(path=p['figspath'], name=p['name']+'_unit{:03d}'.format(unit))
             fig.close()
         print("[ {}.do ] {} units processed.".format(THIS, len(units)))
 

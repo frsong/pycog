@@ -34,11 +34,11 @@ models = [('rdm_varstim',  '2A: Decision-making (variable stim.)'),
           ('rdm_nodale',   '3A: Decision-making (no Dale)'),
           ('rdm_dense',    '3B: Decision-making (Dale, dense)'),
           ('rdm_fixed',    '3C: Decision-making (Dale, fixed)'),
-          ('mante',        '4: Context-dependent int.'),
-          ('multisensory', '5: Multisensory int.'),
-          ('romo',         '6: Parametric working memory'),
-          ('lee',          '7: Lee'),
-          ('lee_areas',    '8B: Lee (2 areas)')]
+          ('mante',        '4:  Context-dependent int.'),
+          ('mante_areas',  '5B: Context-dependent int. (areas)'),
+          ('multisensory', '6:  Multisensory int.'),
+          ('romo',         '7:  Parametric working memory'),
+          ('lee',          '8:  Lee')]
 labels = list('ABCDEFGHIJ')
 
 #=========================================================================================
@@ -148,7 +148,7 @@ for model, _ in models:
 
     # Info
     dy = 0
-    if model in ['lee', 'lee_areas']:
+    if model == 'lee':
         dy = 0.77
     plot.text_lower_right(nunits, dy=dy+0.105, fontsize=5.5,
                           color=Figure.colors('green'), zorder=20)
@@ -182,9 +182,6 @@ for model, _ in models:
     if model == 'lee':
         plot.ylim(0.04, 0.08)
         plot.yticks(np.arange(0.04, 0.09, 0.01))
-    elif model == 'lee_areas':
-        plot.ylim(0.04, 0.2)
-        plot.yticks(np.arange(0.05, 0.21, 0.05))
     elif model == 'romo':
         plot.ylim(0, 100)
     else:

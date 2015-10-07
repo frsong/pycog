@@ -41,14 +41,14 @@ simulate = a.simulate
 args     = a.args
 if not args:
     args = [
-        'rdm',                       # Fig. 2
-        'structure',                 # Fig. 3
-        'mante',                     # Fig. 4
-        'multisensory',              # Fig. 5
-        'romo',                      # Fig. 6
-        'lee',                       # Fig. 7
-        'lee_areas', 'connectivity', # Fig. 8
-        'performance'                # Fig. 9
+        'rdm',                         # Fig. 2
+        'structure',                   # Fig. 3
+        'mante',                       # Fig. 4
+        'mante_areas', 'connectivity', # Fig. 5
+        'multisensory',                # Fig. 6
+        'romo',                        # Fig. 7
+        'lee',                         # Fig. 8
+        'performance'                  # Fig. 9
         ]
 
 #=========================================================================================
@@ -183,6 +183,21 @@ if 'mante' in args:
     figure('fig_mante')
     #train_seeds('mante')
 
+if 'mante_areas' in args:
+    print("=> Context-dependent integration task (areas)")
+    clean('mante_areas')
+    train('mante_areas')
+    trials('mante_areas', 200, 'mante', args='--dt_save 20')
+    do_action('mante_areas', 'sort', 'mante')
+    do_action('mante_areas', 'regress', 'mante')
+    do_action('mante_areas', 'units', 'mante')
+    figure('fig_mante_areas')
+    train_seeds('mante_areas')
+
+if 'connectivity' in args:
+    print("=> Connectivity for sequence execution task")
+    figure('fig_connectivity')
+
 if 'multisensory' in args:
     print("=> Multisensory integration task")
     clean('multisensory')
@@ -210,18 +225,6 @@ if 'lee' in args:
     trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
     train_seeds('lee')
-
-if 'lee_areas' in args:
-    print("=> Eye-movement sequence execution task (with areas)")
-    #clean('lee_areas')
-    #train('lee_areas')
-    #trials('lee_areas', 100, 'lee', args='--dt_save 2')
-    #figure('fig_lee_areas')
-    train_seeds('lee_areas', start_seed=1, ntrain=5)
-
-if 'connectivity' in args:
-    print("=> Connectivity for sequence execution task")
-    figure('fig_connectivity')
 
 if 'performance' in args:
     print("=> Performance")

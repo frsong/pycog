@@ -28,14 +28,14 @@ figspath = join(here, 'figs')
 
 datapath = join(base, 'examples', 'work', 'data')
 
-savefile = join(datapath, 'lee', 'lee.pkl')
+savefile = join(datapath, 'mante', 'mante.pkl')
 rnn1     = RNN(savefile, verbose=True)
 
-savefile = join(datapath, 'lee_areas', 'lee_areas.pkl')
+savefile = join(datapath, 'mante_areas', 'mante_areas.pkl')
 rnn2     = RNN(savefile, verbose=True)
 
 # Load model
-modelfile = join(base, 'examples', 'models', 'lee_areas.py')
+modelfile = join(base, 'examples', 'models', 'mante_areas.py')
 m         = imp.load_source('model', modelfile)
 
 #=========================================================================================
@@ -97,7 +97,7 @@ fig.plotlabels(plotlabels, fontsize=paper.plotlabelsize)
 #=========================================================================================
 
 plot = plots['Arec']
-plot.text_upper_center('Sequence execution task, unstructured connectivity',
+plot.text_upper_center('Context-dependent integration, unstructured connectivity',
                        dy=0.06, fontsize=7)
 plot.xaxis.set_label_position('top')
 plot.xlabel('From', labelpad=4)
@@ -209,12 +209,12 @@ for rnn, s in zip([rnn1, rnn2], ['A', 'B']):
 plot = plots['Ain']
 plot.xaxis.set_tick_params(pad=-3)
 #plot.xticks(np.arange(2)+0.1)
-#plot.xticklabels(['Choice 1', 'Choice 2'], rotation='vertical', fontsize=5.5)
+#plot.xticklabels(['Choice 1', 'Choice 2'], rotation='vertical', fontsize=6)
 
 plot = plots['Aout']
 plot.yaxis.set_tick_params(pad=-2)
 plot.yticks(np.arange(2)+0.02)
-plot.yticklabels(['$x$-position', '$y$-position'], fontsize=6)
+plot.yticklabels(['Choice 1', 'Choice 2'], fontsize=6)
 
 #=========================================================================================
 
