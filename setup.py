@@ -37,7 +37,7 @@ setup(
     name='pycog',
     version='0.1',
     license='MIT',
-    author='H. Francis Song',
+    author='H. Francis Song, G. Robert Yang',
     author_email='song.francis@gmail',
     url='https://github.com/frsong/pycog',
     cmdclass=cmdclass,

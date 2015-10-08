@@ -85,7 +85,7 @@ plot.ylabel('Percent correct')
 plot = plots['romo']
 plot.ylabel('Min. percent correct')
 
-plot = plots[models[-2][0]]
+plot = plots[models[-1][0]]
 plot.ylabel('Error in eye position')
 
 for k in xrange(len(models)):
