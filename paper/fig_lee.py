@@ -412,10 +412,10 @@ for i in xrange(m.nseq):
 
     annot = {
         'iti':      ('ITI', '0.6'),
-        'fixation': ('F',   Figure.colors('orange')),
-        'M1':       ('M1',  Figure.colors('magenta')),
-        'M2':       ('M2',  Figure.colors('green')),
-        'M3':       ('M3',  Figure.colors('purple'))
+        'fixation': ('F',   '#66c2a5'),
+        'M1':       ('M1',  '#fc8d62'),
+        'M2':       ('M2',  '#8da0cb'),
+        'M3':       ('M3',  '#e78ac3')
         }
     idx = {e: np.where((epochs[e][0] < t) & (t <= epochs[e][1]))[0] for e in annot}
 
@@ -557,7 +557,7 @@ cbar.solids.set_edgecolor("face") # Correct stripes
 
 for p, idx in zip(['dots', 'seq'], [m.DOTS, m.SEQUENCE]):
     plot = plots[p]
-    plot.imshow(u[idx], aspect='auto', cmap=cmap, norm=norm,
+    plot.imshow(u[idx], aspect='auto', cmap=cmap, norm=norm, interpolation='nearest',
                 origin='lower', extent=[0, t[-1], -0.5, len(idx)-0.5])
     plot.yticks(range(len(idx)))
     plot.yticklabels(range(1, 1+len(idx)))

@@ -18,16 +18,16 @@ The code uses (but doesn't require) one function from the [NetworkX](https://net
 
 ## Installation
 
-Go to the pycog directory and type
-
-```
-python setup.py install
-```
-
-If this fails for some reason (likely because of permissions), simply add the directory containing ``pycog`` to your ``$PYTHONPATH``. To build the Cython extension, type
+Because you will eventually want to modify the `pycog` source files, we recommend that you "install" by simply adding the `pycog` directory to your `PYTHONPATH`, and build the Cython extension to (slightly) speed up Euler integration for testing the networks by typing
 
 ```
 python setup.py build_ext --inplace
+```
+
+You can also perform a "standard" installation by going to the `pycog` directory and typing
+
+```
+python setup.py install
 ```
 
 ## Examples
