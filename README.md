@@ -32,7 +32,7 @@ python setup.py install
 
 ## Examples
 
-The networks used to generate the figures in the paper were trained using the specifications contained in /examples/models.
+The networks used to generate the figures in the paper were trained using the specifications contained in `examples/models`.
 
 ## Note
 
