@@ -33,9 +33,13 @@ from pycog.utils import get_here, mkdir_p
 #=========================================================================================
 
 p = argparse.ArgumentParser()
+p.add_argument('-g', '--gpus', nargs='?', type=int, const=1, default=0)
 p.add_argument('-s', '--simulate', action='store_true', default=False)
 p.add_argument('args', nargs='*')
 a = p.parse_args()
+
+# GPUs
+gpus = a.gpus
 
 simulate = a.simulate
 args     = a.args
@@ -88,8 +92,8 @@ def train(model, seed=None):
         seed = ' -s {}'.format(seed)
 
     tstart = datetime.datetime.now()
-    call("python {} {} train{}"
-         .format(join(examplespath, 'do.py'), join(modelspath, model), seed))
+    call("python {} {} train{} -g{}"
+         .format(join(examplespath, 'do.py'), join(modelspath, model), seed, gpus))
     tend = datetime.datetime.now()
 
     # Save training time
@@ -105,8 +109,8 @@ def train_seeds(model, start_seed=1, ntrain=5):
         tstart = datetime.datetime.now()
         call("python {} {} clean{}"
              .format(join(examplespath, 'do.py'), join(modelspath, model), s))
-        call("python {} {} train{}"
-             .format(join(examplespath, 'do.py'), join(modelspath, model), s))
+        call("python {} {} train{} -g{}"
+             .format(join(examplespath, 'do.py'), join(modelspath, model), s, gpus))
         tend = datetime.datetime.now()
 
         # Save training time
