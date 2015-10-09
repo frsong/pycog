@@ -18,7 +18,7 @@ The code uses (but doesn't require) one function from the [NetworkX](https://net
 
 ## Installation
 
-Because you will eventually want to modify the `pycog` source files, we recommend that you "install" by simply adding the `pycog` directory to your `PYTHONPATH`, and build the Cython extension to (slightly) speed up Euler integration for testing the networks by typing
+Because you will eventually want to modify the `pycog` source files, we recommend that you "install" by simply adding the `pycog` directory to your `$PYTHONPATH`, and build the Cython extension to (slightly) speed up Euler integration for testing the networks by typing
 
 ```
 python setup.py build_ext --inplace
