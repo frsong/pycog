@@ -76,9 +76,6 @@ class Model(object):
             except AttributeError:
                 print("[ {}.Model ] You need to define a function that returns trials."
                       .format(THIS))
-
-                # TODO: Sine wave
-
                 sys.exit(1)
 
         # generate_trial : usage
