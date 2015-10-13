@@ -67,7 +67,7 @@ analysispath = join(examplespath, 'analysis')
 paperpath    = join(base, 'paper')
 timespath    = join(paperpath, 'times')
 
-# Make time path
+# Make paths
 mkdir_p(timespath)
 
 def call(s):

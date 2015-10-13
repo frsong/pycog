@@ -562,7 +562,7 @@ class Figure(object):
     def save(self, name=None, path=None, fmt=None, transparent=True, **kwargs):
         if path is None:
             path = os.path.dirname(os.path.realpath(sys.argv[0])) + '/work/figs'
-            mkdir_p(path)
+        mkdir_p(path)
         if name is None:
             name = os.path.splitext(sys.argv[0].split('/')[-1])[0]
 
