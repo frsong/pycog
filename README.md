@@ -34,7 +34,11 @@ python setup.py install
 
 Example task specifications, including those used to generate the figures in the paper, can be found in `examples/models`.
 
-Training and testing networks involves some boring logistics, especially regarding file paths. You may find the script `examples/do.py` helpful as you start working with your own networks.
+Training and testing networks involves some boring logistics, especially regarding file paths. You may find the script `examples/do.py` helpful as you start working with your own networks. For instance, to train a new network we can just type (from the `examples` directory)
+
+```
+python do.py models/sinewave train
+```
 
 ## Notes
 
