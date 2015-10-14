@@ -11,7 +11,7 @@ import sys
 
 import numpy as np
 
-from .defaults import defaults
+from .defaults import defaults, generate_trial
 
 THIS = 'pycog.model'
 
@@ -52,29 +52,31 @@ class Model(object):
                            params : dict
 
         """
-        if modelfile is None:
-            import sinewave
-            print("[ {}.Model ] No modelfile provided. Train a sine wave.".format(THIS))
-            self.m = sinewave
-        else:
+        if modelfile is not None:
             try:
                 self.m = imp.load_source('model', modelfile)
             except IOError:
                 print("[ {}.Model ] Couldn't load model file {}".format(THIS, modelfile))
                 sys.exit(1)
+        else:
+            self.m = Struct(**kwargs)
 
         #---------------------------------------------------------------------------------
         # Perform model check
         #---------------------------------------------------------------------------------
+
         # generate_trial : existence
         try:
             f    = self.m.generate_trial
             args = inspect.getargspec(f).args
         except AttributeError:
-            print("[ {}.Model ] No generate_trial function defined. Generate a sine wave."
-                  .format(THIS))
-            import sinewave
-            self.m.generate_trial = sinewave.generate_trial
+            try:
+                f    = self.m.task.generate_trial
+                args = inspect.getargspec(f).args[1:]
+            except AttributeError:
+                print("[ {}.Model ] You need to define a function that returns trials."
+                      .format(THIS))
+                sys.exit(1)
 
         # generate_trial : usage
         if args != ['rng', 'dt', 'params']:
@@ -82,7 +84,7 @@ class Model(object):
                    " expected list of argument names. It is OK if only the names are"
                    " different.").format(THIS))
 
-        # var_in : If var_in is an array, make sure it is the correct size
+        # var_in : size
         if (hasattr(self.m, 'var_in') and isinstance(self.m.var_in, np.ndarray)
             and self.m.var_in.ndim == 1):
             if len(self.m.var_in) != self.m.Nin:
@@ -117,8 +119,10 @@ class Model(object):
         from .trainer import Trainer
 
         # The task
-        #TODO: Replace task directly with generate_trial?
-        task = Struct(generate_trial=self.m.generate_trial)
+        try:
+            task = self.m.task
+        except AttributeError:
+            task = Struct(generate_trial=self.m.generate_trial)
 
         # Parameters
         params = {}
