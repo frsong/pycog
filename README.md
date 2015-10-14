@@ -36,7 +36,7 @@ The networks used to generate the figures in the paper were trained using the sp
 
 ## Note
 
-It's common to see the following warning when running Theano:
+* It's common to see the following warning when running Theano:
 
 ```
 RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility
