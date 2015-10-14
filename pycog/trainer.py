@@ -781,7 +781,8 @@ class Trainer(object):
 
         # Input noise
         if np.isscalar(self.p['var_in']):
-            settings['sigma_in'] = '{}'.format(np.sqrt(self.p['var_in']))
+            if Nin > 0:
+                settings['sigma_in'] = '{}'.format(np.sqrt(self.p['var_in']))
         else:
             settings['sigma_in'] = 'array'
 
