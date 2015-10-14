@@ -169,7 +169,8 @@ class Dataset(object):
             # Pad trials
             for b, trial in enumerate(self.trials):
                 Nt = len(trial['t'])
-                x[:Nt,b,:Nin]  = trial['inputs']
+                if Nin > 0:
+                    x[:Nt,b,:Nin] = trial['inputs']
                 y[:Nt,b,:Nout] = trial['outputs']
                 if 'mask' in trial:
                     y[:Nt,b,Nout:] = trial['mask']
