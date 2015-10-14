@@ -32,9 +32,15 @@ python setup.py install
 
 ## Examples
 
-The networks used to generate the figures in the paper were trained using the specifications contained in `examples/models`.
+Example task specifications, including those used to generate the figures in the paper, can be found in `examples/models`.
 
-## Note
+## Notes
+
+* The default recurrent noise level (used for most of the tasks in our paper) is rather high. When training a new task start with a value of `var_rec` that is small, then increase the noise for more robust solutions.
+
+* By default, recurrent and output biases are set to zero. If you encounter difficulties with training, try including the biases by setting `train_brec = True` and/or `train_bout = True`.
+
+* If you still have difficulties with training, try changing the value of `lambda_Omega`, the multiplier for the vanishing-gradient regularizer.
 
 * It's common to see the following warning when running Theano:
 
