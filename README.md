@@ -49,7 +49,7 @@ Example task specifications, including those used to generate the figures in the
   rval = __import__(module_name, {}, {}, [module_name])
   ```
 
-This is almost always innocuous and can be safely ignored.
+  This is almost always innocuous and can be safely ignored.
 
 ## Acknowledgments
 
