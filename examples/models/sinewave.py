@@ -19,7 +19,7 @@ Nout = 1
 ei, EXC, INH = tasktools.generate_ei(N)
 
 tau    = 100
-period = 8*tau
+period = 8*tau # Period of the sine wave
 
 # Biases are really helpful for this task
 train_bout = True
