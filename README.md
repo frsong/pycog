@@ -34,6 +34,8 @@ python setup.py install
 
 Example task specifications, including those used to generate the figures in the paper, can be found in `examples/models`.
 
+Training and testing networks involves some boring logistics, especially regarding file paths. You may find the script `examples/do.py` helpful as you start working with your own networks.
+
 ## Notes
 
 * The default recurrent noise level (used for most of the tasks in our paper) is rather high. When training a new task start with a value of `var_rec` that is small, then increase the noise for more robust solutions.
