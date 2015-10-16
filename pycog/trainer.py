@@ -211,7 +211,10 @@ class Trainer(object):
 
         # Time step
         if self.p['dt'] is None:
-            self.p['dt'] = self.p['tau']/5
+            if np.isscalar(self.p['tau']):
+                self.p['dt'] = self.p['tau']/5
+            else:
+                self.p['dt'] = np.min(self.p['tau'])/5
 
         # Distribution for initial weights (Win)
         if self.p['distribution_in'] is None:
