@@ -1,3 +1,7 @@
+"""
+Default parameters for training.
+
+"""
 defaults = {
     'extra_info':            {},
     'Nin':                   0,
