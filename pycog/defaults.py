@@ -63,4 +63,8 @@ defaults = {
     }
 
 def generate_trial(rng, dt, params):
+    """
+    Recommended structure for the `generate_trial` function.
+
+    """
     pass
