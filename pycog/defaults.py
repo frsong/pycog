@@ -6,7 +6,7 @@ defaults = {
     'extra_info':            {},
     'Nin':                   0,
     'N':                     100,
-    'Nout':                  0,
+    'Nout':                  1,
     'rectify_inputs':        True,
     'train_brec':            False,
     'brec':                  0,
