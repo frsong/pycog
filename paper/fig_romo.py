@@ -54,7 +54,8 @@ w   = 6.3
 h   = 4
 r   = w/h
 fig = Figure(w=w, h=h, axislabelsize=7, labelpadx=5, labelpady=5.5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2,
+             format=paper.format)
 
 #-----------------------------------------------------------------------------------------
 # Inputs

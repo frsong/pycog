@@ -36,7 +36,8 @@ w   = 7.5
 h   = 6.7
 r   = w/h
 fig = Figure(w=w, h=h, axislabelsize=6.5, labelpadx=5, labelpady=5,
-             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2)
+             thickness=0.6, ticksize=3, ticklabelsize=6, ticklabelpad=2,
+             format=paper.format)
 
 #-----------------------------------------------------------------------------------------
 # Psychometric functions
