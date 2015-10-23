@@ -27,7 +27,7 @@ def call(s):
 def figure(fig, n):
     call('python ' + join(paperpath, fig + '.py'))
     call('mv {} {}'.format(join(paperpath, 'figs', fig + '.eps'),
-                           join(paperpath, 'figs', 'plos', fig + '.eps')))
+                           join(paperpath, 'figs', 'plos', 'fig{}.eps'.format(n))))
 
 #=========================================================================================
 
