@@ -59,15 +59,17 @@ if not args:
 # Shared steps
 #=========================================================================================
 
-here         = get_here(__file__)
-base         = os.path.abspath(join(here, os.pardir))
-examplespath = join(base, 'examples')
-modelspath   = join(examplespath, 'models')
-analysispath = join(examplespath, 'analysis')
-paperpath    = join(base, 'paper')
-timespath    = join(paperpath, 'times')
+here          = get_here(__file__)
+base          = os.path.abspath(join(here, os.pardir))
+examplespath  = join(base, 'examples')
+modelspath    = join(examplespath, 'models')
+analysispath  = join(examplespath, 'analysis')
+paperpath     = join(base, 'paper')
+paperfigspath = join(paperpath, 'figs')
+timespath     = join(paperpath, 'times')
 
 # Make paths
+mkdir_p(paperfigspath)
 mkdir_p(timespath)
 
 def call(s):
