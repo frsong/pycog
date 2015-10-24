@@ -395,6 +395,7 @@ class Subplot(object):
                 bins = Subplot.scott(data)
 
         # Plot histogram
+        print(kwargs)
         pdf, binedges, patches = self.ax.hist(data, bins, **kwargs)
 
         # Modify appearance
