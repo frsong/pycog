@@ -371,7 +371,7 @@ class Subplot(object):
         h = 3.5*np.std(data, ddof=ddof)/cbrt(len(data))
         return int((np.max(data) - np.min(data))/h)
 
-    def hist(self, data, bins=None, get_binedges=False, **kwargs):
+    def hist(self, data, bins=None, get_binedges=False, lw=0, **kwargs):
         """
         Plot a histogram.
 
@@ -398,7 +398,7 @@ class Subplot(object):
         pdf, binedges, patches = self.ax.hist(data, bins, **kwargs)
 
         # Modify appearance
-        plt.setp(patches, 'facecolor', kwargs['color'], 'linewidth', 0)
+        plt.setp(patches, 'facecolor', kwargs['color'], 'linewidth', lw)
 
         if get_binedges:
             return pdf, binedges
