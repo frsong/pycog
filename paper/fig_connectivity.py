@@ -208,8 +208,6 @@ for rnn, s in zip([rnn1, rnn2], ['A', 'B']):
 
 plot = plots['Ain']
 plot.xaxis.set_tick_params(pad=-3)
-#plot.xticks(np.arange(2)+0.1)
-#plot.xticklabels(['Choice 1', 'Choice 2'], rotation='vertical', fontsize=6)
 
 plot = plots['Aout']
 plot.yaxis.set_tick_params(pad=-2)
