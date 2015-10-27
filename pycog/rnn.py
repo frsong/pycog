@@ -478,7 +478,7 @@ class RNN(object):
     #/////////////////////////////////////////////////////////////////////////////////////
 
     @staticmethod
-    def plot_connection_matrix(plot, W, smap_exc, smap_inh, labelsize=5):
+    def plot_connection_matrix(plot, W, smap_exc=None, smap_inh=None, labelsize=5):
         """
         Plot a connection matrix, using separate colors for excitatory and inhibitory
         units.
@@ -488,6 +488,12 @@ class RNN(object):
         smap_exc, smap_inh : matplotlib.cm.ScalarMappable
 
         """
+        try:
+            from .figtools import Figure, gradient, mpl
+        except ImportError:
+            print("[ {}.RNN.plot_costs ] Couldn't import pycog.figtools.".format(THIS))
+            sys.exit(1)
+
         #---------------------------------------------------------------------------------
         # Format axes
         #---------------------------------------------------------------------------------
@@ -504,6 +510,22 @@ class RNN(object):
         #---------------------------------------------------------------------------------
         # Display connection matrix
         #---------------------------------------------------------------------------------
+
+        white = 'w'
+        blue  = Figure.colors('strongblue')
+        red   = Figure.colors('strongred')
+
+        # Create colormaps if necessary
+        if smap_exc is None:
+            exc      = np.ravel(W[np.where(W > 0)])
+            cmap_exc = gradient(white, blue)
+            norm_exc = mpl.colors.Normalize(vmin=0, vmax=np.max(exc))
+            smap_exc = mpl.cm.ScalarMappable(norm_exc, cmap_exc)
+        if smap_inh is None:
+            inh      = -np.ravel(W[np.where(W < 0)])
+            cmap_inh = gradient(white, red)
+            norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.max(inh))
+            smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
 
         if W.ndim == 1:
             W = W[:,np.newaxis]
@@ -526,7 +548,7 @@ class RNN(object):
 
         """
         try:
-            from .figtools import Figure, mpl
+            from .figtools import Figure, gradient, mpl
         except ImportError:
             print("[ {}.RNN.plot_costs ] Couldn't import pycog.figtools.".format(THIS))
             sys.exit(1)
@@ -660,20 +682,15 @@ class RNN(object):
         blue  = Figure.colors('strongblue')
         red   = Figure.colors('strongred')
 
-        from .figtools import gradient
-
         cmap_exc = gradient(white, blue)
-        cmap_exc = mpl.cm.Blues
         norm_exc = mpl.colors.Normalize(vmin=0, vmax=np.round(exc[-1], 1), clip=True)
         smap_exc = mpl.cm.ScalarMappable(norm_exc, cmap_exc)
 
         cmap_inh = gradient(white, red)
-        cmap_inh = mpl.cm.Reds
         norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.round(inh[-1], 1), clip=True)
         smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
 
         cmap_inh_r = gradient(red, white)
-        cmap_inh_r = mpl.cm.Reds_r
         norm_inh_r = mpl.colors.Normalize(vmin=-np.round(inh[-1], 1), vmax=0, clip=True)
         smap_inh_r = mpl.cm.ScalarMappable(norm_inh_r, cmap_inh_r)
 

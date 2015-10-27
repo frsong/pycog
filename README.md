@@ -4,7 +4,7 @@
 
 This code is written in Python 2.7 and requires
 
-* [Theano](http://deeplearning.net/software/theano/)
+* [Theano 0.7](http://deeplearning.net/software/theano/)
 
 Optional but recommended if you plan to run many trials with the trained networks outside of Theano:
 
