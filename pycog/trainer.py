@@ -385,9 +385,8 @@ class Trainer(object):
                                       self.p['distribution_in'])
         Wrec_0 = self.init_weights(rng, self.p['Crec'],
                                    N, N, self.p['distribution_rec'])
-        if Nout > 0:
-            Wout_0 = self.init_weights(rng, self.p['Cout'],
-                                       Nout, N, self.p['distribution_out'])
+        Wout_0 = self.init_weights(rng, self.p['Cout'],
+                                   Nout, N, self.p['distribution_out'])
 
         #---------------------------------------------------------------------------------
         # Enforce Dale's law on the initial weights
@@ -403,8 +402,7 @@ class Trainer(object):
             if Nin > 0:
                 Win_0 = abs(Win_0) # If Dale, assume inputs are excitatory
             Wrec_0 = abs(Wrec_0)
-            if Nout > 0:
-                Wout_0 = abs(Wout_0)
+            Wout_0 = abs(Wout_0)
         else:
             settings['Dale\'s law'] = 'no'
 
@@ -458,10 +456,7 @@ class Trainer(object):
         else:
             Win = None
         Wrec = theanotools.shared(Wrec_0, name='Wrec')
-        if Nout > 0:
-            Wout = theanotools.shared(Wout_0, name='Wout')
-        else:
-            Wout = None
+        Wout = theanotools.shared(Wout_0, name='Wout')
         brec = theanotools.shared(brec_0, name='brec')
         bout = theanotools.shared(bout_0, name='bout')
         x0   = theanotools.shared(x0_0,   name='x0')
@@ -569,8 +564,7 @@ class Trainer(object):
             ei    = theanotools.shared(self.p['ei'], name='ei')
             Wrec_ = make_positive(Wrec_)*ei
 
-            if Nout > 0:
-                Wout_ = make_positive(Wout_)*ei
+            Wout_ = make_positive(Wout_)*ei
 
         #---------------------------------------------------------------------------------
         # Variables to save
@@ -580,12 +574,7 @@ class Trainer(object):
             save_values = [Win_]
         else:
             save_values = [None]
-        save_values += [Wrec_]
-        if Nout > 0:
-            save_values += [Wout_]
-        else:
-            save_values += [None]
-        save_values += [brec, bout, x0]
+        save_values += [Wrec_, Wout_, brec, bout, x0]
 
         #---------------------------------------------------------------------------------
         # Activation functions
@@ -612,6 +601,8 @@ class Trainer(object):
         #---------------------------------------------------------------------------------
 
         # Dims: time, trials, units
+        # u[:,:,:Nin]  contains the inputs (including baseline and noise),
+        # u[:,:,Nin:]  contains the recurrent noise
         u   = T.tensor3('u')
         x0_ = T.alloc(x0, u.shape[1], x0.shape[0])
 
@@ -667,10 +658,7 @@ class Trainer(object):
         # Readout
         #---------------------------------------------------------------------------------
 
-        if Nout > 0:
-            z = f_output(T.dot(r, Wout_.T) + bout)
-        else:
-            z = r
+        z = f_output(T.dot(r, Wout_.T) + bout)
 
         #---------------------------------------------------------------------------------
         # Deduce whether the task specification contains an output mask -- use a
@@ -696,6 +684,8 @@ class Trainer(object):
 
         # Input-output pairs
         inputs = [u, target]
+        # target[:,:,:Nout] contains the target outputs, &
+        # target[:,:,Nout:] contains the mask.
 
         # Loss, not including the regularization terms
         loss = T.sum(f_loss(z, target[:,:,:Nout])*mask)/masknorm
