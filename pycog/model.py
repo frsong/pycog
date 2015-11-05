@@ -91,6 +91,11 @@ class Model(object):
                 print("[ {}.Model ] The length of var_in doesn't match Nin.".format(THIS))
                 sys.exit(1)
 
+        # if terminate is given, performance should also be given
+        if hasattr(self.m, 'terminate') and not hasattr(self.m, 'performance'):
+            print(("[ {}.Model ] Warning: Termination criterion is provided, "
+                   " but the performance measure is not defined").format(THIS))
+
     #/////////////////////////////////////////////////////////////////////////////////////
 
     def train(self, savefile, seed=None, compiledir=None, recover=True, gpus=0):

@@ -103,11 +103,15 @@ class SGD(object):
         # Pascanu's trick for getting dL/dxt
         scan_node = x.owner.inputs[0].owner
         assert isinstance(scan_node.op, theano.scan_module.scan_op.Scan)
+        # scan_node.op.n_seqs is the number of sequences in the scan
         npos   = scan_node.op.n_seqs + 1
+        # init_x is the initial value of x at all time points, including x0
         init_x = scan_node.inputs[npos]
+        # Compute gradients
         g_x,   = theanotools.grad(costs[0], [init_x])
 
-        # Get into "standard" order
+        # Get into "standard" order, by filling `self.trainables` with
+        # `None`s if some of the parameters are not trained.
         Win, Wrec, Wout, brec, bout, x0 = RNN.fill(self.trainables, self.trainable_names)
 
         # Gradients
@@ -118,8 +122,8 @@ class SGD(object):
         # For vanishing gradient regularizer
         #---------------------------------------------------------------------------------
 
-        self.Wrec_ = extras['Wrec_']
-        d_f_hidden = extras['d_f_hidden']
+        self.Wrec_ = extras['Wrec_'] # Actual recurrent weight
+        d_f_hidden = extras['d_f_hidden'] # derivative of hidden activation function
 
         #---------------------------------------------------------------------------------
         # Regularization for the vanishing gradient problem
@@ -129,19 +133,36 @@ class SGD(object):
             alpha = T.scalar('alpha')
         else:
             alpha = T.vector('alpha')
-        d_xt = T.tensor3('d_xt')
-        xt   = T.tensor3('xt')
+        d_xt = T.tensor3('d_xt') # Later replaced later by g_x, of size (time+1) X batchsize X nh
+        xt   = T.tensor3('xt') # Later replaced later by x, of size time X batchsize X nh
+        # Using temporary variables instead of actual x variables
+        # allows for calculation of immediate derivative
 
-        num    = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt))
+        # Here construct the regularizaer Omega for the vanishing gradient problem
+
+        # Numerator of Omega (d_xt[1:] return time X batchsize X nh)
+        # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
+        num    = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt)) # Francis original
         num    = (num**2).sum(axis=2)
+
+        # Denominator of Omega
+        # \partial E/\partial x_{t+1}, squared and summed over hidden units
         denom  = (d_xt[1:]**2).sum(axis=2)
+
+        # Omega, small denominators are not considered
         Omega  = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
+        # fraction of time steps where we have |\p E/\p x_t|^2 > bound (default 1e-20)
         nelems = T.mean(T.ge(denom, bound), axis=1)
+        # first averaged across batches (.mean(axis=1)),
+        # then averaged across all time steps where |\p E/\p x_t|^2 > bound
         Omega  = Omega.mean(axis=1).sum()/nelems.sum()
 
+        # tmp_g_Wrec: immediate derivative of Omega with respect to Wrec
+        # Notice grad is computed before the clone. This is critical for calculating immediate derivative
         tmp_g_Wrec = theanotools.grad(Omega, Wrec)
         Omega, tmp_g_Wrec, nelems = theano.clone([Omega, tmp_g_Wrec, nelems.mean()],
                                                  replace=[(d_xt, g_x), (xt, x)])
+        # Add the gradient to the original gradient
         g_Wrec += lambda_Omega * tmp_g_Wrec
 
         #---------------------------------------------------------------------------------
@@ -346,9 +367,10 @@ class SGD(object):
 
                     # Validation cost
                     costs = self.f_cost(*validation_data(best['other_costs']))
-                    z     = costs[-1]
+                    z     = costs[-1] # network outputs
                     costs = [float(i) for i in costs[:-1]]
-                    s     = "| validation: {:.8f} / {:.8f}".format(costs[0], costs[1])
+                    s0    = "| validation loss / RMSE"
+                    s1    = ": {:.6f} / {:.6f}".format(costs[0], costs[1])
 
                     # Dashes
                     nfill = 70
@@ -357,9 +379,9 @@ class SGD(object):
                     if performance is not None:
                         costs.append(performance(validation_data.get_trials(),
                                                  SGD.get_value(z)))
-                        sp     = " / {:.8f}".format(costs[-1])
-                        s     += sp
-                        nfill -= len(sp)
+                        s0    += " / performance"
+                        s1    += " / {:.2f}".format(costs[-1])
+                    s = s0 + s1
 
                     # Callback
                     if self.p['callback'] is not None:
@@ -381,7 +403,7 @@ class SGD(object):
                     # New best
                     if costs[0] < best['cost']:
                         s += ' ' + '-'*(nfill - len(s))
-                        s += " NEW BEST (prev. best: {:.8f})".format(best['cost'])
+                        s += " NEW BEST (prev. best: {:.6f})".format(best['cost'])
                         best = {
                             'iter':        iter,
                             'cost':        costs[0],
@@ -428,6 +450,7 @@ class SGD(object):
                               .format(self.p['min_error']))
                         break
 
+                    # This termination criterion assumes that performance is not None
                     if terminate(np.array([c[-1] for _, c in costs_history])):
                         print("Termination criterion satisfied -- we\'ll call it a day.")
                         break
