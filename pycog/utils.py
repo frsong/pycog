@@ -8,6 +8,10 @@ import os
 import signal
 import sys
 
+def println(line):
+    sys.stdout.write(line)
+    sys.stdout.flush()
+
 def print_settings(settings, indent=3, title="=> settings"):
     """
     Pretty print.
