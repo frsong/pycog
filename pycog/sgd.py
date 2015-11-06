@@ -122,8 +122,8 @@ class SGD(object):
         # For vanishing gradient regularizer
         #---------------------------------------------------------------------------------
 
-        self.Wrec_ = extras['Wrec_'] # Actual recurrent weight
-        d_f_hidden = extras['d_f_hidden'] # derivative of hidden activation function
+        self.Wrec_ = extras['Wrec_']        # Actual recurrent weight
+        d_f_hidden = extras['d_f_hidden']   # derivative of hidden activation function
 
         #---------------------------------------------------------------------------------
         # Regularization for the vanishing gradient problem
@@ -133,16 +133,16 @@ class SGD(object):
             alpha = T.scalar('alpha')
         else:
             alpha = T.vector('alpha')
-        d_xt = T.tensor3('d_xt') # Later replaced later by g_x, of size (time+1) X batchsize X nh
-        xt   = T.tensor3('xt') # Later replaced later by x, of size time X batchsize X nh
+        d_xt = T.tensor3('d_xt')    # Later replaced by g_x, of size (time+1),batchsize,nh
+        xt   = T.tensor3('xt')      # Later replaced by x, of size time,batchsize,nh
         # Using temporary variables instead of actual x variables
         # allows for calculation of immediate derivative
 
-        # Here construct the regularizaer Omega for the vanishing gradient problem
+        # Here construct the regularizer Omega for the vanishing gradient problem
 
         # Numerator of Omega (d_xt[1:] return time X batchsize X nh)
         # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
-        num    = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt)) # Francis original
+        num    = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt))
         num    = (num**2).sum(axis=2)
 
         # Denominator of Omega
@@ -158,7 +158,8 @@ class SGD(object):
         Omega  = Omega.mean(axis=1).sum()/nelems.sum()
 
         # tmp_g_Wrec: immediate derivative of Omega with respect to Wrec
-        # Notice grad is computed before the clone. This is critical for calculating immediate derivative
+        # Notice grad is computed before the clone.
+        # This is critical for calculating immediate derivative
         tmp_g_Wrec = theanotools.grad(Omega, Wrec)
         Omega, tmp_g_Wrec, nelems = theano.clone([Omega, tmp_g_Wrec, nelems.mean()],
                                                  replace=[(d_xt, g_x), (xt, x)])
