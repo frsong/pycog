@@ -101,13 +101,12 @@ class SGD(object):
         #---------------------------------------------------------------------------------
 
         # Pascanu's trick for getting dL/dxt
+        # scan_node.op.n_seqs is the number of sequences in the scan
+        # init_x is the initial value of x at all time points, including x0
         scan_node = x.owner.inputs[0].owner
         assert isinstance(scan_node.op, theano.scan_module.scan_op.Scan)
-        # scan_node.op.n_seqs is the number of sequences in the scan
         npos   = scan_node.op.n_seqs + 1
-        # init_x is the initial value of x at all time points, including x0
         init_x = scan_node.inputs[npos]
-        # Compute gradients
         g_x,   = theanotools.grad(costs[0], [init_x])
 
         # Get into "standard" order, by filling `self.trainables` with
@@ -122,8 +121,8 @@ class SGD(object):
         # For vanishing gradient regularizer
         #---------------------------------------------------------------------------------
 
-        self.Wrec_ = extras['Wrec_']        # Actual recurrent weight
-        d_f_hidden = extras['d_f_hidden']   # derivative of hidden activation function
+        self.Wrec_ = extras['Wrec_']      # Actual recurrent weight
+        d_f_hidden = extras['d_f_hidden'] # derivative of hidden activation function
 
         #---------------------------------------------------------------------------------
         # Regularization for the vanishing gradient problem
@@ -133,8 +132,8 @@ class SGD(object):
             alpha = T.scalar('alpha')
         else:
             alpha = T.vector('alpha')
-        d_xt = T.tensor3('d_xt')    # Later replaced by g_x, of size (time+1),batchsize,nh
-        xt   = T.tensor3('xt')      # Later replaced by x, of size time,batchsize,nh
+        d_xt = T.tensor3('d_xt') # Later replaced by g_x, of size (time+1),batchsize,nh
+        xt   = T.tensor3('xt')   # Later replaced by x, of size time,batchsize,nh
         # Using temporary variables instead of actual x variables
         # allows for calculation of immediate derivative
 
@@ -142,19 +141,17 @@ class SGD(object):
 
         # Numerator of Omega (d_xt[1:] return time X batchsize X nh)
         # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
-        num    = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt))
-        num    = (num**2).sum(axis=2)
+        num = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt))
+        num = (num**2).sum(axis=2)
 
-        # Denominator of Omega
+        # Denominator of Omega, small denominators are not considered
         # \partial E/\partial x_{t+1}, squared and summed over hidden units
         denom  = (d_xt[1:]**2).sum(axis=2)
-
-        # Omega, small denominators are not considered
         Omega  = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
-        # fraction of time steps where we have |\p E/\p x_t|^2 > bound (default 1e-20)
-        nelems = T.mean(T.ge(denom, bound), axis=1)
+
         # first averaged across batches (.mean(axis=1)),
         # then averaged across all time steps where |\p E/\p x_t|^2 > bound
+        nelems = T.mean(T.ge(denom, bound), axis=1)
         Omega  = Omega.mean(axis=1).sum()/nelems.sum()
 
         # tmp_g_Wrec: immediate derivative of Omega with respect to Wrec
