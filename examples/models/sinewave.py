@@ -18,8 +18,8 @@ Nout = 1
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
 
-tau    = 100
-period = 8*tau # Period of the sine wave
+# Time constant
+tau = 100
 
 # Biases are really helpful for this task
 train_bout = True
@@ -34,6 +34,9 @@ var_rec = 0.05**2 # Helps with generalization
 #-----------------------------------------------------------------------------------------
 # Task structure
 #-----------------------------------------------------------------------------------------
+
+ # Period of the sine wave
+period = 8*tau
 
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
