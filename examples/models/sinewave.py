@@ -35,7 +35,7 @@ var_rec = 0.05**2 # Helps with generalization
 # Task structure
 #-----------------------------------------------------------------------------------------
 
- # Period of the sine wave
+# Period of the sine wave
 period = 8*tau
 
 def generate_trial(rng, dt, params):
