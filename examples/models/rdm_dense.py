@@ -45,7 +45,7 @@ pcatch      = 1/(nconditions + 1)
 SCALE = 3.2
 def scale(coh):
     return (1 + SCALE*coh/100)/2
-    
+
 def generate_trial(rng, dt, params):
     #-------------------------------------------------------------------------------------
     # Select task condition
@@ -56,10 +56,8 @@ def generate_trial(rng, dt, params):
         if params.get('catch', rng.rand() < pcatch):
             catch_trial = True
         else:
-            coh = params.get('coh', rng.choice(cohs))
-
-            p      = params.get('callback_results')
-            in_out = params.get('in_out', rng.choice(in_outs, p=p))
+            coh    = params.get('coh',    rng.choice(cohs))
+            in_out = params.get('in_out', rng.choice(in_outs))
     elif params['name'] == 'validation':
         b = params['minibatch_index'] % (nconditions + 1)
         if b == 0:
