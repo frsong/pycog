@@ -146,8 +146,8 @@ class SGD(object):
 
         # Denominator of Omega, small denominators are not considered
         # \partial E/\partial x_{t+1}, squared and summed over hidden units
-        denom  = (d_xt[1:]**2).sum(axis=2)
-        Omega  = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
+        denom = (d_xt[1:]**2).sum(axis=2)
+        Omega = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
 
         # first averaged across batches (.mean(axis=1)),
         # then averaged across all time steps where |\p E/\p x_t|^2 > bound
