@@ -522,10 +522,11 @@ class RNN(object):
             norm_exc = mpl.colors.Normalize(vmin=0, vmax=np.max(exc))
             smap_exc = mpl.cm.ScalarMappable(norm_exc, cmap_exc)
         if smap_inh is None:
-            inh      = -np.ravel(W[np.where(W < 0)])
-            cmap_inh = gradient(white, red)
-            norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.max(inh))
-            smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
+            inh = -np.ravel(W[np.where(W < 0)])
+            if len(inh) > 0:
+                cmap_inh = gradient(white, red)
+                norm_inh = mpl.colors.Normalize(vmin=0, vmax=np.max(inh))
+                smap_inh = mpl.cm.ScalarMappable(norm_inh, cmap_inh)
 
         if W.ndim == 1:
             W = W[:,np.newaxis]
