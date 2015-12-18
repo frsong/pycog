@@ -803,6 +803,7 @@ class Trainer(object):
             settings['tau'] = '{} ms'.format(self.p['tau'])
         else:
             settings['tau'] = 'custom'
+        settings['tau_in']            = '{} ms'.format(self.p['tau_in'])
         settings['learning rate']     = '{}'.format(self.p['learning_rate'])
         settings['lambda_Omega']      = '{}'.format(self.p['lambda_Omega'])
         settings['max gradient norm'] = '{}'.format(self.p['max_gradient_norm'])
