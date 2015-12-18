@@ -269,6 +269,7 @@ class RNN(object):
         var_rec     = self.p['var_rec']
         dt          = self.p['dt']
         tau         = self.p['tau']
+        tau_in      = self.p['tau_in']
         sigma0      = self.p['sigma0']
         mode        = self.p['mode']
 
@@ -334,7 +335,7 @@ class RNN(object):
 
         # Input noise
         if self.Win is not None:
-            var_in = 2*var_in/alpha
+            var_in = 2*tau_in/dt*var_in
             if np.isscalar(var_in) or var_in.ndim == 1:
                 if np.any(var_in > 0):
                     noise_in = (np.sqrt(var_in)*rng.normal(size=(Nt, Nin)))
@@ -345,7 +346,7 @@ class RNN(object):
             noise_in = np.asarray(noise_in, dtype=dtype)
 
         # Recurrent noise
-        var_rec = 2*var_rec/alpha
+        var_rec = 2/dt*var_rec
         if np.isscalar(var_rec) or var_rec.ndim == 1:
             if np.any(var_rec > 0):
                 noise_rec = np.sqrt(var_rec)*rng.normal(size=(Nt, N))
@@ -353,7 +354,7 @@ class RNN(object):
                 noise_rec = np.zeros((Nt, N))
         else:
             noise_rec = rng.multivariate_normal(np.zeros(N), var_rec, Nt)
-        noise_rec = np.asarray(noise_rec, dtype=dtype)
+        noise_rec = np.asarray(np.sqrt(tau)*noise_rec, dtype=dtype)
 
         # Inputs
         if self.Win is not None:

@@ -209,6 +209,10 @@ class Trainer(object):
         for k in defaults:
             self.p.setdefault(k, defaults[k])
 
+        # Time constants
+        if not np.isscalar(self.p['tau']):
+            self.p['tau'] = np.asarray(self.p['tau'], dtype=floatX)
+
         # Time step
         if self.p['dt'] is None:
             if np.isscalar(self.p['tau']):
@@ -627,7 +631,7 @@ class Trainer(object):
                 x_t = ((1 - alpha)*x_tm1
                        + alpha*(T.dot(r_tm1, WrecT) # Recurrent
                                 + brec              # Bias
-                                + u_t[:,Nin:])      # Recurrent noise
+                                + u_t[:,Nin:]) # Recurrent noise
                        )
                 r_t = f_hidden(x_t)
 
@@ -794,8 +798,11 @@ class Trainer(object):
         # Other settings
         #---------------------------------------------------------------------------------
 
-        settings['dt']                = '{} ms'.format(self.p['dt'])
-        settings['tau']               = '{} ms'.format(self.p['tau'])
+        settings['dt'] = '{} ms'.format(self.p['dt'])
+        if np.isscalar(self.p['tau']):
+            settings['tau'] = '{} ms'.format(self.p['tau'])
+        else:
+            settings['tau'] = 'custom'
         settings['learning rate']     = '{}'.format(self.p['learning_rate'])
         settings['lambda_Omega']      = '{}'.format(self.p['lambda_Omega'])
         settings['max gradient norm'] = '{}'.format(self.p['max_gradient_norm'])

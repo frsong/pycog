@@ -50,8 +50,9 @@ class Dataset(object):
             setattr(self, k, p[k])
 
         # Rescale noise
-        self.var_in  = 2*p['tau']/p['dt']*p['var_in']
-        self.var_rec = 2*p['tau']/p['dt']*p['var_rec']
+        self.var_in  = 2*p['tau_in']/p['dt']*p['var_in']
+        self.tau     = p['tau']
+        self.var_rec = 2/p['dt']*p['var_rec']
 
         # Random number generator
         self.rng = np.random.RandomState(seed)
@@ -200,7 +201,7 @@ class Dataset(object):
             else:
                 # Correlated noise
                 r = self.rng.multivariate_normal(np.zeros(N), self.var_rec, (T, B))
-            x[:,:,Nin:] = r
+            x[:,:,Nin:] = np.sqrt(self.tau)*r
 
             # Keep inputs positive
             if self.rectify_inputs:

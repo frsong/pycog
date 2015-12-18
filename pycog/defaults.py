@@ -16,6 +16,7 @@ defaults = {
     'x0':                    0.1,
     'mode':                  'batch',
     'tau':                   100,
+    'tau_in':                100,
     'Cin':                   None,
     'Crec':                  None,
     'Cout':                  None,

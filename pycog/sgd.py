@@ -132,16 +132,16 @@ class SGD(object):
             alpha = T.scalar('alpha')
         else:
             alpha = T.vector('alpha')
-        d_xt = T.tensor3('d_xt') # Later replaced by g_x, of size (time+1),batchsize,nh
-        xt   = T.tensor3('xt')   # Later replaced by x, of size time,batchsize,nh
+        d_xt = T.tensor3('d_xt') # Later replaced by g_x, of size (time+1), batchsize, N
+        xt   = T.tensor3('xt')   # Later replaced by x, of size time, batchsize, N
         # Using temporary variables instead of actual x variables
-        # allows for calculation of immediate derivative
+        # allows for calculation of immediate derivatives
 
         # Here construct the regularizer Omega for the vanishing gradient problem
 
-        # Numerator of Omega (d_xt[1:] return time X batchsize X nh)
+        # Numerator of Omega (d_xt[1:] returns time X batchsize X N)
         # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
-        num = ((1 - alpha)*d_xt[1:] + alpha*T.dot(d_xt[1:], self.Wrec_)*d_f_hidden(xt))
+        num = ((1 - alpha)*d_xt[1:] + T.dot(alpha*d_xt[1:], self.Wrec_)*d_f_hidden(xt))
         num = (num**2).sum(axis=2)
 
         # Denominator of Omega, small denominators are not considered
@@ -149,7 +149,7 @@ class SGD(object):
         denom = (d_xt[1:]**2).sum(axis=2)
         Omega = (T.switch(T.ge(denom, bound), num/denom, 1) - 1)**2
 
-        # first averaged across batches (.mean(axis=1)),
+        # First averaged across batches (.mean(axis=1)),
         # then averaged across all time steps where |\p E/\p x_t|^2 > bound
         nelems = T.mean(T.ge(denom, bound), axis=1)
         Omega  = Omega.mean(axis=1).sum()/nelems.sum()
