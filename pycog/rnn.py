@@ -338,7 +338,7 @@ class RNN(object):
             var_in = 2*tau_in/dt*var_in
             if np.isscalar(var_in) or var_in.ndim == 1:
                 if np.any(var_in > 0):
-                    noise_in = (np.sqrt(var_in)*rng.normal(size=(Nt, Nin)))
+                    noise_in = np.sqrt(var_in)*rng.normal(size=(Nt, Nin))
                 else:
                     noise_in = np.zeros((Nt, Nin))
             else:
