@@ -141,7 +141,7 @@ class SGD(object):
 
         # Numerator of Omega (d_xt[1:] returns time X batchsize X N)
         # Notice Wrec_ is used in the network equation as: T.dot(r_tm1, Wrec_.T)
-        num = ((1 - alpha)*d_xt[1:] + T.dot(alpha*d_xt[1:], self.Wrec_)*d_f_hidden(xt))
+        num = (1 - alpha)*d_xt[1:] + T.dot(alpha*d_xt[1:], self.Wrec_)*d_f_hidden(xt)
         num = (num**2).sum(axis=2)
 
         # Denominator of Omega, small denominators are not considered

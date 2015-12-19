@@ -186,9 +186,6 @@ class Trainer(object):
                      Terminate training if the objective function doesn't change
                      for longer than `patience`.
 
-          init_momentum : float, optional
-                          Initial value of the momentum.
-
           Not used currently
           ------------------
 
