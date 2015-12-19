@@ -156,7 +156,7 @@ class SGD(object):
 
         # tmp_g_Wrec: immediate derivative of Omega with respect to Wrec
         # Notice grad is computed before the clone.
-        # This is critical for calculating immediate derivative
+        # This is critical for calculating the immediate derivative.
         tmp_g_Wrec = theanotools.grad(Omega, Wrec)
         Omega, tmp_g_Wrec, nelems = theano.clone([Omega, tmp_g_Wrec, nelems.mean()],
                                                  replace=[(d_xt, g_x), (xt, x)])
