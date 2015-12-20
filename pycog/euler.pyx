@@ -9,7 +9,7 @@ cimport cython
 @cython.cdivision(True)
 @cython.nonecheck(False)
 @cython.wraparound(False)
-def euler(float alpha,
+def euler(np.ndarray[np.float32_t, ndim=1] alpha,
           np.ndarray[np.float32_t, ndim=1] x_t,
           np.ndarray[np.float32_t, ndim=1] r_t,
           np.ndarray[np.float32_t, ndim=2] Win,
@@ -35,7 +35,7 @@ def euler(float alpha,
 @cython.cdivision(True)
 @cython.nonecheck(False)
 @cython.wraparound(False)
-def euler_no_Win(float alpha,
+def euler_no_Win(np.ndarray[np.float32_t, ndim=1] alpha,
                  np.ndarray[np.float32_t, ndim=1] x_t,
                  np.ndarray[np.float32_t, ndim=1] r_t,
                  np.ndarray[np.float32_t, ndim=2] Wrec,

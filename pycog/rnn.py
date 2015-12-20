@@ -377,6 +377,8 @@ class RNN(object):
         self.r[0] = r_t
 
         # Integrate
+        if np.isscalar(alpha):
+            alpha = alpha*np.ones(N)
         if self.Win is not None:
             euler(alpha, x_t, r_t, self.Win, self.Wrec, self.brec, self.bout,
                   self.u, noise_rec, f_hidden, self.r)

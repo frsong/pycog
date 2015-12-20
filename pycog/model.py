@@ -139,7 +139,7 @@ class Model(object):
         # Optional parameters
         for k in defaults:
             if hasattr(self.m, k):
-                params[k] = getattr(self.m, k)
+                params[k] = getattr(self.m, k);
 
         # Train
         trainer = Trainer(params)

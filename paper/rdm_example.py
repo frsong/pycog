@@ -23,6 +23,9 @@ ei, EXC, INH = tasktools.generate_ei(N)
 Cout = np.zeros((Nout, N))
 Cout[:,EXC] = 1
 
+tau = 100
+tau = 100*np.ones(N)
+
 #-------------------------------------------------------------------------------
 # Task structure
 #-------------------------------------------------------------------------------
@@ -149,7 +152,8 @@ n_validation = 100*(nconditions + 1)
 # Train model
 #-------------------------------------------------------------------------------
 
-model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, generate_trial=generate_trial,
+model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, tau=tau, Cout=Cout,
+              generate_trial=generate_trial,
               performance=performance, terminate=terminate,
               n_validation=n_validation)
 model.train('savefile.pkl')
