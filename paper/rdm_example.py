@@ -149,7 +149,7 @@ n_validation = 100*(nconditions + 1)
 # Train model
 #-------------------------------------------------------------------------------
 
-model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, tau=tau, Cout=Cout,
+model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, Cout=Cout,
               generate_trial=generate_trial,
               performance=performance, terminate=terminate,
               n_validation=n_validation)
