@@ -13,7 +13,7 @@ import theano.tensor as T
 
 # Newer version of Theano has built-in ReLU
 if hasattr(T.nnet, 'relu'):
-    rectify = relu
+    rectify = T.nnet.relu
 else:
     def rectify(x):
         return T.switch(x > 0, x, 0)
