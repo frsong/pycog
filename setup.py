@@ -29,7 +29,7 @@ if use_cython:
                              include_dirs=[np.get_include()])]
     cmdclass    = {'build_ext': build_ext}
 else:
-    ext_modules = [Extension('pycog.euler', ['pycog/euler.c'])]
+    ext_modules = []
     cmdclass    = {}
 
 # Setup
