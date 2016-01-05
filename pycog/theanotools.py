@@ -11,8 +11,12 @@ import theano.tensor as T
 # Activation functions and some of their derivatives
 #=========================================================================================
 
-def rectify(x):
-    return T.switch(x > 0, x, 0)
+# Newer version of Theano has built-in ReLU
+if hasattr(T.nnet, 'relu'):
+    rectify = relu
+else:
+    def rectify(x):
+        return T.switch(x > 0, x, 0)
 
 def d_rectify(x):
     return T.switch(x > 0, 1, 0)
