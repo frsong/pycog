@@ -784,7 +784,7 @@ class Trainer(object):
         if np.isscalar(self.p['var_rec']):
             settings['sigma_rec'] = '{}'.format(np.sqrt(self.p['var_rec']))
         else:
-            settings['sigma_in'] = 'array'
+            settings['sigma_rec'] = 'array'
 
         # Dataset settings
         settings['rectify inputs']            = self.p['rectify_inputs']
