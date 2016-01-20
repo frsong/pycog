@@ -94,7 +94,7 @@ if __name__ == '__main__':
     plot = fig.add()
 
     plot.plot(rnn.t/tau, rnn.z[0], color=Figure.colors('blue'))
-    plot.highlight(2*period, 3*period)
+    plot.highlight(2*period/tau, 3*period/tau)
     plot.text_upper_right('Range of training durations highlighted', dy=0.02)
 
     plot.ylim(-1, 1)
