@@ -69,7 +69,7 @@ def generate_trial(rng, dt, params):
     return trial
 
 # Target error
-min_error = 0.05
+min_error = 0.04
 
 #/////////////////////////////////////////////////////////////////////////////////////////
 
