@@ -4,6 +4,7 @@
 *.so
 *.txt
 *.egg-info/
+*.pkl
 build/
 dist/
 examples/work/
