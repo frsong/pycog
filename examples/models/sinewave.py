@@ -18,10 +18,11 @@ Nout = 1
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
 
-# Time constant
+# Time constant and step size (should be small for this example)
 tau = 100
+dt  = 10
 
-# Biases are really helpful for this task
+# Biases are helpful for this task
 train_bout = True
 train_brec = True
 
@@ -75,7 +76,7 @@ min_error = 0.05
 if __name__ == '__main__':
     from pycog import Model
 
-    model = Model(N=N, Nout=Nout, ei=ei, tau=tau,
+    model = Model(N=N, Nout=Nout, ei=ei, tau=tau, dt=dt,
                   train_brec=train_brec, train_bout=train_bout,
                   var_rec=var_rec, generate_trial=generate_trial, min_error=min_error)
     model.train('savefile.pkl')
@@ -95,7 +96,7 @@ if __name__ == '__main__':
 
     plot.plot(rnn.t/tau, rnn.z[0], color=Figure.colors('blue'))
     plot.highlight(2*period/tau, 3*period/tau)
-    plot.text_upper_right('Range of training durations highlighted', dy=0.02)
+    plot.text_upper_right('Range of training durations highlighted', dy=0.05)
 
     plot.ylim(-1, 1)
 
