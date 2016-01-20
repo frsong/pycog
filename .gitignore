@@ -2,9 +2,9 @@
 *.DS_Store
 *.pyc
 *.so
+*.pkl
 *.txt
 *.egg-info/
-*.pkl
 build/
 dist/
 examples/work/
