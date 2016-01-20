@@ -275,7 +275,7 @@ class RNN(object):
 
         # Check dt
         if np.any(dt > tau/10):
-            print("[ {}.RNN.run ] Warning: dt seems a bit small.".format(THIS))
+            print("[ {}.RNN.run ] Warning: dt seems a bit large.".format(THIS))
 
         # Float
         dtype = self.Wrec[0,0]
