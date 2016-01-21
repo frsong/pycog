@@ -12,15 +12,14 @@ from pycog import tasktools
 # Network structure
 #-----------------------------------------------------------------------------------------
 
-N    = 50
+N    = 100
 Nout = 1
 
 # E/I
 ei, EXC, INH = tasktools.generate_ei(N)
 
-# Time constant and step size (latter should be small for this example)
-tau = 100
-dt  = 5
+tau = 100 # Time constant
+dt  = 20  # Step size -- use a smaller step size if exact amplitude is important
 
 # Biases are helpful for this task
 train_bout = True
@@ -30,7 +29,7 @@ train_brec = True
 # Noise
 #-----------------------------------------------------------------------------------------
 
-var_rec = 0.01**2
+var_rec = 0.05**2
 
 #-----------------------------------------------------------------------------------------
 # Task structure
@@ -39,12 +38,9 @@ var_rec = 0.01**2
 # Period of the sine wave
 period = 8*tau
 
-# Sample duration
-epochs = {'T': 2*period}
-
 # Trial info
 t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs in discrete time
-trial = {'t': t, 'epochs': epochs}           # Trial
+trial = {'t': t, 'epochs': {'T': 2*period}}  # Trial
 
 # Target output
 trial['outputs'] = 0.9*np.sin(2*np.pi*t/period)[:,None]
@@ -53,11 +49,11 @@ def generate_trial(rng, dt, params):
     return trial
 
 # Target error
-min_error = 0.02
+min_error = 0.05
 
 # Online training
 mode         = 'continuous'
-n_validation = 100
+n_validation = 50
 
 #/////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,13 +73,14 @@ if __name__ == '__main__':
     from pycog          import RNN
     from pycog.figtools import Figure
 
-    rnn  = RNN('savefile.pkl', {'dt': 0.5})
-    info = rnn.run(T=16*period)
+    rnn  = RNN('savefile.pkl', {'dt': 0.5, 'var_rec': 0.01**2})
+    info = rnn.run(T=20*period)
 
     fig  = Figure()
     plot = fig.add()
 
     plot.plot(rnn.t/tau, rnn.z[0], color=Figure.colors('blue'))
+    plot.xlim(rnn.t[0]/tau, rnn.t[-1]/tau)
     plot.ylim(-1, 1)
 
     plot.xlabel(r'$t/\tau$')
