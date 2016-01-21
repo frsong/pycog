@@ -81,4 +81,4 @@ MIT
 
 If you find our code helpful to your work, consider giving us a shout-out in your publications:
 
-* Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." Under Revision. 2016. (\* = equal contribution)
+* Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." Under revision. 2016. (\* = equal contribution)
