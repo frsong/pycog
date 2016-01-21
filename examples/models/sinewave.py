@@ -38,9 +38,12 @@ var_rec = 0.05**2
 # Period of the sine wave
 period = 8*tau
 
+# Sample duration
+epochs = {'T': 2*period}
+
 # Trial info
 t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs in discrete time
-trial = {'t': t, 'epochs': {'T': 2*period}}  # Trial
+trial = {'t': t, 'epochs': epochs}           # Trial
 
 # Target output
 trial['outputs'] = 0.9*np.sin(2*np.pi*t/period)[:,None]
