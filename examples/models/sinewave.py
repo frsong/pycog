@@ -39,17 +39,17 @@ var_rec = 0.01**2
 # Period of the sine wave
 period = 8*tau
 
+# Sample duration
+epochs = {'T': 2*period}
+
+# Trial info
+t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs in discrete time
+trial = {'t': t, 'epochs': epochs}           # Trial
+
+# Target output
+trial['outputs'] = 0.9*np.sin(2*np.pi*t/period)[:,None]
+
 def generate_trial(rng, dt, params):
-    # Sample duration
-    epochs = {'T': 2*period}
-
-    # Trial info
-    t, e  = tasktools.get_epochs_idx(dt, epochs) # Time, task epochs in discrete time
-    trial = {'t': t, 'epochs': epochs}           # Trial
-
-    # Target output
-    trial['outputs'] = 0.9*np.sin(2*np.pi*t/period)[:,None]
-
     return trial
 
 # Target error
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                   train_brec=train_brec, train_bout=train_bout, var_rec=var_rec,
                   generate_trial=generate_trial,
                   mode=mode, n_validation=n_validation, min_error=min_error)
-    model.train('savefile.pkl', seed=100) # Seed to match do.py
+    model.train('savefile.pkl', seed=100)
 
     #-------------------------------------------------------------------------------------
     # Plot
