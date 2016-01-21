@@ -40,6 +40,12 @@ Training and testing networks involves some boring logistics, especially regardi
 python do.py models/sinewave train
 ```
 
+For this particular example we've also directly included code for training and plotting the result, so you can simply type
+
+```
+python models/sinewave.py
+```
+
 ## Notes
 
 * The default recurrent noise level (used for most of the tasks in our paper) is rather high. When training a new task start with a value of `var_rec` that is small, then increase the noise for more robust solutions.
