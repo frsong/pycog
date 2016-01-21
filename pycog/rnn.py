@@ -304,7 +304,6 @@ class RNN(object):
             u[1:,:] = trial['inputs']
 
             info['epochs'] = trial['epochs']
-        assert self.t[1] - self.t[0] == dt
 
         Nt = len(self.t)
 
