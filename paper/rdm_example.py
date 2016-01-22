@@ -43,8 +43,8 @@ def generate_trial(rng, dt, params):
         catch_trial = True
     else:
         catch_trial = False
-        coh         = params.get('coh',    rng.choice(cohs))
-        left_right      = params.get('left_right', rng.choice(left_rights))
+        coh         = params.get('coh',        rng.choice(cohs))
+        left_right  = params.get('left_right', rng.choice(left_rights))
 
     #---------------------------------------------------------------------------
     # Epochs
