@@ -39,21 +39,12 @@ def generate_trial(rng, dt, params):
     # Select task condition
     #---------------------------------------------------------------------------
 
-    catch_trial = False
-    if params['name'] in ['gradient', 'test']:
-        if params.get('catch', rng.rand() < pcatch):
-            catch_trial = True
-        else:
-            coh    = params.get('coh',    rng.choice(cohs))
-            in_out = params.get('in_out', rng.choice(in_outs))
-    elif params['name'] == 'validation':
-        b = params['minibatch_index'] % (nconditions + 1)
-        if b == 0:
-            catch_trial = True
-        else:
-            k0, k1 = tasktools.unravel_index(b-1, (len(cohs), len(in_outs)))
-            coh    = cohs[k0]
-            in_out = in_outs[k1]
+    if params.get('catch', rng.rand() < pcatch):
+        catch_trial = True
+    else:
+        catch_trial = False
+        coh         = params.get('coh',    rng.choice(cohs))
+        in_out      = params.get('in_out', rng.choice(in_outs))
 
     #---------------------------------------------------------------------------
     # Epochs
