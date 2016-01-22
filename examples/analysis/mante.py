@@ -811,10 +811,10 @@ def plot_taskaxes(plot, yax, p_vc, basecolor):
         if cond[1] > 0:
             prop = dict(mfc=color, mec=color, ms=2.5, mew=0.5)
         else:
-            prop = dict(mfc='none', mec=color, ms=3, mew=0.5)
+            prop = dict(mfc='w', mec=color, ms=2.5, mew=0.5)
 
-        plot.plot(p[CHOICE], p[yax], '-', color=color, lw=0.75)
-        plot.plot(p[CHOICE], p[yax], 'o', color=color, **prop)
+        plot.plot(p[CHOICE],      p[yax],      '-', color=color, lw=0.75)
+        plot.plot(p[CHOICE][::2], p[yax][::2], 'o', color=color, **prop)
 
         xall.append(p[CHOICE])
         yall.append(p[yax])
