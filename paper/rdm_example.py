@@ -2,8 +2,6 @@
 Perceptual decision-making task, loosely based on the random dot motion task.
 
 """
-from __future__ import division
-
 import numpy as np
 
 from pycog import Model, RNN, tasktools
