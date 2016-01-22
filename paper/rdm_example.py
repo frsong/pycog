@@ -26,8 +26,8 @@ Cout[:,EXC] = 1
 #-------------------------------------------------------------------------------
 
 cohs        = [1, 2, 4, 8, 16]
-in_outs     = [1, -1]
-nconditions = len(cohs)*len(in_outs)
+left_rights = [1, -1]
+nconditions = len(cohs)*len(left_rights)
 pcatch      = 1/(nconditions + 1)
 
 SCALE = 3.2
@@ -44,7 +44,7 @@ def generate_trial(rng, dt, params):
     else:
         catch_trial = False
         coh         = params.get('coh',    rng.choice(cohs))
-        in_out      = params.get('in_out', rng.choice(in_outs))
+        left_right      = params.get('left_right', rng.choice(left_rights))
 
     #---------------------------------------------------------------------------
     # Epochs
@@ -76,13 +76,13 @@ def generate_trial(rng, dt, params):
         trial['info'] = {}
     else:
         # Correct choice
-        if in_out > 0:
+        if left_right > 0:
             choice = 0
         else:
             choice = 1
 
         # Trial info
-        trial['info'] = {'coh': coh, 'in_out': in_out, 'choice': choice}
+        trial['info'] = {'coh': coh, 'left_right': left_right, 'choice': choice}
 
     #---------------------------------------------------------------------------
     # Inputs
@@ -147,5 +147,5 @@ if __name__ == '__main__':
     # Run the trained network with 51.2% coherence for choice 1
     rnn        = RNN('savefile.pkl', {'dt': 0.5})
     trial_func = generate_trial
-    trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'in_out': 1}
+    trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'left_right': 1}
     info       = rnn.run(inputs=(trial_func, trial_args))
