@@ -7,7 +7,7 @@ from   os.path import join
 
 import numpy as np
 
-from pycog.figtools    import Figure
+from pycog.figtools    import apply_alpha, Figure
 from pycog.utils       import get_here, get_parent
 from examples.analysis import mante
 
@@ -176,6 +176,54 @@ mante.plot_statespace(trialsfile, sortedfile, betafile, mante_plots)
 plots['m2'].text_upper_center('Motion context', dy=0.08, fontsize=7, color='k')
 plots['c2'].text_upper_center('Color context', dy=0.08, fontsize=7,
                               color=Figure.colors('darkblue'))
+
+#-----------------------------------------------------------------------------------------
+# Legend
+#-----------------------------------------------------------------------------------------
+
+ms_filled = 2.5
+ms_empty  = 2.5
+
+mew_filled = 0.5
+mew_empty  = 0.5
+
+y  = 1.2
+dx = 0.08
+dy = 0.06
+
+fontsize = 4.75
+
+for context, plot, basecolor in zip(['Motion', 'Color'],
+                                    [plots['c1'], plots['c3']],
+                                    ['k', Figure.colors('darkblue')]):
+    transform = plot.ax.transAxes
+    colors    = [apply_alpha(basecolor, alpha) for alpha in [0.4, 0.7, 1]]
+    for i in xrange(3):
+        plot.plot(0.5+(i+0.5)*dx, y, 'o', mfc=colors[i], mec=colors[i],
+                  ms=ms_filled, mew=mew_filled, transform=transform)
+        plot.plot(0.5-(i+0.5)*dx, y, 'o', mfc='none', mec=colors[i],
+                  ms=ms_empty, mew=mew_empty, transform=transform)
+
+    # Strength label
+    plot.text(0.5, y+dy, 'Weak', ha='center', va='bottom', fontsize=fontsize,
+              color=colors[0], transform=transform)
+    plot.text(0.5+2.5*dx, y+dy, 'Strong', ha='center', va='bottom', fontsize=fontsize,
+              color=colors[-1], transform=transform)
+    plot.text(0.5-2.5*dx, y+dy, 'Strong', ha='center', va='bottom', fontsize=fontsize,
+              color=colors[-1], transform=transform)
+
+    if context == 'Motion':
+        plot.text(0.5-5*dx, y, context, ha='right', va='center', fontsize=1.2*fontsize,
+                  color=colors[-1], transform=transform)
+    else:
+        plot.text(0.5+5*dx, y, context, ha='left', va='center', fontsize=1.2*fontsize,
+                  color=colors[-1], transform=transform)
+
+    # Choice label
+    plot.text(0.5+2.5*dx, y-dy, 'To choice 1', ha='center', va='top', fontsize=fontsize,
+              color='k', transform=transform)
+    plot.text(0.5-2.5*dx, y-dy, 'To choice 2', ha='center', va='top', fontsize=fontsize,
+              color='k', transform=transform)
 
 #=========================================================================================
 # Single-unit activity
