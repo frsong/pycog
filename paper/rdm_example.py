@@ -143,21 +143,22 @@ def terminate(performance_history):
 # Validation dataset size
 n_validation = 100*(nconditions + 1)
 
-#-------------------------------------------------------------------------------
-# Train model
-#-------------------------------------------------------------------------------
+if __name__ == '__main__':
+    #---------------------------------------------------------------------------
+    # Train model
+    #---------------------------------------------------------------------------
 
-model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, Cout=Cout,
-              generate_trial=generate_trial,
-              performance=performance, terminate=terminate,
-              n_validation=n_validation)
-model.train('savefile.pkl')
+    model = Model(Nin=Nin, N=N, Nout=Nout, ei=ei, Cout=Cout,
+                  generate_trial=generate_trial,
+                  performance=performance, terminate=terminate,
+                  n_validation=n_validation)
+    model.train('savefile.pkl')
 
-#-------------------------------------------------------------------------------
-# Run the trained network with 51.2% coherence for choice 1
-#-------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
+    # Run the trained network with 51.2% coherence for choice 1
+    #---------------------------------------------------------------------------
 
-rnn        = RNN('savefile.pkl', {'dt': 0.5})
-trial_func = generate_trial
-trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'in_out': 1}
-info       = rnn.run(inputs=(trial_func, trial_args))
+    rnn        = RNN('savefile.pkl', {'dt': 0.5})
+    trial_func = generate_trial
+    trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'in_out': 1}
+    info       = rnn.run(inputs=(trial_func, trial_args))
