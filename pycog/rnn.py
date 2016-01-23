@@ -269,7 +269,7 @@ class RNN(object):
         var_rec     = self.p['var_rec']
         dt          = self.p['dt']
         tau         = self.p['tau']
-        tau_in      = self.p['tau_in']
+        tau_in      = self.p.get('tau_in', self.p['tau'])
         sigma0      = self.p['sigma0']
         mode        = self.p['mode']
 
