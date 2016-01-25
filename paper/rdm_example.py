@@ -144,7 +144,7 @@ if __name__ == '__main__':
                   n_validation=n_validation)
     model.train('savefile.pkl')
 
-    # Run the trained network with 51.2% coherence for choice 1
+    # Run the trained network with 16*3.2% = 51.2% coherence for choice 1
     rnn        = RNN('savefile.pkl', {'dt': 0.5})
     trial_func = generate_trial
     trial_args = {'name': 'test', 'catch': False, 'coh': 16, 'left_right': 1}
