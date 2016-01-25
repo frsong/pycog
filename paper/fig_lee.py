@@ -343,10 +343,14 @@ for seq in xrange(1, 1+m.nseq):
 
     # Offsets
     offsets = {
-        1: (+0.7, -0.5),
-        5: (+0.9, +0.5),
-        7: (-0.7, +0.5),
-        8: (-0.8, +0.5)
+	    1: (0.1, -0.6),
+        2: (1.1, -0.2),
+        3: (-1.2, -0.3),
+        4: (-1, -0.3),
+        5: (1.1, 0),
+	    6: (-1.5, 0),
+        7: (-1, 0.3),
+        8: (-0.8, 0.5)
         }
 
     # Endpoint
@@ -372,7 +376,7 @@ plot.ylabel('PC 2')
 # Legend
 props = {'prop': {'size': 5.5}, 'handlelength': 1,
          'handletextpad': 1, 'labelspacing': 0.5}
-plot.legend(bbox_to_anchor=(0.7, 1), **props)
+plot.legend(bbox_to_anchor=(0.6, 1), **props)
 
 # Variance explained
 pct_var = 100*np.sum(pca.fracs[:2])

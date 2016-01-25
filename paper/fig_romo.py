@@ -38,7 +38,7 @@ m = imp.load_source('model', modelfile)
 
 units = {
     'L': 18,
-    'R': 80,
+    'R': 125,
     }
 
 # Color map
@@ -292,8 +292,8 @@ for name, unit in units.items():
     plot.xticks([0, 1, 2, 3, 4])
 
     if name == 'L':
-        plot.ylim(0, 1)
-        plot.yticks([0, 0.5, 1])
+        plot.ylim(0, 0.75)
+        plot.yticks([0, 0.5])
 
         ymin, ymax = plot.get_ylim()
         plot.text(1e-3*((f1_start + f1_end)/2 - t0), 1.03*ymax, '$f_1$',
@@ -301,8 +301,8 @@ for name, unit in units.items():
         plot.text(1e-3*((f2_start + f2_end)/2 - t0), 1.03*ymax, '$f_2$',
                   ha='center', va='bottom', fontsize=7)
     elif name == 'R':
-        plot.ylim(0, 1)
-        plot.yticks([0, 0.5, 1])
+        plot.ylim(0, 0.75)
+        plot.yticks([0, 0.5])
 
     # Highlight stimulus periods
     plot.highlight(1e-3*(f1_start-t0), 1e-3*(f1_end-t0))
