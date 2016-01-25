@@ -380,7 +380,7 @@ plot.legend(bbox_to_anchor=(0.6, 1), **props)
 
 # Variance explained
 pct_var = 100*np.sum(pca.fracs[:2])
-print("First two PCs explains {:.2f}% of the variance.".format(pct_var))
+print("First two PCs explain {:.2f}% of the variance.".format(pct_var))
 
 #=========================================================================================
 # x-coordinate, y-coordinate, screen
