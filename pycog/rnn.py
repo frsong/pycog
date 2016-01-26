@@ -289,7 +289,7 @@ class RNN(object):
                 raise RuntimeError("[ {}.RNN.run ] Cannot determine the trial duration."
                                    .format(THIS))
 
-            self.t = np.linspace(0, T, int(T/dt)+1, dtype=dtype)
+            self.t = np.linspace(0, T, int(T/dt)+1).astype(dtype)
             if self.Win is not None:
                 u = np.zeros((len(self.t), Nin), dtype=dtype)
             info = None
