@@ -162,9 +162,6 @@ if 'rdm' in args:
 
     figure('fig_rdm')
 
-    for m in ['rdm_varstim', 'rdm_rt']:
-        train_seeds(m)
-
 if 'structure' in args:
     print("=> Perceptual decision-making task (structure)")
     models = ['rdm_nodale', 'rdm_dense', 'rdm_fixed']
@@ -175,8 +172,6 @@ if 'structure' in args:
         trials(m, 2000, 'rdm', args='--dt_save 100')
         do_action(m, 'selectivity', 'rdm')
     figure('fig_structure')
-    for m in models:
-        train_seeds(m)
 
 if 'mante' in args:
     print("=> Context-dependent integration task")
@@ -187,7 +182,6 @@ if 'mante' in args:
     do_action('mante', 'regress')
     do_action('mante', 'units')
     figure('fig_mante')
-    train_seeds('mante')
 
 if 'mante_areas' in args:
     print("=> Context-dependent integration task (areas)")
@@ -198,7 +192,6 @@ if 'mante_areas' in args:
     do_action('mante_areas', 'regress', 'mante')
     do_action('mante_areas', 'units', 'mante')
     figure('fig_mante_areas')
-    train_seeds('mante_areas')
 
 if 'connectivity' in args:
     print("=> Connectivity for sequence execution task")
@@ -212,7 +205,6 @@ if 'multisensory' in args:
     do_action('multisensory', 'sort')
     do_action('multisensory', 'units')
     figure('fig_multisensory')
-    train_seeds('multisensory')
 
 if 'romo' in args:
     print("=> Parametric working memory task")
@@ -222,7 +214,6 @@ if 'romo' in args:
     do_action('romo', 'sort')
     do_action('romo', 'units')
     figure('fig_romo')
-    train_seeds('romo')
 
 if 'lee' in args:
     print("=> Eye-movement sequence execution task")
@@ -230,8 +221,16 @@ if 'lee' in args:
     train('lee')
     trials('lee', 100, args='--dt_save 2')
     figure('fig_lee')
-    train_seeds('lee')
 
 if 'performance' in args:
     print("=> Performance")
+    for m in ['rdm_varstim', 'rdm_rt']:
+        train_seeds(m)
+    for m in ['rdm_nodale', 'rdm_dense', 'rdm_fixed']:
+        train_seeds(m)
+    train_seeds('mante')
+    train_seeds('mante_areas')
+    train_seeds('multisensory')
+    train_seeds('romo')
+    train_seeds('lee')
     figure('fig_performance')
