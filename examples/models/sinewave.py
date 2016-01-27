@@ -67,7 +67,7 @@ if __name__ == '__main__':
                   train_brec=train_brec, train_bout=train_bout, var_rec=var_rec,
                   generate_trial=generate_trial,
                   mode=mode, n_validation=n_validation, min_error=min_error)
-    model.train('savefile.pkl', seed=100)
+    model.train('savefile.pkl', seed=100, recover=False)
 
     #-------------------------------------------------------------------------------------
     # Plot
