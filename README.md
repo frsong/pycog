@@ -50,6 +50,8 @@ python models/sinewave.py
 
 * The default recurrent noise level (used for most of the tasks in our paper) is rather high. When training a new task start with a value of `var_rec` that is small, then increase the noise for more robust solutions.
 
+* A list of parameters and their default values can be found in `defaults.py`
+
 * The default time step is also relatively large, so always test with a smaller time step (say 0.05) and re-train with a smaller step size if the results change.
 
 * By default, recurrent and output biases are set to zero. If you encounter difficulties with training, try including the biases by setting `train_brec = True` and/or `train_bout = True`.
@@ -81,4 +83,4 @@ MIT
 
 This code is the product of work carried out in the group of [Xiao-Jing Wang at New York University](http://www.cns.nyu.edu/wanglab/). If you find our code helpful to your work, consider giving us a shout-out in your publications:
 
-* Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." Under revision. 2016. (\* = equal contribution)
+* Song, H. F.\*, Yang, G. R.\*, & Wang, X.-J. "Training Excitatory-Inhibitory Recurrent Neural Networks for Cognitive Tasks: A Simple and Flexible Framework." *PLoS Comp. Bio. In press. (\* = equal contribution)
